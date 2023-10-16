@@ -12,7 +12,6 @@ int main() {
         900,
         0,
         "Material Editor",
-        OpenGL,
         false,
         false,
         false

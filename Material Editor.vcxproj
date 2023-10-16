@@ -132,7 +132,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)Dependencies\glfw-3.3.8\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -164,7 +164,6 @@
     <ClCompile Include="Core\Render\Shader.cpp" />
     <ClCompile Include="Core\Render\Texture.cpp" />
     <ClCompile Include="Core\Scene\Scene.cpp" />
-    <ClCompile Include="Core\Scene\ShaderManager.cpp" />
     <ClCompile Include="Core\utilities\Logger.cpp" />
     <ClCompile Include="Core\Time\Time.cpp" />
     <ClCompile Include="Core\UI\GUI.cpp" />
@@ -198,7 +197,6 @@
     <ClInclude Include="Core\Render\Texture.h" />
     <ClInclude Include="Core\Render\Vertex.h" />
     <ClInclude Include="Core\Scene\Scene.h" />
-    <ClInclude Include="Core\Scene\ShaderManager.h" />
     <ClInclude Include="Core\utilities\Logger.h" />
     <ClInclude Include="Core\Time\Time.h" />
     <ClInclude Include="Core\UI\GUI.h" />

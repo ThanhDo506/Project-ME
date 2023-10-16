@@ -9,16 +9,16 @@
 class Renderable {
 
 private:
+	Shader* _shader;
 	GLuint _vao;
 	GLuint _vbo;
 	GLuint _ebo;
 	std::vector<Vertex> _vertices;
 	std::vector<GLuint> _indices;
-
 public:
-	explicit Renderable(std::vector<Vertex> vertices, std::vector<GLuint> indices);
+	explicit Renderable(std::vector<Vertex> vertices, std::vector<GLuint> indices, Shader* shader);
 
-	virtual void render(Shader& shader, Camera& camera);
+	virtual void render(Camera& camera);
 };
 
 #endif

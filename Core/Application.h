@@ -6,18 +6,11 @@
 #include "Events/Input.h"
 #include "UI/GUI.h"
 
-enum GraphicsRenderer {
-	OpenGL,
-	Vulkan,
-	DirectX12
-};
-
 struct WindowSetting {
 	GLint width = 1920;
 	GLint height = 1080;
 	int limitFPS = 0;
 	const char* title = "";
-	GraphicsRenderer graphicsRenderer = OpenGL;
 	bool isVSync = false;
 	bool msaa = false;
 	bool fxaa = false;

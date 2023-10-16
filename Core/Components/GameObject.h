@@ -11,15 +11,15 @@
 class GameObject {
 
 private:
-	bool active;
-	bool hasChanged;
-	int childCount;
-	Transform transform;
-	std::string name;
-	std::string tag;
-	std::list<GameObject*> children;
-	GameObject* parent;
-	std::vector<IComponent*> components;
+	bool						_active;
+	bool						_hasChanged;
+	int							_childCount;
+	Transform					_transform;
+	std::string					_name;
+	std::string					_tag;
+	std::list<GameObject*>		_children;
+	GameObject*					_parent;
+	std::vector<IComponent*>	_components;
 
 public:
 	GameObject(Transform& transform,const char* name = "Game Object", GameObject* parent = nullptr);

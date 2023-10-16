@@ -34,9 +34,6 @@ public:
 		}
 	};
 
-	
-
-
 	template<typename... Args>
 	static void Info(const char* message, Args... args) {
 		Logger::instance()->_logHolder.push(Log( INFO, message, args...));

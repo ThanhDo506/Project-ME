@@ -19,7 +19,7 @@ private:
 	bool receiveShadows;
 
 public:
-	explicit MeshRenderer(std::vector<Vertex> vertices, std::vector<GLuint> indices, Material* material, CastShadowsMode castShadows = CastShadowsMode::ON, bool contributeGloballIllumination = true, bool receiveShadows = true);
+	explicit MeshRenderer(std::vector<Vertex> vertices, std::vector<GLuint> indices, Shader* shader, Material* material, CastShadowsMode castShadows = CastShadowsMode::ON, bool contributeGloballIllumination = true, bool receiveShadows = true);
 };
 
 #endif

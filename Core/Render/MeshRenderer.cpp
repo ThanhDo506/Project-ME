@@ -1,6 +1,6 @@
 #include "MeshRenderer.h"
 
-MeshRenderer::MeshRenderer(std::vector<Vertex> vertices, std::vector<GLuint> indices, Material* material, CastShadowsMode castShadows, bool contributeGloballIllumination, bool receiveShadows) : Renderable(vertices, indices)
+MeshRenderer::MeshRenderer(std::vector<Vertex> vertices, std::vector<GLuint> indices, Shader* shader, Material* material, CastShadowsMode castShadows, bool contributeGloballIllumination, bool receiveShadows) : Renderable(vertices, indices, shader)
 {
 
 }

@@ -15,11 +15,29 @@ public:
 
 	Transform identity();
 
-	glm::vec3 up() const;
+	glm::vec3	up() const;
+	glm::vec3	forward() const;
+	glm::vec3	right() const;
 
-	glm::vec3 forward() const;
-	
-	glm::vec3 right() const;
+	glm::vec3	getLocalEulerAngles() const;
+	void		setLocalEulerAngles(glm::vec3 eulerAngles);
+
+	glm::vec3	getLocalPosition() const;
+	void		setLocalPosition(glm::vec3 newPosition);
+
+	glm::vec3	getLocalScale() const;
+	void		setLocalScale(glm::vec3 newScale);
+
+	glm::quat	getLocalRotation() const;
+	void		setLocalRotation(glm::quat newRotation);
+
+	glm::mat4	getLocalToWorldMatrix() const;
+	glm::mat4	getWorldToLocalMatrix() const;
+
+
+	static glm::vec3 quaternionToEulerAngles(glm::quat& quaternion);
+	static glm::quat eulerAnglesToQuaternion(glm::vec3& eulerAngles);
+	static glm::quat eulerAnglesToQuaternion(float& pitch, float& yaw, float& roll);
 };
 
 #endif
