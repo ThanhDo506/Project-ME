@@ -19,7 +19,6 @@ void Texture::bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape& tex
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _id);
 		break;
 	case Image:
-		// Bind image unit.
 		glBindImageTexture(unit, _id, 0, GL_FALSE, 0, GL_READ_WRITE, _internalFormat);
 		break;
 	default:
@@ -86,8 +85,7 @@ bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0,
-		dataFormat, GL_UNSIGNED_BYTE, imageData);
+	glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, dataFormat, GL_UNSIGNED_BYTE, imageData);
 	if (textureSetting.maxMipmapsLevel >= 0)
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -173,48 +171,44 @@ bool Texture::loadHdr(const char* path, TextureSetting& textureSetting)
 	if (data == nullptr)
 	{
 		stbi_image_free(data);
-		throw std::string("ERROR::TEXTURE::LOAD_FAILED\n" + std::string(path));
+		APP_ERROR("Load image %s failure.", path);
+		return false;
 	}
 
 	GLenum dataFormat;
-	if (texture._numChannels == 1)
+	if (_numChannel == 1)
 	{
-		texture._internalFormat = GL_R16F;
+		_internalFormat = GL_R16F;
 		dataFormat = GL_RED;
 	}
-	else if (texture._numChannels == 2)
+	else if (_numChannel == 2)
 	{
-		texture._internalFormat = GL_RG16F;
+		_internalFormat = GL_RG16F;
 		dataFormat = GL_RG;
 	}
-	else if (texture._numChannels == 3)
+	else if (_numChannel == 3)
 	{
-		texture._internalFormat = GL_RGB16F;
+		_internalFormat = GL_RGB16F;
 		dataFormat = GL_RGB;
 	}
-	else if (texture._numChannels == 4)
+	else if (_numChannel == 4)
 	{
-		texture._internalFormat = GL_RGBA16F;
+		_internalFormat = GL_RGBA16F;
 		dataFormat = GL_RGBA;
 	}
 	else
 	{
 		stbi_image_free(data);
-		throw std::string(
-			"ERROR::TEXTURE::UNSUPPORTED_TEXTURE_FORMAT\n"
-			"Texture '" +
-			std::string(path) + "' contained unsupported number of channels: " +
-			std::to_string(texture._numChannels));
+		APP_ERROR("Texture %s contained unsupported number of channels: %d", path, _numChannel);
+		return false;
 	}
 
-	glGenTextures(1, &texture._id);
-	glBindTexture(GL_TEXTURE_2D, texture._id);
+	glGenTextures(1, &_id);
+	glBindTexture(GL_TEXTURE_2D, _id);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, texture._internalFormat,
-		texture._width, texture._height, 0,
-		dataFormat, GL_FLOAT, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, dataFormat, GL_FLOAT, data);
 
-	applySetting(params);
+	applySetting(textureSetting);
 	stbi_image_free(data);
 
 	return true;
@@ -264,8 +258,7 @@ void Texture::applySetting(const TextureSetting& textureSetting)
 		{
 			glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 		}
-		glTexParameterfv(target, GL_TEXTURE_BORDER_COLOR,
-			glm::value_ptr(textureSetting.borderColor));
+		glTexParameterfv(target, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(textureSetting.borderColor));
 		break;
 	}
 }

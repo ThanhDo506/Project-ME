@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <thread>
 #include <iostream>
@@ -103,7 +104,16 @@ private:
 	}
 };
 
-#define APP_INFO(...)		::Logger::Info(__VA_ARGS__)
-#define APP_WARN(...)		::Logger::Warn(__VA_ARGS__)
-#define APP_ERROR(...)		::Logger::Error(__VA_ARGS__)
-#define APP_CRITICAL(...)	::Logger::Critical(__VA_ARGS__)
+#ifdef ENABLE_APP_LOGGER
+	#define APP_INFO(...)		::Logger::Info(__VA_ARGS__)
+	#define APP_WARN(...)		::Logger::Warn(__VA_ARGS__)
+	#define APP_ERROR(...)		::Logger::Error(__VA_ARGS__)
+	#define APP_CRITICAL(...)	::Logger::Critical(__VA_ARGS__)
+#else
+	#define APP_INFO(...)		
+	#define APP_WARN(...)		
+	#define APP_ERROR(...)		
+	#define APP_CRITICAL(...)	
+#endif
+
+#endif
