@@ -14,11 +14,11 @@ private:
 	bool						_active;
 	bool						_hasChanged;
 	int							_childCount;
-	Transform					_transform;
-	std::string					_name;
-	std::string					_tag;
+	Transform					transform;
+	std::string					name;
+	std::string					tag;
 	std::list<GameObject*>		_children;
-	GameObject*					_parent;
+	GameObject*					parent;
 	std::vector<IComponent*>	_components;
 
 public:
@@ -58,7 +58,7 @@ public:
 
 	template<typename T>
 	T* GetComponent() const {
-		for (IComponent* component : components) {
+		for (IComponent* component : _components) {
 			if (dynamic_cast<T*>(component) != nullptr) {
 				return static_cast<T*>(component);
 			}
@@ -68,13 +68,13 @@ public:
 
 	template<typename T>
 	void AddComponent(T* component) {
-		components.push_back(component);
+		_components.push_back(component);
 	}
 
 	template<typename T>
 	bool RemoveComponent(T* component) {
-		std::vector<IComponent*>::iterator it = std::find(components.begin(), components.end(), component);
-		components.erase(it);
+		std::vector<IComponent*>::iterator it = std::find(_components.begin(), _components.end(), component);
+		_components.erase(it);
 	}
 };
 

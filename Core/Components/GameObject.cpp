@@ -15,11 +15,11 @@ void GameObject::setName(std::string& newName) {
 }
 
 bool GameObject::isActive() const {
-	return active;
+	return _active;
 }
 
 void GameObject::setActive(bool active) {
-	this->active = active;
+	this->_active = active;
 }
 
 void GameObject::setParent(GameObject* parent) {
@@ -39,7 +39,7 @@ Transform GameObject::getTransform() const {
 }
 
 bool GameObject::isChildOf(GameObject& gameObject) const {
-	return (& gameObject == parent);
+	return (&gameObject == parent);
 }
 
 void GameObject::Destroy(GameObject& gameObject, float time) {

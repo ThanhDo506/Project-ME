@@ -31,9 +31,7 @@ public:
 	glm::quat	getLocalRotation() const;
 	void		setLocalRotation(glm::quat newRotation);
 
-	glm::mat4	getLocalToWorldMatrix() const;
-	glm::mat4	getWorldToLocalMatrix() const;
-
+	glm::mat4	getMatrixTransform() const;
 
 	static glm::vec3 quaternionToEulerAngles(glm::quat& quaternion);
 	static glm::quat eulerAnglesToQuaternion(glm::vec3& eulerAngles);

@@ -3,6 +3,8 @@
 
 #include "../common.h"
 #include "../../third-party/stb/stb_image.h"
+#include "exception"
+#include <glm/glm.hpp>
 
 enum MappingCubeType {
 	CubicEnviroment,
@@ -12,7 +14,8 @@ enum MappingCubeType {
 
 enum TextureShape {
 	Texture2D,
-	Cube
+	Cube,
+	Image
 };
 
 enum TextureAlphaSource {
@@ -38,67 +41,66 @@ enum TextureType {
 enum TextureWrapMode {
 	Repeat,
 	MirrorRepeat,
-	Clamp2Edge,
-	Clamp2Border
+	ClampToEdge,
+	ClampToBorder
 };
 
 struct TextureSetting {
-	bool			flipTextureOnLoad	= false;
+	bool			flipVerticalTextureOnLoad	= false;
 	/**
 	 * @brief desired number of color channel.
 	 * @brief 0: number of channels follow raw image.
 	 */
-	int				desiredChannel		= 0;
-	bool			sRGB				= false;
-	bool			alphaIsTransparency = true;
-	int				maxMipmapsLevel		= 4;
-	TextureShape	texShape			= Texture2D;
+	int				desiredChannel				= 0;
+	bool			sRGB						= false;
+	bool			alphaIsTransparency			= true;
+	int				maxMipmapsLevel				= 4;
+	glm::vec4		borderColor					= glm::vec4(0.0, 0.0, 0.0, 0.0);
+	TextureShape	textureShape				= Texture2D;
 	/**
 	 * @brief Use this param when texture shape is Cube.
 	 */
-	MappingCubeType		mappingCubeType = CubicEnviroment;
-	TextureType			texType			= Default;
-	TextureFilterMode	texFilter		= PointFiltering;
-	TextureWrapMode		texWrapMode		= Repeat;
-	TextureAlphaSource	texAlphaSrc		= TextureAlpha;
+	MappingCubeType		mappingCubeType			= CubicEnviroment;
+	TextureType			textureType				= Default;
+	TextureFilterMode	textureFilter			= PointFiltering;
+	TextureWrapMode		textureWrapMode			= Repeat;
+	TextureAlphaSource	textureAlphaSrc			= TextureAlpha;
 };
 
 class Texture {
 
 private:
-	bool			_initialized = false;
 	bool			_sRGB;
-	TextureShape	_texShape;
-	TextureType		_texType;
+	TextureShape	_textureShape;
+	TextureType		_textureType;
 	GLenum			_internalFormat;
-	GLuint			_id;
+	GLuint			_id = 0;
 	GLint			_width;
 	GLint			_height;
 	GLint			_numChannel;
-	const char*		_path;
 
 public:
-	Texture(const char* path, TextureSetting& texSetting);
-
-	Texture(std::vector<const char*> paths, TextureSetting& texSetting);
-
-
-
-	/**
-	 * @brief Clean up from GPU.
-	 */
 	void Clean();
 
-	void bindTextureUnit(GLuint& unit, GLuint& textureId);
+	void bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape& textureShape);
 
+	static GLenum textureShapeToGLTarget(TextureShape& textureShape);
+
+	bool load2DTexture(const char* path, TextureSetting& texSetting);
+
+	/**
+	 * Create cube texture.
+	 * @brief
+	 * Only support RGB format (no sRGB, etc).
+	 * \param paths exactly 6 paths to 6 base image
+	 * \param textureSetting
+	 * \return init success or false
+	 */
+	bool loadCubeTexture(std::vector<const char*> paths, TextureSetting& textureSetting);
+
+	bool loadHdr(const char* path, TextureSetting& textureSetting);
 private:
-	void load(const char* path, TextureSetting& texSetting);
-
-	void load(std::vector<const char*> paths, TextureSetting& texSetting);
-
-	void load2DTexture(const char* path, TextureSetting& texSetting);
-
-	void loadCubeTexture(const char* path, TextureSetting& texSetting);
+	
 
 	void applySetting(const TextureSetting& textureSetting);
 };
