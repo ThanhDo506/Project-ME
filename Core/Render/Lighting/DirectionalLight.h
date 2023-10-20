@@ -1,7 +1,13 @@
 #ifndef DIRECTIONALLIGHT_H
 #define DIRECTIONALLIGHT_H
 
-class DirectionalLight : Light {
+#include "Light.h"
+
+
+class DirectionalLight : public Light {
+
+private:
+	Transform* transform;
 };
 
 #endif

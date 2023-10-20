@@ -1,12 +1,15 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <thread>
 #include <iostream>
 #include <queue>
 #include <mutex>
 #include <ctime>
 #include <string>
+#include <chrono>
 
 
 /// @brief Log system which run on separate thread
@@ -74,7 +77,7 @@ private:
 
 	static Logger* _instance;
 	std::thread* _logThread;
-	bool _stopPrint = false;
+	std::atomic<bool> _stopPrint = false;
 	std::queue<Log> _logHolder;
 
 	// just copy from https://learn.microsoft.com/en-us/answers/questions/813614/how-to-printf-to-std-string-by-using-of-a-function
@@ -104,7 +107,7 @@ private:
 	}
 };
 
-#ifdef ENABLE_APP_LOGGER
+#if APP_ENABLE_APP_LOGGER
 	#define APP_INFO(...)		::Logger::Info(__VA_ARGS__)
 	#define APP_WARN(...)		::Logger::Warn(__VA_ARGS__)
 	#define APP_ERROR(...)		::Logger::Error(__VA_ARGS__)

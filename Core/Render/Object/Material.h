@@ -2,7 +2,7 @@
 #define MATERIAL_H
 
 #include <utility>
-#include "../utilities/Logger.h"
+#include "../../utilities/Logger.h"
 #include <glm/glm.hpp>
 #include "Texture.h"
 

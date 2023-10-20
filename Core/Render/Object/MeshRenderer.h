@@ -2,7 +2,7 @@
 #define MESH_RENDERER_H
 
 #include "Renderable.h"
-#include "../common.h"
+#include "../../common.h"
 #include "Material.h"
 
 enum CastShadowsMode {

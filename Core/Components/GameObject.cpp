@@ -1,17 +1,22 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Transform& transform,const char* name, GameObject* parent) {
-	this->transform = transform;
-	this->name = name;
-	this->parent = parent;
+GameObject::GameObject(GameObject& baseGameObject)
+{
+}
+
+GameObject::GameObject(Transform transform,const char* name, GameObject* parent) {
+	Transform* t = new Transform(transform);
+	this->AddComponent(t);
+	this->_name = name;
+	this->_parent = parent;
 }
 
 std::string GameObject::getName() const {
-	return name;
+	return _name;
 }
 
 void GameObject::setName(std::string& newName) {
-	this->name = newName;
+	this->_name = newName;
 }
 
 bool GameObject::isActive() const {
@@ -23,42 +28,90 @@ void GameObject::setActive(bool active) {
 }
 
 void GameObject::setParent(GameObject* parent) {
-	this->parent = parent;
+	this->_parent = parent;
 }
 
 GameObject* GameObject::getParent() {
-	return this->parent;
+	return this->_parent;
 }
 
-void GameObject::setTransform(Transform& newTransform) {
-	this->transform = newTransform;
+Transform* GameObject::getTransform() const
+{
+	return GetComponent<Transform>();
 }
 
-Transform GameObject::getTransform() const {
-	return this->transform;
+void GameObject::setTransform(Transform tranform)
+{
+	Transform* trans = GetComponent<Transform>();
+	*trans = tranform;
 }
 
-bool GameObject::isChildOf(GameObject& gameObject) const {
-	return (&gameObject == parent);
+bool GameObject::isChildOf(GameObject& gameObject) const 
+{
+	return (&gameObject == _parent);
 }
 
-void GameObject::Destroy(GameObject& gameObject, float time) {
+void GameObject::OnEnable() 
+{
+	for (Component* component : _components) {
+		component->OnEnable();
+	}
+	for (GameObject* child : _children) {
+		child->OnEnable();
+	}
 }
 
-void GameObject::OnEnable() {
+void GameObject::OnDisable() 
+{
+	for (GameObject* child : _children) {
+		child->OnDisable();
+	}
+	for (Component* component : _components) {
+		component->OnDisable();
+	}
 }
 
-void GameObject::OnDisable() {
+void GameObject::Awake() 
+{
+	for (Component* component : _components) {
+		component->Awake();
+	}
+	for (GameObject* child : _children) {
+		child->Awake();
+	}
 }
 
-void GameObject::Awake() {
+void GameObject::Start() 
+{
+	for (Component* component : _components) {
+		component->Start();
+	}
 }
 
-void GameObject::Start() {
+void GameObject::Update() 
+{
+	if (!_active)
+		return;
+	for (Component* component : _components) {
+		if (component->isActive()) {
+			component->Update();
+		}
+	}
+	for (GameObject* child : _children) {
+		child->Update();
+	}
 }
 
-void GameObject::Update() {
-}
-
-void GameObject::FixedUpdate() {
+void GameObject::FixedUpdate() 
+{
+	if (!_active)
+		return;
+	for (Component* component : _components) {
+		if (component->isActive()) {
+			component->FixedUpdate();
+		}
+	}
+	for (GameObject* child : _children) {
+		child->FixedUpdate();
+	}
 }

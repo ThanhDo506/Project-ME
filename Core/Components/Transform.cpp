@@ -1,31 +1,33 @@
 #include "Transform.h"
 
-Transform Transform::identity() {
-	return {glm::vec3(0.0,0.0,0.0), 
-			glm::vec3(1.0,1.0,1.0), 
-			glm::quat(1.0,0.0,0.0,0.0) };
+Transform::Transform(GameObject* gameObject, glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive)
+	: Component(gameObject, "Transform", true)
+{
+	_position = position;
+	_scale = scale;
+	_rotation = rotation;
 }
 
 glm::vec3 Transform::up() const {
-	return rotation * glm::vec3(0.0, 1.0, 0.0);
+	return _rotation * glm::vec3(0.0, 1.0, 0.0);
 }
 
 glm::vec3 Transform::forward() const {
-	return rotation * glm::vec3(0.0, 0.0, 1.0);
+	return _rotation * glm::vec3(0.0, 0.0, 1.0);
 }
 
 glm::vec3 Transform::right() const {
-	return rotation * glm::vec3(1.0, 0.0, 0.0);
+	return _rotation * glm::vec3(1.0, 0.0, 0.0);
 }
 
 glm::vec3 Transform::getLocalEulerAngles() const
 {
-	return glm::degrees(glm::eulerAngles(rotation));
+	return glm::degrees(glm::eulerAngles(_rotation));
 }
 
 void Transform::setLocalEulerAngles(glm::vec3 eulerAngles)
 {
-	rotation = glm::quat(glm::vec3(
+	_rotation = glm::quat(glm::vec3(
 		glm::radians(eulerAngles.x),
 		glm::radians(eulerAngles.y),
 		glm::radians(eulerAngles.z)
@@ -34,39 +36,39 @@ void Transform::setLocalEulerAngles(glm::vec3 eulerAngles)
 
 glm::vec3 Transform::getLocalPosition() const
 {
-	return position;
+	return _position;
 }
 
 void Transform::setLocalPosition(glm::vec3 newPosition)
 {
-	position = newPosition;
+	_position = newPosition;
 }
 
 glm::vec3 Transform::getLocalScale() const
 {
-	return scale;
+	return _scale;
 }
 
 void Transform::setLocalScale(glm::vec3 newScale)
 {
-	scale = newScale;
+	_scale = newScale;
 }
 
 glm::quat Transform::getLocalRotation() const
 {
-	return rotation;
+	return _rotation;
 }
 
 void Transform::setLocalRotation(glm::quat newRotation)
 {
-	rotation = newRotation;
+	_rotation = newRotation;
 }
 
 glm::mat4 Transform::getMatrixTransform() const
 {
-	glm::mat4 positionMtx = glm::translate(glm::mat4(1.0), position);
-	glm::mat4 scaleMtx = glm::scale(glm::mat4(1.0), scale);
-	glm::mat4 rotationMtx = glm::toMat4(rotation);
+	glm::mat4 positionMtx = glm::translate(glm::mat4(1.0), _position);
+	glm::mat4 scaleMtx = glm::scale(glm::mat4(1.0), _scale);
+	glm::mat4 rotationMtx = glm::toMat4(_rotation);
 	return positionMtx * rotationMtx * scaleMtx;
 }
 
@@ -91,4 +93,31 @@ glm::quat Transform::eulerAnglesToQuaternion(float& pitch, float& yaw, float& ro
 		glm::radians(yaw),
 		glm::radians(roll)
 	));
+}
+
+glm::vec3 Transform::getPosition() const
+{
+	return glm::vec3();
+}
+
+void Transform::setPosition(glm::vec3 newPosition)
+{
+}
+
+glm::vec3 Transform::getScale() const
+{
+	return glm::vec3();
+}
+
+void Transform::setScale(glm::vec3 newScale)
+{
+}
+
+glm::quat Transform::getQuaternion() const
+{
+	return glm::quat();
+}
+
+void Transform::setQuaternion(glm::quat newQuaternion)
+{
 }

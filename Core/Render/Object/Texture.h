@@ -1,7 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "../common.h"
+#include "../../common.h"
 #include "../../third-party/stb/stb_image.h"
 #include "exception"
 #include <glm/glm.hpp>
@@ -54,6 +54,9 @@ struct TextureSetting {
 	int				desiredChannel				= 0;
 	bool			sRGB						= false;
 	bool			alphaIsTransparency			= true;
+	/**
+	 * if maxMipmapsLevel >= 0 enable generate mipmap else generate no mipmaps.
+	 */
 	int				maxMipmapsLevel				= 4;
 	glm::vec4		borderColor					= glm::vec4(0.0, 0.0, 0.0, 0.0);
 	TextureShape	textureShape				= Texture2D;
@@ -82,9 +85,9 @@ private:
 public:
 	void Clean();
 
-	void bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape& textureShape);
+	void bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape textureShape);
 
-	static GLenum textureShapeToGLTarget(TextureShape& textureShape);
+	static GLenum textureShapeToGLTarget(TextureShape textureShape);
 
 	bool load2DTexture(const char* path, TextureSetting& texSetting);
 

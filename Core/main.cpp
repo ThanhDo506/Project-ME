@@ -4,6 +4,10 @@
 #include "common.h"
 #include "glm/glm.hpp"
 #include "Application.h"
+#include "Components/GameObject.h"
+#include "Components/Component.h"
+#include <assert.h>
+
 
 int main() {
     Logger::init();

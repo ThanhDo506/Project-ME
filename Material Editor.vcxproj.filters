@@ -21,7 +21,7 @@
     <ClCompile Include="Core\utilities\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Components\IComponent.cpp">
+    <ClCompile Include="Core\Components\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Components\GameObject.cpp">
@@ -33,19 +33,19 @@
     <ClCompile Include="Core\Render\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Render\Texture.cpp">
+    <ClCompile Include="Core\Render\Object\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Render\Shader.cpp">
+    <ClCompile Include="Core\Render\Object\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Render\MeshRenderer.cpp">
+    <ClCompile Include="Core\Render\Object\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Render\Renderable.cpp">
+    <ClCompile Include="Core\Render\Object\Renderable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Time\Time.cpp">
@@ -87,12 +87,30 @@
     <ClCompile Include="Core\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Render\RendererManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Scene\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Scene\LightRenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Render\Lighting\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Events\IEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Events\EventDispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\utilities\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Components\IComponent.h">
+    <ClInclude Include="Core\Components\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Components\GameObject.h">
@@ -116,31 +134,31 @@
     <ClInclude Include="Core\Render\Lighting\SpotLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Texture.h">
+    <ClInclude Include="Core\Render\Object\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Vertex.h">
+    <ClInclude Include="Core\Render\Object\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Shader.h">
+    <ClInclude Include="Core\Render\Object\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Material.h">
+    <ClInclude Include="Core\Render\Object\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\MeshRenderer.h">
+    <ClInclude Include="Core\Render\Object\MeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Renderable.h">
+    <ClInclude Include="Core\Render\Object\Renderable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Render\Renderer.h">
+    <ClInclude Include="Core\Render\Object\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Time\Time.h">
@@ -200,5 +218,23 @@
     <ClInclude Include="Core\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Render\RendererManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Scene\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Scene\LightRenderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Events\IEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Events\EventDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Design Proj\Material Editor.vpp" />
   </ItemGroup>
 </Project>

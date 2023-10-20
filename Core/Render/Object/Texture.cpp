@@ -6,7 +6,7 @@ void Texture::Clean()
 	glDeleteTextures(1, &_id);
 }
 
-void Texture::bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape& textureShape) 
+void Texture::bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape textureShape) 
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
 
@@ -27,15 +27,17 @@ void Texture::bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape& tex
 	}
 }
 
-GLenum Texture::textureShapeToGLTarget(TextureShape& textureShape)
+GLenum Texture::textureShapeToGLTarget(TextureShape textureShape)
 {
 	switch (textureShape) {
 	case Texture2D:
 		return GL_TEXTURE_2D;
 	case Cube:
 		return GL_TEXTURE_CUBE_MAP;
+	default:
+		APP_ERROR("Invalid texture shape");
+		return GL_INVALID_ENUM;
 	}
-	APP_ERROR("Invalid texture shape");
 }
 
 bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
@@ -78,10 +80,8 @@ bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
 		stbi_image_free(imageData);
 		APP_ERROR("Unsupported texture format!");
 		return false;
-		break;
 	}
 	
-
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_2D, _id);
 

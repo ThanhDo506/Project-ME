@@ -4,45 +4,26 @@
 #include <list>
 #include <vector>
 #include "Transform.h"
-#include "IComponent.h"
+#include "Component.h"
 #include "../common.h"
 #include <algorithm>
 
+class Component;
+
 class GameObject {
-
-private:
-	bool						_active;
-	bool						_hasChanged;
-	int							_childCount;
-	Transform					transform;
-	std::string					name;
-	std::string					tag;
-	std::list<GameObject*>		_children;
-	GameObject*					parent;
-	std::vector<IComponent*>	_components;
-
 public:
-	GameObject(Transform& transform,const char* name = "Game Object", GameObject* parent = nullptr);
-
-	std::string getName() const;
-
-	void setName(std::string& newName);
-
-	bool isActive() const;
-
-	void setActive(bool active);
+	GameObject(GameObject& baseGameObject);
+	GameObject(Transform transform, const char* name = "Game Object", GameObject* parent = nullptr);
 
 	void setParent(GameObject* parent);
 
 	GameObject* getParent();
 
-	void setTransform(Transform& newTransform);
+	Transform* getTransform() const;
 
-	Transform getTransform() const;
+	void setTransform(Transform tranform);
 
 	bool isChildOf(GameObject& gameObject) const;
-
-	void Destroy(GameObject& gameObject, float time = 0.0f);
 
 	virtual void OnEnable();
 
@@ -58,7 +39,7 @@ public:
 
 	template<typename T>
 	T* GetComponent() const {
-		for (IComponent* component : _components) {
+		for (Component* component : _components) {
 			if (dynamic_cast<T*>(component) != nullptr) {
 				return static_cast<T*>(component);
 			}
@@ -71,11 +52,31 @@ public:
 		_components.push_back(component);
 	}
 
-	template<typename T>
-	bool RemoveComponent(T* component) {
-		std::vector<IComponent*>::iterator it = std::find(_components.begin(), _components.end(), component);
+	bool RemoveComponent(Component* component) {
+		std::vector<Component*>::iterator it = std::find(_components.begin(), _components.end(), component);
 		_components.erase(it);
 	}
+
+	std::string getName() const;
+
+	void setName(std::string& newName);
+
+	bool isActive() const;
+
+	void setActive(bool active);
+
+
+	__declspec(property(get = getName		, put = setName))		std::string name;
+	__declspec(property(get = getTransform	, put = setTransform))	Transform*	transform;
+	__declspec(property(get = getTag		, put = setTag))		std::string tag;
+private:
+	bool						_active;
+	bool						_hasChanged;
+	std::string					_name;
+	std::string					_tag;
+	GameObject* _parent;
+	std::vector<GameObject*>	_children;
+	std::vector<Component*>		_components;
 };
 
 #endif

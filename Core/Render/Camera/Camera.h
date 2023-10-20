@@ -2,10 +2,10 @@
 #define CAMERA_H
 
 #include "../../common.h"
-#include "../../Components/IComponent.h"
+#include "../../Components/Component.h"
 #include <glm/glm.hpp>
 
-class Camera : IComponent {
+class Camera {
 
 private:
 	float nearClippingPlanes;

@@ -3,7 +3,7 @@
 
 #define MAX_MESSAGE_LENGTH 500
 
-#include "../common.h"
+#include "../../common.h"
 #include <glm/glm.hpp>
 #include <fstream>
 
