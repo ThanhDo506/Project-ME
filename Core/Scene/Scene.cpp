@@ -20,24 +20,6 @@ void Scene::Render()
 
 }
 
-std::shared_ptr<GameObject> Scene::Instantiate(std::shared_ptr<GameObject> base)
-{
-	std::shared_ptr<GameObject> newGameObject(new GameObject(*base));
-	return newGameObject;
-}
-
-std::shared_ptr<GameObject> Scene::Instantiate(std::shared_ptr<GameObject> base, glm::vec3 position, glm::quat rotation)
-{
-	std::shared_ptr<GameObject> newGameObject(new GameObject(new Transform(), *base));
-	return newGameObject;
-}
-
-std::shared_ptr<GameObject> Scene::Instantiate(std::shared_ptr<GameObject> base, glm::vec3 position, glm::quat rotation, std::shared_ptr<GameObject> parent)
-{
-	std::shared_ptr<GameObject> newGameObject(new GameObject(*base));
-	return newGameObject;
-}
-
 std::shared_ptr<GameObject> Scene::findGameObject(std::string name)
 {
 	return std::shared_ptr<GameObject>();

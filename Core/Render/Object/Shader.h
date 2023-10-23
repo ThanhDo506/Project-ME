@@ -31,6 +31,8 @@ public:
 
 	void SetBool(const char* uniformName, bool value);
 	void SetInt(const char* uniformName, int value);
+
+	// TODO: haven't done this!
 	void SetIntArray(const char* uniformName, int* values, uint32_t count);
 	void SetFloat(const char* uniformName, float value);
 	void SetFloat2(const char* uniformName, const glm::vec2& value);
@@ -41,8 +43,6 @@ public:
 	void SetMat4(const char* uniformName, const glm::mat4& value);
 
 	std::string getName() const;
-
-
 private:
 	// Ref: Victor Gordan
 	// 12th - July - 2023

@@ -8,13 +8,15 @@
 
 #include "Component.h"
 
-class Component;
-class GameObject;
-
 class Transform : public Component {
 
 public:
-	Transform(GameObject* gameObject, glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive = true);
+	Transform(GameObject* gameObject, glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive = true) : Component(gameObject, "Transform", true)
+	{
+		_position = position;
+		_scale = scale;
+		_rotation = rotation;
+	}
 	/**
 	 * @brief The green axis of the transform in world space.
 	 */

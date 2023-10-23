@@ -2,6 +2,11 @@
 
 GameObject::GameObject(GameObject& baseGameObject)
 {
+	_active = baseGameObject._active;
+	_hasChanged = true;
+	_name = baseGameObject.name + " (Copy)";
+	_parent = baseGameObject._parent;
+	_children = baseGameObject._children;
 }
 
 GameObject::GameObject(Transform transform,const char* name, GameObject* parent) {
@@ -11,11 +16,11 @@ GameObject::GameObject(Transform transform,const char* name, GameObject* parent)
 	this->_parent = parent;
 }
 
-std::string GameObject::getName() const {
+std::string GameObject::get_name() const {
 	return _name;
 }
 
-void GameObject::setName(std::string& newName) {
+void GameObject::set_name(std::string& newName) {
 	this->_name = newName;
 }
 

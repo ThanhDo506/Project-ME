@@ -1,13 +1,5 @@
 #include "Transform.h"
 
-Transform::Transform(GameObject* gameObject, glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive)
-	: Component(gameObject, "Transform", true)
-{
-	_position = position;
-	_scale = scale;
-	_rotation = rotation;
-}
-
 glm::vec3 Transform::up() const {
 	return _rotation * glm::vec3(0.0, 1.0, 0.0);
 }

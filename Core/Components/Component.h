@@ -1,16 +1,17 @@
-#ifndef Component_H
-#define Component_H
+#ifndef COMPONENT_H
+#define COMPONENT_H
 
 #include <string>
-#include "GameObject.h"
+#include "../common.h"
 
 class GameObject;
-class Transform;
 
 class Component {
 
 public:
-	Component(GameObject* gameObject, std::string name, bool isActive = true);
+	Component(GameObject* gameObject, std::string name, bool isActive = true) : _gameObject(gameObject), _name(name), _active(isActive) {
+		APP_CRITICAL("Create Component attach to null GameObject!");
+	}
 
 	virtual ~Component();
 
@@ -41,6 +42,9 @@ public:
 	__declspec(property(get = getGameObject)) GameObject* gameObject;
 	__declspec(property(get = getName, put = setName)) std::string name;
 
+
+	Component(const Component& obj, GameObject* gameObject);
+	virtual void operator=(const Component& obj);
 protected:
 	std::string _name;
 	bool		_active;

@@ -47,26 +47,20 @@ public:
 		return nullptr;
 	}
 
-	template<typename T>
-	void AddComponent(T* component) {
+	void AddComponent(Component* component) {
 		_components.push_back(component);
 	}
 
-	bool RemoveComponent(Component* component) {
-		std::vector<Component*>::iterator it = std::find(_components.begin(), _components.end(), component);
-		_components.erase(it);
-	}
+	std::string get_name() const;
 
-	std::string getName() const;
-
-	void setName(std::string& newName);
+	void set_name(std::string& newName);
 
 	bool isActive() const;
 
 	void setActive(bool active);
 
 
-	__declspec(property(get = getName		, put = setName))		std::string name;
+	__declspec(property(get = get_name		, put = set_name))		std::string name;
 	__declspec(property(get = getTransform	, put = setTransform))	Transform*	transform;
 	__declspec(property(get = getTag		, put = setTag))		std::string tag;
 private:

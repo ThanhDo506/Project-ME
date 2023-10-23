@@ -25,24 +25,135 @@ enum BlendingMode {
 };
 
 class Material {
+	Texture get_diffuse_map() const;
+	void	set_diffuse_map(Texture diffuseMap);
 
+	Texture get_roughness_map() const;
+	void	set_roughness_map(Texture roughnessMap);
+
+	Texture get_metallic_map() const;
+	void	set_metallic_map(Texture metallicMap);
+
+	Texture get_ao_map() const;
+	void	set_ao_map(Texture aoMap);
+
+	Texture get_normal_map() const;
+	void	set_normal_map(Texture normalMap);
+
+	Texture get_height_map() const;
+	void	set_height_map(Texture heightMap);
+
+	Texture get_emission_map() const;
+	void	set_emission_map(Texture emissionMap);
+
+	float	get_metallic() const;
+	void	set_metallic(float metallic);
+
+	float	get_smoothness() const;
+	void	set_smoothness(float smoothness);
+
+	float	get_ao_strength() const;
+	void	set_ao_strength(float aoStrength);
+
+	bool	is_use_alpha_clipping() const;
+	void	set_use_alpha_clipping(bool useAlphaClipping);
+
+	float	get_alpha_clipping_threshold();
+	void	set_alpha_clipping_threshold(float val);
+
+	glm::vec4	get_reflect_color() const;
+	void		set_reflect_color(glm::vec4 newColor);
+
+	bool		is_use_emission_map() const;
+	void		set_use_emission_map(bool use);
+
+	bool		is_use_metallic_map() const;
+	void		set_use_metallic_map(bool use);
+
+	bool		is_received_shadow() const;
+	void		set_received_shader(bool use);
+
+	void		set_tilling(glm::vec2 newTilling);
+	glm::vec2	get_tilling() const;
+
+	void		set_offset(glm::vec2 newOffset);
+	glm::vec2	get_offset() const;
+
+	SurfaceType get_sufface_type() const;
+	void		set_sufface_type(SurfaceType newSurfaceType);
+
+	RenderFace	get_render_face() const;
+	void		set_render_face(RenderFace newRenderFace);
+
+	BlendingMode get_blending_mode() const;
+	void		 set_blending_mode(BlendingMode newBlendingMode);
+
+	bool		is_use_specular_highlight() const;
+	void		set_use_specular_highlight(bool val);
+
+	bool		is_use_enviroment_reflections() const;
+	void		set_use_enviroment_reflections(bool val);
+
+	bool		is_must_update() const;
+
+	short		get_priority_render() const;
+	void		set_priority_render(short newPriority);
+
+	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture			diffuseMap;
+	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture			roughnessMap;
+	__declspec(property(get = get_metallic_map, put = set_metallic_map))							Texture			metallicMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			occlusionMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			ambientOccolusionMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			aoMap;
+	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			normalMap;
+	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			bumpMap;
+	__declspec(property(get = get_height_map, put = set_height_map))								Texture			heightMap;
+	__declspec(property(get = get_emission_map, put = set_emission_map))							Texture			emissionMap;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+
+	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+	__declspec(property(get = get_tilling, put = set_tilling))										glm::vec2		tilling;
+	__declspec(property(get = get_sufface_type, put = set_sufface_type))							SurfaceType		surfaceType;
+	__declspec(property(get = get_render_face, put = set_render_face))								RenderFace		renderFace;
+	__declspec(property(get = get_blending_mode, put = set_blending_mode))							BlendingMode	blendingMode;
+	__declspec(property(get = is_use_specular_highlight, put = set_use_specular_highlight))			bool			specularHighlight;
+	__declspec(property(get = is_use_enviroment_reflections, put = set_use_enviroment_reflections)) bool			enviromentReflection;
+	__declspec(property(get = isMustUpdate))														bool			isMushUpdate;
+	__declspec(property(get = get_priority_render, put = set_priority_render))						short			priorityRender;
 private:
-	Texture		_diffuseMap;
-	Texture		_roughnessMap;
-	Texture		_metallicMap;
-	Texture		_aoMap;
-	Texture		_normalMap;
-	Texture		_emissionMap;
-	float		_metallic;
-	float		_smoothness;
-	float		_aoStrength;
-	float		_alphaClipping;
-	glm::vec4	_reflectColor;
-	bool		_useEmissionMap;
-	bool		_useMetallicMap;
-	bool		_receivedShadow;
-	std::pair<float, float> tilling;
-	std::pair<float, float> offset;
+	Texture						_diffuseMap;
+	Texture						_roughnessMap;
+	Texture						_metallicMap;
+	Texture						_aoMap;
+	Texture						_normalMap;
+	Texture						_emissionMap;
+	Texture						_heightMap;
+	float						_metallic;
+	float						_smoothness;
+	float						_aoStrength;
+	float						_alphaClippingThreshold;
+	glm::vec4					_reflectColor;
+	bool						_useEmissionMap;
+	bool						_useMetallicMap;
+	bool						_receivedShadow;
+	glm::vec2					_tilling;
+	glm::vec2					_offset;
+	SurfaceType					_surfaceType;
+	RenderFace					_renderFace;
+	BlendingMode				_blendingMode;
+	bool						_useSpecularHighlight = false;
+	bool						_useEnviromentReflections = false;
+	bool						_mustUpdate = true;
+	bool						_useAlphaClipping = false;
+	short						_priorityRender = 0;
 };
 
 #endif

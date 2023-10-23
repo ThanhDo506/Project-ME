@@ -1,15 +1,5 @@
 #include "Component.h"
 
-// TODO: 
-Component::Component(GameObject* gameObject, std::string name, bool isActive)
-{
-	APP_CRITICAL("Create Component with null gameObject!");
-	assert(gameObject == nullptr);
-	_gameObject	= gameObject;
-	_name		= name;
-	_active		= isActive;
-}
-
 Component::~Component()
 {
 	_gameObject = nullptr;
@@ -66,4 +56,14 @@ bool Component::isActive() const
 GameObject* Component::getGameObject()
 {
 	return _gameObject;
+}
+
+Component::Component(const Component& obj, GameObject* gameObject)
+{
+
+}
+
+void Component::operator=(const Component& obj)
+{
+
 }
