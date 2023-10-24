@@ -25,6 +25,11 @@ enum BlendingMode {
 };
 
 class Material {
+public:
+	bool		is_must_update() const;
+
+	bool		is_texture_changed() const;
+
 	Texture get_diffuse_map() const;
 	void	set_diffuse_map(Texture diffuseMap);
 
@@ -94,8 +99,6 @@ class Material {
 	bool		is_use_enviroment_reflections() const;
 	void		set_use_enviroment_reflections(bool val);
 
-	bool		is_must_update() const;
-
 	short		get_priority_render() const;
 	void		set_priority_render(short newPriority);
 
@@ -108,16 +111,19 @@ class Material {
 	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			normalMap;
 	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			bumpMap;
 	__declspec(property(get = get_height_map, put = set_height_map))								Texture			heightMap;
+	__declspec(property(get = get_height_map, put = set_height_map))								Texture			parallaxMap;
 	__declspec(property(get = get_emission_map, put = set_emission_map))							Texture			emissionMap;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
-	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
+
+	__declspec(property(get = get_metallic, put = set_metallic))									float			metallic;
+	__declspec(property(get = get_smoothness, put = set_smoothness))								float			smoothness;
+	__declspec(property(get = get_ao_strength, put = set_ao_strength))								float			aoStrength;
+	__declspec(property(get = get_ao_strength, put = set_ao_strength))								float			occolusionStrength;
+	__declspec(property(get = is_use_alpha_clipping, put = set_use_alpha_clipping))					bool			useAlphaClipping;
+	__declspec(property(get = get_alpha_clipping_threshold, put = set_alpha_clipping_threshold))	float			alphaClippingThreshold;
+	__declspec(property(get = get_reflect_color, put = set_reflect_color))							glm::vec4		reflectColor;
+	__declspec(property(get = is_use_emission_map, put = set_use_emission_map))						bool			useEmissionMap;
+	__declspec(property(get = is_use_metallic_map, put = set_use_metallic_map))						bool			useMetallicMap;
+	__declspec(property(get = is_received_shadow, put = set_received_shadow))						bool			receivedShadow;
 
 	__declspec(property(get = get_offset, put = set_offset))										glm::vec2		offset;
 	__declspec(property(get = get_tilling, put = set_tilling))										glm::vec2		tilling;
@@ -128,6 +134,7 @@ class Material {
 	__declspec(property(get = is_use_enviroment_reflections, put = set_use_enviroment_reflections)) bool			enviromentReflection;
 	__declspec(property(get = isMustUpdate))														bool			isMushUpdate;
 	__declspec(property(get = get_priority_render, put = set_priority_render))						short			priorityRender;
+
 private:
 	Texture						_diffuseMap;
 	Texture						_roughnessMap;
@@ -153,6 +160,7 @@ private:
 	bool						_useEnviromentReflections = false;
 	bool						_mustUpdate = true;
 	bool						_useAlphaClipping = false;
+	bool						_textureChanged = true;
 	short						_priorityRender = 0;
 };
 

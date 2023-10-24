@@ -233,6 +233,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
+    <None Include="Resources\GLSL\PBR.frag" />
+    <None Include="Resources\GLSL\PBR.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

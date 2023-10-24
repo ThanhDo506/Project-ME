@@ -28,6 +28,7 @@ private:
 
 
 private:
+	//
 	Material*					_material;
 	Shader*						_shader;
 	std::vector<Mesh*>			_meshes;

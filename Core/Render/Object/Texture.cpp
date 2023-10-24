@@ -6,11 +6,11 @@ void Texture::Clean()
 	glDeleteTextures(1, &_id);
 }
 
-void Texture::bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape textureShape) 
+void Texture::bindTextureUnit(GLuint unit) 
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
 
-	switch (textureShape)
+	switch (_textureShape)
 	{
 	case Texture2D:
 		glBindTexture(GL_TEXTURE_2D, _id);

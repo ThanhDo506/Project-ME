@@ -33,12 +33,12 @@ void Component::OnDisable()
 {
 }
 
-std::string Component::getName() const 
+std::string Component::get_name() const 
 {
 	return _name;
 }
 
-void Component::setName(std::string name)
+void Component::set_name(std::string name)
 {
 	_name = name;
 }
@@ -53,17 +53,12 @@ bool Component::isActive() const
 	return _active;
 }
 
-GameObject* Component::getGameObject()
+GameObject* Component::get_gameObject()
 {
 	return _gameObject;
 }
 
-Component::Component(const Component& obj, GameObject* gameObject)
+void Component::set_gameObject(GameObject* gameObject)
 {
-
-}
-
-void Component::operator=(const Component& obj)
-{
-
+	_gameObject = gameObject;
 }

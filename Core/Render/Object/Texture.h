@@ -85,7 +85,7 @@ private:
 public:
 	void Clean();
 
-	void bindTextureUnit(GLuint& unit, GLuint& textureId, TextureShape textureShape);
+	void bindTextureUnit(GLuint unit);
 
 	static GLenum textureShapeToGLTarget(TextureShape textureShape);
 

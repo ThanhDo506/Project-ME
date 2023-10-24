@@ -5,19 +5,19 @@ glm::vec3 Transform::up() const {
 }
 
 glm::vec3 Transform::forward() const {
-	return _rotation * glm::vec3(0.0, 0.0, 1.0);
+	return glm::normalize(_rotation * glm::vec3(0.0, 0.0, 1.0));
 }
 
 glm::vec3 Transform::right() const {
 	return _rotation * glm::vec3(1.0, 0.0, 0.0);
 }
 
-glm::vec3 Transform::getLocalEulerAngles() const
+glm::vec3 Transform::get_local_eulerAngles() const
 {
 	return glm::degrees(glm::eulerAngles(_rotation));
 }
 
-void Transform::setLocalEulerAngles(glm::vec3 eulerAngles)
+void Transform::set_local_eulerAngles(glm::vec3 eulerAngles)
 {
 	_rotation = glm::quat(glm::vec3(
 		glm::radians(eulerAngles.x),
@@ -26,37 +26,37 @@ void Transform::setLocalEulerAngles(glm::vec3 eulerAngles)
 	));
 }
 
-glm::vec3 Transform::getLocalPosition() const
+glm::vec3 Transform::get_local_position() const
 {
 	return _position;
 }
 
-void Transform::setLocalPosition(glm::vec3 newPosition)
+void Transform::set_local_position(glm::vec3 newPosition)
 {
 	_position = newPosition;
 }
 
-glm::vec3 Transform::getLocalScale() const
+glm::vec3 Transform::get_local_scale() const
 {
 	return _scale;
 }
 
-void Transform::setLocalScale(glm::vec3 newScale)
+void Transform::set_local_scale(glm::vec3 newScale)
 {
 	_scale = newScale;
 }
 
-glm::quat Transform::getLocalRotation() const
+glm::quat Transform::get_local_rotation() const
 {
 	return _rotation;
 }
 
-void Transform::setLocalRotation(glm::quat newRotation)
+void Transform::set_local_rotation(glm::quat newRotation)
 {
 	_rotation = newRotation;
 }
 
-glm::mat4 Transform::getMatrixTransform() const
+glm::mat4 Transform::get_matrix_transform() const
 {
 	glm::mat4 positionMtx = glm::translate(glm::mat4(1.0), _position);
 	glm::mat4 scaleMtx = glm::scale(glm::mat4(1.0), _scale);
@@ -64,12 +64,12 @@ glm::mat4 Transform::getMatrixTransform() const
 	return positionMtx * rotationMtx * scaleMtx;
 }
 
-glm::vec3 Transform::quaternionToEulerAngles(glm::quat& quaternion)
+glm::vec3 Transform::quaternion_to_eulerAngles(glm::quat& quaternion)
 {
 	return glm::eulerAngles(quaternion);
 }
 
-glm::quat Transform::eulerAnglesToQuaternion(glm::vec3& eulerAngles)
+glm::quat Transform::eulerAngles_to_quaternion(glm::vec3& eulerAngles)
 {
 	return glm::quat(glm::vec3(
 		glm::radians(eulerAngles.x),
@@ -78,7 +78,7 @@ glm::quat Transform::eulerAnglesToQuaternion(glm::vec3& eulerAngles)
 	));
 }
 
-glm::quat Transform::eulerAnglesToQuaternion(float& pitch, float& yaw, float& roll)
+glm::quat Transform::eulerAngles_to_quaternion(float& pitch, float& yaw, float& roll)
 {
 	return glm::quat(glm::vec3(
 		glm::radians(pitch),
@@ -87,29 +87,32 @@ glm::quat Transform::eulerAnglesToQuaternion(float& pitch, float& yaw, float& ro
 	));
 }
 
-glm::vec3 Transform::getPosition() const
+glm::vec3 Transform::get_position() const
 {
-	return glm::vec3();
+	return _position;
 }
 
-void Transform::setPosition(glm::vec3 newPosition)
+void Transform::set_position(glm::vec3 newPosition)
 {
+	_position = newPosition;
 }
 
-glm::vec3 Transform::getScale() const
+glm::vec3 Transform::get_scale() const
 {
-	return glm::vec3();
+	return _scale;
 }
 
-void Transform::setScale(glm::vec3 newScale)
+void Transform::set_scale(glm::vec3 newScale)
 {
+	_scale = newScale;
 }
 
-glm::quat Transform::getQuaternion() const
+glm::quat Transform::get_rotation() const
 {
-	return glm::quat();
+	return _rotation;
 }
 
-void Transform::setQuaternion(glm::quat newQuaternion)
+void Transform::set_rotation(glm::quat newRotation)
 {
+	_rotation = newRotation;
 }

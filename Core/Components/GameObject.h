@@ -13,11 +13,11 @@ class Component;
 class GameObject {
 public:
 	GameObject(GameObject& baseGameObject);
-	GameObject(Transform transform, const char* name = "Game Object", GameObject* parent = nullptr);
+	GameObject(Transform transform, std::string = "Game Object", GameObject* parent = nullptr);
 
-	void setParent(GameObject* parent);
+	void set_parent(GameObject* parent);
 
-	GameObject* getParent();
+	GameObject* get_parent();
 
 	Transform* getTransform() const;
 
@@ -48,7 +48,8 @@ public:
 	}
 
 	void AddComponent(Component* component) {
-		_components.push_back(component);
+		std::cout << "Add component " << component->name << " to " << this->name << " object.\n";
+		_components.push_back(*component);
 	}
 
 	std::string get_name() const;
@@ -59,18 +60,33 @@ public:
 
 	void setActive(bool active);
 
+	static GameObject swallow_copy(const GameObject& base) {
+		GameObject newObj(Transform(*base.transform), base._name + " (Copy)", base._parent);
+		/*for (auto component : base._components )
+		{
+			if (dynamic_cast<Transform*>(component))
+				continue;
+			auto copy = component;
+			newObj.AddComponent(copy);
+		}*/
+		std::vector<Component> components = base._components;
+		newObj._components = components;
+		return newObj;
+	}
 
+	__declspec(property(get = get_parent	, put = set_parent))	GameObject* parent;
 	__declspec(property(get = get_name		, put = set_name))		std::string name;
 	__declspec(property(get = getTransform	, put = setTransform))	Transform*	transform;
 	__declspec(property(get = getTag		, put = setTag))		std::string tag;
+	std::vector<Component>		_components;
+
 private:
 	bool						_active;
 	bool						_hasChanged;
 	std::string					_name;
 	std::string					_tag;
-	GameObject* _parent;
+	GameObject*					_parent;
 	std::vector<GameObject*>	_children;
-	std::vector<Component*>		_components;
 };
 
 #endif

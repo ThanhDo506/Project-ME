@@ -29,26 +29,27 @@ public:
 
 	virtual void OnDisable();
 
-	std::string getName() const;
+	std::string get_name() const;
 
-	void setName(std::string name);
+	void set_name(std::string name);
 
 	void setActive(bool val);
 
 	bool isActive() const;
 
-	GameObject* getGameObject();
+	GameObject* get_gameObject();
 
-	__declspec(property(get = getGameObject)) GameObject* gameObject;
-	__declspec(property(get = getName, put = setName)) std::string name;
+	__declspec(property(get = get_gameObject, put = set_gameObject)) GameObject* gameObject;
+	__declspec(property(get = get_name, put = set_name)) std::string name;
 
-
-	Component(const Component& obj, GameObject* gameObject);
-	virtual void operator=(const Component& obj);
 protected:
 	std::string _name;
 	bool		_active;
 	GameObject* _gameObject;
+	
+	void set_gameObject(GameObject* gameObject);
+
+	friend class GameObject;
 };
 
 #endif

@@ -9,11 +9,12 @@ GameObject::GameObject(GameObject& baseGameObject)
 	_children = baseGameObject._children;
 }
 
-GameObject::GameObject(Transform transform,const char* name, GameObject* parent) {
-	Transform* t = new Transform(transform);
-	this->AddComponent(t);
+GameObject::GameObject(Transform transform, std::string name, GameObject* parent) {
 	this->_name = name;
 	this->_parent = parent;
+	Transform* t = new Transform(transform);
+	t->set_gameObject(this);
+	this->AddComponent(t);
 }
 
 std::string GameObject::get_name() const {
@@ -32,11 +33,11 @@ void GameObject::setActive(bool active) {
 	this->_active = active;
 }
 
-void GameObject::setParent(GameObject* parent) {
+void GameObject::set_parent(GameObject* parent) {
 	this->_parent = parent;
 }
 
-GameObject* GameObject::getParent() {
+GameObject* GameObject::get_parent() {
 	return this->_parent;
 }
 
