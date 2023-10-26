@@ -1,7 +1,11 @@
-#ifndef POINTLIGHT_H
-#define POINTLIGHT_H
+#ifndef POINT_LIGHT_H
+#define POINT_LIGHT_H
 
-class PointLight : Light {
+#include "Light.h"
+
+class Light;
+
+class PointLight : public Light {
 
 private:
 	float range;

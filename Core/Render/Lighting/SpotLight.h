@@ -1,7 +1,11 @@
-#ifndef SPOTLIGHT_H
-#define SPOTLIGHT_H
+#ifndef SPOT_LIGHT_H
+#define SPOT_LIGHT_H
 
-class SpotLight : Light {
+#include "Light.h"
+
+class Light;
+
+class SpotLight : public Light {
 
 private:
 	float innerAngle;

@@ -75,7 +75,17 @@ GameObject* Component::get_gameObject()
 	return _gameObject;
 }
 
-void Component::set_gameObject(GameObject* gameObject)
+Transform* Component::get_gameObject_transform()
+{
+	return _gameObject->transform;
+}
+
+void Component::set_gameObject_transform(const Transform& newTransform)
+{
+	*(_gameObject->transform) = newTransform;
+}
+
+void Component::set_owner(GameObject* gameObject)
 {
 	_gameObject = gameObject;
 }

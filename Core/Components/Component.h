@@ -3,6 +3,8 @@
 
 #include <string>
 #include "../common.h"
+#include "Transform.h"
+#include "GameObject.h"
 
 class GameObject;
 
@@ -41,17 +43,21 @@ public:
 
 	GameObject* get_gameObject();
 
+	Transform*	get_gameObject_transform();
+	void		set_gameObject_transform(const Transform& newTransform);
+
 	virtual Component* Clone(GameObject* gameObject) const = 0;
 
-	__declspec(property(get = get_gameObject, put = set_gameObject))	GameObject* gameObject;
-	__declspec(property(get = get_name		, put = set_name))			std::string name;
+	__declspec(property(get = get_gameObject			, put = set_gameObject))			GameObject* gameObject;
+	__declspec(property(get = get_gameObject_transform	, put = set_gameObject_transform))	Transform*	transform;
+	__declspec(property(get = get_name					, put = set_name))					std::string name;
 
 protected:
 	std::string _name;
 	bool		_active;
 	GameObject* _gameObject;
 	
-	void set_gameObject(GameObject* gameObject);
+	void set_owner(GameObject* gameObject);
 
 	friend class GameObject;
 };

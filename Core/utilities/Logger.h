@@ -11,10 +11,9 @@
 #include <string>
 #include <chrono>
 
-
 /// @brief Log system which run on separate thread
 ///	@brief Should call Logger::init() to initialized log system
-/// @brief Use macros: APP_INFO, APP_WARN, APP_ERROR, APP_CRITICAL, format like func printf
+/// @brief Use macros: APP_INFO, APP_WARN, APP_ERROR, APP_CRITICAL, format like func printf of C
 class Logger
 {
 public:

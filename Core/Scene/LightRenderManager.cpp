@@ -6,23 +6,20 @@ bool LightManager::addLight(Light* light)
 	{
 		APP_INFO("Nullptr light");
 	}
-	if (!light->isApplied())
+	if (!light->_isApplied)
 	{
-		light->setApplied(true);
+		light->_isApplied = true;
 		_lights.push_back(light);
-		switch (light->getLightType())
+		switch (light->lightType)
 		{
 		case LightType::DirectionalLight:
-			light->setLightIndex(_directionalLightCount);
-			_directionalLightCount++;
+			light->index = _directionalLightCount++;
 			break;
 		case LightType::PointLight:
-			light->setLightIndex(_pointLightCount);
-			_pointLightCount++;
+			light->index = _pointLightCount++;
 			break;
 		case LightType::SpotLight:
-			light->setLightIndex(_spotLightCount);
-			_spotLightCount++;
+			light->index = _spotLightCount++;
 			break;
 		default:
 			APP_WARN("Unknow type of light.");
