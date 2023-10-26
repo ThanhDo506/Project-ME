@@ -1,5 +1,18 @@
 #include "Transform.h"
 
+Transform::Transform()
+{
+	_position = glm::vec3(0);
+	_scale = glm::vec3(1);
+	_rotation = glm::quat(glm::vec3(0));
+}
+
+Transform::Transform(const Transform& base)
+	: _position(base._position), _scale(base._scale), _rotation(base._rotation) { }
+
+Transform::Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation)
+	: _position(position), _scale(scale), _rotation(rotation) { }
+
 glm::vec3 Transform::up() const {
 	return _rotation * glm::vec3(0.0, 1.0, 0.0);
 }

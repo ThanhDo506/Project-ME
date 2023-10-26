@@ -1,8 +1,25 @@
 #include "Component.h"
 
-Component::~Component()
+Component::Component(const Component& base)
 {
-	_gameObject = nullptr;
+	_name = base._name;
+	_active = base._active;
+	_gameObject = base._gameObject;
+}
+
+Component::Component(const Component& base, GameObject* owner)
+{
+	_name = base._name;
+	_active = base._active;
+	_gameObject = owner;
+}
+
+Component::Component(GameObject* owner, std::string name, bool isActive) 
+	: _gameObject(owner), _name(name), _active(isActive)
+{
+	if (_gameObject == nullptr) {
+		APP_WARN("Component %s (Address: %p)  attach to null GameObject!", _name.c_str(), this);
+	}
 }
 
 void Component::Awake()

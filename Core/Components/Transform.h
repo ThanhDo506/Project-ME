@@ -6,23 +6,15 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-#include "Component.h"
-
-class Transform : public Component {
+class Transform {
 
 public:
-	Transform(GameObject* gameObject, glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive = true) : Component(gameObject, "Transform", true)
-	{
-		_position = position;
-		_scale = scale;
-		_rotation = rotation;
-	}
-	Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation, bool isActive = true) : Component(nullptr, "Transform", true)
-	{
-		_position = position;
-		_scale = scale;
-		_rotation = rotation;
-	}
+	Transform();
+
+	Transform(const Transform& base);
+
+	Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation);
+
 	/**
 	 * @brief The green axis of the transform in world space.
 	 */

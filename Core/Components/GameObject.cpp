@@ -1,27 +1,35 @@
 #include "GameObject.h"
 
-GameObject::GameObject(GameObject& baseGameObject)
+GameObject::GameObject(const GameObject& baseGameObject)
 {
-	_active = baseGameObject._active;
+	_active		= baseGameObject._active;
 	_hasChanged = true;
-	_name = baseGameObject.name + " (Copy)";
-	_parent = baseGameObject._parent;
-	_children = baseGameObject._children;
+	_name		= baseGameObject._name + " (Copy)";
+	_parent		= baseGameObject._parent;
+	_transform	= baseGameObject._transform;
+	for (auto component : _components) {
+		this->AddComponent(component->Clone(this));
+	}
 }
 
-GameObject::GameObject(Transform transform, std::string name, GameObject* parent) {
+GameObject::GameObject(const Transform& transform, std::string name, GameObject* parent) {
 	this->_name = name;
 	this->_parent = parent;
-	Transform* t = new Transform(transform);
-	t->set_gameObject(this);
-	this->AddComponent(t);
+	_transform = transform;
+}
+
+void GameObject::AddComponent(Component* component)
+{
+	APP_INFO("Add component %s (Address %p) to %s object.", component->_name.c_str(), component, this->_name.c_str());
+	_components.push_back(component);
+	component->_gameObject = this;
 }
 
 std::string GameObject::get_name() const {
 	return _name;
 }
 
-void GameObject::set_name(std::string& newName) {
+void GameObject::set_name(const std::string newName) {
 	this->_name = newName;
 }
 
@@ -33,6 +41,17 @@ void GameObject::setActive(bool active) {
 	this->_active = active;
 }
 
+GameObject* GameObject::Clone() const
+{
+	GameObject* clone = new GameObject(*this);
+	clone->_name = this->_name + " (Copy)";
+	clone->_components.clear();
+	for (auto component : _components) {
+		clone->AddComponent(component->Clone(clone));
+	}
+	return clone;
+}
+
 void GameObject::set_parent(GameObject* parent) {
 	this->_parent = parent;
 }
@@ -41,15 +60,14 @@ GameObject* GameObject::get_parent() {
 	return this->_parent;
 }
 
-Transform* GameObject::getTransform() const
+Transform* GameObject::get_transform()
 {
-	return GetComponent<Transform>();
+	return &_transform;
 }
 
-void GameObject::setTransform(Transform tranform)
+void GameObject::set_transform(const Transform& tranform)
 {
-	Transform* trans = GetComponent<Transform>();
-	*trans = tranform;
+	_transform = tranform;
 }
 
 bool GameObject::isChildOf(GameObject& gameObject) const 

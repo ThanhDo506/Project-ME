@@ -9,11 +9,13 @@ class GameObject;
 class Component {
 
 public:
-	Component(GameObject* gameObject, std::string name, bool isActive = true) : _gameObject(gameObject), _name(name), _active(isActive) {
-		APP_CRITICAL("Create Component attach to null GameObject!");
-	}
+	Component(const Component& base);
 
-	virtual ~Component();
+	Component(const Component& base, GameObject* owner);
+
+	Component(GameObject* owner, std::string name, bool isActive = true);
+
+	virtual ~Component() = default;
 
 	virtual void Awake();
 
@@ -39,8 +41,10 @@ public:
 
 	GameObject* get_gameObject();
 
-	__declspec(property(get = get_gameObject, put = set_gameObject)) GameObject* gameObject;
-	__declspec(property(get = get_name, put = set_name)) std::string name;
+	virtual Component* Clone(GameObject* gameObject) const = 0;
+
+	__declspec(property(get = get_gameObject, put = set_gameObject))	GameObject* gameObject;
+	__declspec(property(get = get_name		, put = set_name))			std::string name;
 
 protected:
 	std::string _name;

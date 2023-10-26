@@ -12,16 +12,16 @@ class Component;
 
 class GameObject {
 public:
-	GameObject(GameObject& baseGameObject);
-	GameObject(Transform transform, std::string = "Game Object", GameObject* parent = nullptr);
+	GameObject(const GameObject& baseGameObject);
+	GameObject(const Transform& transform, std::string = "Game Object", GameObject* parent = nullptr);
 
 	void set_parent(GameObject* parent);
 
 	GameObject* get_parent();
 
-	Transform* getTransform() const;
+	Transform* get_transform();
 
-	void setTransform(Transform tranform);
+	void set_transform(const Transform& tranform);
 
 	bool isChildOf(GameObject& gameObject) const;
 
@@ -47,38 +47,23 @@ public:
 		return nullptr;
 	}
 
-	void AddComponent(Component* component) {
-		std::cout << "Add component " << component->name << " to " << this->name << " object.\n";
-		_components.push_back(*component);
-	}
+	void AddComponent(Component* component);
 
 	std::string get_name() const;
 
-	void set_name(std::string& newName);
+	void set_name(const std::string newName);
 
 	bool isActive() const;
 
 	void setActive(bool active);
 
-	static GameObject swallow_copy(const GameObject& base) {
-		GameObject newObj(Transform(*base.transform), base._name + " (Copy)", base._parent);
-		/*for (auto component : base._components )
-		{
-			if (dynamic_cast<Transform*>(component))
-				continue;
-			auto copy = component;
-			newObj.AddComponent(copy);
-		}*/
-		std::vector<Component> components = base._components;
-		newObj._components = components;
-		return newObj;
-	}
+	GameObject* Clone() const;
 
 	__declspec(property(get = get_parent	, put = set_parent))	GameObject* parent;
 	__declspec(property(get = get_name		, put = set_name))		std::string name;
-	__declspec(property(get = getTransform	, put = setTransform))	Transform*	transform;
+	__declspec(property(get = get_transform	, put = set_transform))	Transform*	transform;
 	__declspec(property(get = getTag		, put = setTag))		std::string tag;
-	std::vector<Component>		_components;
+	std::vector<Component*>		_components;
 
 private:
 	bool						_active;
@@ -87,6 +72,9 @@ private:
 	std::string					_tag;
 	GameObject*					_parent;
 	std::vector<GameObject*>	_children;
+	Transform					_transform;
+
+	friend class Component;
 };
 
 #endif
