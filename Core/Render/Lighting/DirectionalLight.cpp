@@ -15,3 +15,23 @@ glm::vec3 DirectionalLight::get_direction() const
 {
     return _gameObject->transform->forward();
 }
+
+Light::LightType DirectionalLight::get_light_type() const
+{
+    return Light::DirectionalLight;
+}
+
+std::string DirectionalLight::get_uniform_name() const
+{
+    return _uniformName;
+}
+
+void DirectionalLight::UpdateShader(Shader& shader)
+{
+    if (_isApplied || !_isUpdated)
+        return;
+    shader.SetVec3(_uniformName + ".direction", _gameObject->transform->forward());
+    shader.SetVec3(_uniformName + ".diffuse", _diffuseColor);
+    shader.SetVec3(_uniformName + ".specular", _specularColor);
+    _isUpdated = true;
+}

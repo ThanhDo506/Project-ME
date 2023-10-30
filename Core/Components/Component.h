@@ -46,7 +46,7 @@ public:
 	Transform*	get_gameObject_transform();
 	void		set_gameObject_transform(const Transform& newTransform);
 
-	virtual Component* Clone(GameObject* gameObject) const = 0;
+	virtual Component* Clone(GameObject* owner) const = 0;
 
 	__declspec(property(get = get_gameObject			, put = set_gameObject))			GameObject* gameObject;
 	__declspec(property(get = get_gameObject_transform	, put = set_gameObject_transform))	Transform*	transform;

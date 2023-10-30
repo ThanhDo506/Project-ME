@@ -13,6 +13,11 @@ public:
 
 	glm::vec3 get_direction() const;
 
+	LightType get_light_type() const override;
+
+	std::string get_uniform_name() const override;
+
+	void UpdateShader(Shader& shader) override;
 };
 
 #endif

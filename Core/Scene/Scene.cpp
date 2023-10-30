@@ -1,27 +1,56 @@
 #include "Scene.h"
 
-void Scene::Start() {
-	// TODO - implement Scene::Start
-	throw "Not yet implemented";
+void Scene::Awake() {
+
 }
 
-void Scene::Update() {
-	// TODO - implement Scene::Update
-	throw "Not yet implemented";
-}
-
-void Scene::FixedUpdate() {
-	// TODO - implement Scene::FixedUpdate
-	throw "Not yet implemented";
-}
-
-void Scene::Render()
+void Scene::Start() 
 {
-
 }
 
-std::shared_ptr<GameObject> Scene::findGameObject(std::string name)
+void Scene::Update() 
 {
-	return std::shared_ptr<GameObject>();
+}
+
+void Scene::FixedUpdate() 
+{
+}
+
+GameObject* Scene::Instantiate(const GameObject& base)
+{
+	GameObject* newGameObject = new GameObject(base);
+	if (newGameObject->parent == nullptr)
+		_gameObjectList.push_back(newGameObject);
+	return newGameObject;
+}
+
+GameObject* Scene::Instantiate(const GameObject& base, glm::vec3 position, glm::quat rotation, glm::vec3 scale)
+{
+	GameObject* newGameObject = new GameObject(base, { position, scale, rotation });
+	if (newGameObject->parent == nullptr)
+		_gameObjectList.push_back(newGameObject);
+	return newGameObject;
+}
+
+GameObject* Scene::Instantiate(const GameObject& base, 
+	glm::vec3 position, glm::quat rotation, glm::vec3 scale, GameObject* parent)
+{
+	GameObject* newGameObject = new GameObject(base, {position, scale, rotation}, base._name + " (Copy)", base._parent);
+	if (newGameObject->parent == nullptr)
+		_gameObjectList.push_back(newGameObject);
+	return newGameObject;
+}
+
+GameObject* Scene::findGameObject(std::string name)
+{
+	for (auto gameObject : _gameObjectList) {
+		if (gameObject->name == name) {
+			return gameObject;
+		}
+		GameObject* res = gameObject->findInChild(name);
+		if (res != nullptr)
+			return res;
+	}
+	return nullptr;
 }
 

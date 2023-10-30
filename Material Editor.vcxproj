@@ -169,7 +169,6 @@
     <ClCompile Include="Core\Render\Object\Renderer.cpp" />
     <ClCompile Include="Core\Render\Object\Shader.cpp" />
     <ClCompile Include="Core\Render\Object\Texture.cpp" />
-    <ClCompile Include="Core\Render\RendererManager.cpp" />
     <ClCompile Include="Core\Scene\LightRenderManager.cpp" />
     <ClCompile Include="Core\Scene\Scene.cpp" />
     <ClCompile Include="Core\utilities\Logger.cpp" />
@@ -179,6 +178,7 @@
     <ClCompile Include="Core\Events\IEvent.cpp" />
     <ClCompile Include="Core\Events\EventDispatcher.cpp" />
     <ClCompile Include="Core\Render\Object\Mesh.cpp" />
+    <ClCompile Include="Core\Scene\SceneRenderer.cpp" />
     <ClCompile Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
     <ClCompile Include="third-party\imgui\imgui_demo.cpp" />
@@ -208,7 +208,6 @@
     <ClInclude Include="Core\Render\Object\Shader.h" />
     <ClInclude Include="Core\Render\Object\Texture.h" />
     <ClInclude Include="Core\Render\Object\Vertex.h" />
-    <ClInclude Include="Core\Render\RendererManager.h" />
     <ClInclude Include="Core\Scene\LightRenderManager.h" />
     <ClInclude Include="Core\Scene\Scene.h" />
     <ClInclude Include="Core\utilities\Logger.h" />
@@ -218,6 +217,7 @@
     <ClInclude Include="Core\Events\IEvent.h" />
     <ClInclude Include="Core\Events\EventDispatcher.h" />
     <ClInclude Include="Core\Render\Object\Mesh.h" />
+    <ClInclude Include="Core\Scene\SceneRenderer.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />

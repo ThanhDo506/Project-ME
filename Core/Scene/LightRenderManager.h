@@ -7,11 +7,13 @@
 class LightRenderManager {
 
 public:
-	bool addLight(Light* light);
+	LightRenderManager();
 
-	bool removeLight(Light* light);
+	bool addLight(Light& light);
 
-	virtual void Update();
+	bool removeLight(Light& light);
+
+	virtual void Update(Shader& shader);
 
 	void Clean();
 private:

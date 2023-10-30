@@ -5,6 +5,7 @@
 #include "Time/Time.h"
 #include "Events/Input.h"
 #include "UI/GUI.h"
+#include "Scene/SceneManager.h"
 
 struct WindowSetting {
 	GLint width = 1920;
@@ -17,10 +18,8 @@ struct WindowSetting {
 };
 
 class Application {
-private:
-	WindowSetting _setting;
-	GLFWwindow* _glfwWindow;
-	bool _isInitialized = false;
+	friend class Input;
+	friend class GUI;
 public:
 	Application(WindowSetting& setting);
 
@@ -35,8 +34,11 @@ private:
 
 	void initContext(WindowSetting& setting);
 
-	friend class Input;
-	friend class GUI;
+private:
+	WindowSetting _setting;
+	GLFWwindow* _glfwWindow;
+	bool _isInitialized = false;
+	SceneManager* _sceneManager;
 };
 
 #endif

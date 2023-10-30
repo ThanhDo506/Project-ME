@@ -17,9 +17,6 @@ Component::Component(const Component& base, GameObject* owner)
 Component::Component(GameObject* owner, std::string name, bool isActive) 
 	: _gameObject(owner), _name(name), _active(isActive)
 {
-	if (_gameObject == nullptr) {
-		APP_WARN("Component %s (Address: %p)  attach to null GameObject!", _name.c_str(), this);
-	}
 }
 
 void Component::Awake()

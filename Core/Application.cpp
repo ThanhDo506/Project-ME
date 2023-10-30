@@ -3,6 +3,9 @@
 Application::Application(WindowSetting& setting) {
 	this->_setting = setting;
 	Init(setting);
+	_sceneManager = new SceneManager();
+	_sceneManager->add_scene(new Scene(), "Main Scene");
+	_sceneManager->_currentScene = _sceneManager->_scenes["Main Scene"];
 }
 
 void Application::Init(WindowSetting& setting) {
@@ -36,13 +39,13 @@ void Application::Run() {
 
 		// TODO: Render here
 		// Begin frame
-		/*ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();*/
+		ImGui::NewFrame();
 
 
 		// End frame
-		//GUI::instance().Draw();
+		GUI::instance().Draw();
 
 
 		glfwSwapBuffers(_glfwWindow);
@@ -93,3 +96,4 @@ void Application::initContext(WindowSetting& setting)
 	APP_INFO("Version: %s", reinterpret_cast<const char*>(renderer));
 	this->_isInitialized = true;
 }
+

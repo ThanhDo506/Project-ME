@@ -11,8 +11,11 @@
 class Component;
 
 class GameObject {
+	friend class Component;
+	friend class Scene;
 public:
 	GameObject(const GameObject& baseGameObject);
+	GameObject(const GameObject& baseGameObject, const Transform& transform, std::string name = "Game Object", GameObject* parent = nullptr);
 	GameObject(const Transform& transform, std::string = "Game Object", GameObject* parent = nullptr);
 
 	void set_parent(GameObject* parent);
@@ -22,6 +25,8 @@ public:
 	Transform* get_transform();
 
 	void set_transform(const Transform& tranform);
+
+	GameObject* findInChild(std::string name);
 
 	bool isChildOf(GameObject& gameObject) const;
 
@@ -47,6 +52,7 @@ public:
 		return nullptr;
 	}
 
+	// just call new Component, it'll auto fixed owner
 	void AddComponent(Component* component);
 
 	std::string get_name() const;
@@ -67,14 +73,13 @@ public:
 
 private:
 	bool						_active;
-	bool						_hasChanged;
+	bool						_hasChanged = true;
 	std::string					_name;
 	std::string					_tag;
 	GameObject*					_parent;
 	std::vector<GameObject*>	_children;
 	Transform					_transform;
 
-	friend class Component;
 };
 
 #endif

@@ -1,30 +1,33 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <list>
 #include "../Render/Camera/Camera.h"
 #include "../Components/GameObject.h"
 
 class Scene {
-
-private:
-	std::list<std::shared_ptr<GameObject>> gameObjectList;
-	std::unique_ptr<GameObject> mainCamera;
+	friend class SceneManager;
 
 public:
+	// this behavior like MonoBehavior of Unity Engine
+	#pragma region MonoBehavior
+	void Awake();
+
 	void Start();
 
 	void Update();
 
 	void FixedUpdate();
+	#pragma endregion
 
-	void Render();
+	GameObject* Instantiate(const GameObject& base);
+	GameObject* Instantiate(const GameObject& base, glm::vec3 position, glm::quat rotation, glm::vec3 scale);
+	GameObject* Instantiate(const GameObject& base, glm::vec3 position, glm::quat rotation, glm::vec3 scale, GameObject* parent);
 
-	std::shared_ptr<GameObject> Instantiate(std::shared_ptr<GameObject> base);
-	std::shared_ptr<GameObject> Instantiate(std::shared_ptr<GameObject> base, glm::vec3 position, glm::quat rotation);
-	std::shared_ptr<GameObject> Instantiate(std::shared_ptr<GameObject> base, glm::vec3 position, glm::quat rotation, std::shared_ptr<GameObject> parent);
+	GameObject* findGameObject(std::string name);
 
-	std::shared_ptr<GameObject> findGameObject(std::string name);
+private:
+	std::list<GameObject*> _gameObjectList;
+	GameObject* _mainCamera;
 };
 
 #endif

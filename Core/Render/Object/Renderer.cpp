@@ -9,6 +9,8 @@ Renderer::Renderer(GameObject* gameObject, Material* material, Shader* shader, s
 
 void Renderer::update_shader()
 {
+	if (!_gameObject->isActive())
+		return;
 	if (!_material->is_must_update() || !_material->is_texture_changed() )
 		return;
 	_shader->Active();
@@ -28,7 +30,7 @@ void Renderer::update_shader()
 		_material->aoMap.		bindTextureUnit(3);
 		_shader->SetInt("_Material.aoMap"		, 3);
 
-		_material->bumpMap.	bindTextureUnit(4);
+		_material->bumpMap.		bindTextureUnit(4);
 		_shader->SetInt("_Material.normalMap"	, 4);
 
 		_material->emissionMap.	bindTextureUnit(5);
@@ -53,6 +55,10 @@ void Renderer::update_shader()
 
 void Renderer::Render()
 {
+	// if game object is inactive, no render
+	if (!_gameObject->isActive())
+		return;
+
 	_shader->Active();
 	for (auto mesh : _meshes) {
 		mesh->Draw();

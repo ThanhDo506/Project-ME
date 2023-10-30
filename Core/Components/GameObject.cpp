@@ -3,10 +3,17 @@
 GameObject::GameObject(const GameObject& baseGameObject)
 {
 	_active		= baseGameObject._active;
-	_hasChanged = true;
 	_name		= baseGameObject._name + " (Copy)";
 	_parent		= baseGameObject._parent;
 	_transform	= baseGameObject._transform;
+	for (auto component : _components) {
+		this->AddComponent(component->Clone(this));
+	}
+}
+
+GameObject::GameObject(const GameObject& baseGameObject, const Transform& transform, std::string name, GameObject* parent)
+	:	_transform(transform), _name(name), _parent(parent)
+{
 	for (auto component : _components) {
 		this->AddComponent(component->Clone(this));
 	}
@@ -16,6 +23,9 @@ GameObject::GameObject(const Transform& transform, std::string name, GameObject*
 	this->_name = name;
 	this->_parent = parent;
 	_transform = transform;
+	for (auto component : _components) {
+		this->AddComponent(component->Clone(this));
+	}
 }
 
 void GameObject::AddComponent(Component* component)
@@ -45,19 +55,19 @@ GameObject* GameObject::Clone() const
 {
 	GameObject* clone = new GameObject(*this);
 	clone->_name = this->_name + " (Copy)";
-	clone->_components.clear();
-	for (auto component : _components) {
-		clone->AddComponent(component->Clone(clone));
+	for (auto child : _children) {
+		GameObject* newChild = child->Clone();
+		newChild->_parent = clone;
 	}
 	return clone;
 }
 
 void GameObject::set_parent(GameObject* parent) {
-	this->_parent = parent;
+	_parent = parent;
 }
 
 GameObject* GameObject::get_parent() {
-	return this->_parent;
+	return _parent;
 }
 
 Transform* GameObject::get_transform()
@@ -68,6 +78,23 @@ Transform* GameObject::get_transform()
 void GameObject::set_transform(const Transform& tranform)
 {
 	_transform = tranform;
+}
+
+GameObject* GameObject::findInChild(std::string name)
+{
+	if (this->_name == name)
+	{
+		return this;
+	}
+	for (GameObject* child : this->_children)
+	{
+		GameObject* res = child->findInChild(name);
+		if (res != nullptr)
+		{
+			return res;
+		}
+	}
+	return nullptr;
 }
 
 bool GameObject::isChildOf(GameObject& gameObject) const 
