@@ -41,6 +41,23 @@ public:
 	void SetMat2(const char* uniformName, const glm::mat2& value);
 	void SetMat3(const char* uniformName, const glm::mat3& value);
 	void SetMat4(const char* uniformName, const glm::mat4& value);
+	void SetVec2(const char* uniformName, const glm::vec2& value);
+	void SetVec2(const char* uniformName, const float& x, const float& y);
+	void SetVec3(const char* uniformName, const glm::vec3& value);
+	void SetVec3(const char* uniformName, const float& x, const float& y, const float& z);
+	void SetVec4(const char* uniformName, const glm::vec4& value);
+	void SetVec4(const char* uniformName, const float& x, const float& y, const float& z, const float& w);
+
+	void SetFloat(const std::string& uniformName, float value);
+	void SetMat2(const std::string& uniformName, const glm::mat2& value);
+	void SetMat3(const std::string& uniformName, const glm::mat3& value);
+	void SetMat4(const std::string& uniformName, const glm::mat4& value);
+	void SetVec2(const std::string& uniformName, const glm::vec2& value);
+	void SetVec2(const std::string& uniformName, const float& x, const float& y);
+	void SetVec3(const std::string& uniformName, const glm::vec3& value);
+	void SetVec3(const std::string& uniformName, const float& x, const float& y, const float& z);
+	void SetVec4(const std::string& uniformName, const glm::vec4& value);
+	void SetVec4(const std::string& uniformName, const float& x, const float& y, const float& z, const float& w);
 
 	std::string getName() const;
 private:

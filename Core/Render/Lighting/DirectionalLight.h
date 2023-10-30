@@ -6,16 +6,13 @@
 class DirectionalLight : public Light {
 
 public:
-	DirectionalLight(const DirectionalLight& base);
+	DirectionalLight(const DirectionalLight& base, GameObject* owner);
 
-	DirectionalLight(GameObject* owner, bool isActive,
-		glm::vec3 direction,
-		glm::vec3 specularColor, glm::vec3 diffuseColor,
-		unsigned int index)
+	DirectionalLight(GameObject* owner, unsigned int index, 
+		glm::vec3 direction, glm::vec3 specularColor, glm::vec3 diffuseColor);
 
+	glm::vec3 get_direction() const;
 
-
-private:
 };
 
 #endif

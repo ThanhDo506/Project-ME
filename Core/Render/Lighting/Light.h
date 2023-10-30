@@ -5,37 +5,38 @@
 #include <glm/glm.hpp>
 #include "../../common.h"
 #include "../../Components/Transform.h"
+#include "../Object/Shader.h"
 
-struct Attenuation {
-	float constant;
-	float linear;
-	float quadratic;
-};
-
-enum LightType {
-	DirectionalLight,
-	PointLight,
-	SpotLight
-};
-
-class Light : Component {
-	friend class LightManager;
+class Light : public Component {
+	friend class LightRenderManager;
 
 public:
+	enum LightType {
+		DirectionalLight,
+		PointLight,
+		SpotLight
+	};
+
+	struct Attenuation {
+		float constant;
+		float linear;
+		float quadratic;
+	};
+
 	Light(const Light& base);
 
-	Light(GameObject* owner, bool isActive, 
-		glm::vec3 specularColor, glm::vec3 diffuseColor, 
-		unsigned int index);
+	Light(GameObject* owner, std::string name, bool isActive, 
+		unsigned int index,
+		glm::vec3 specularColor, glm::vec3 diffuseColor
+		);
 
 	bool isApplied() const;
 
-	virtual LightType get_light_type() = 0;
+	virtual LightType get_light_type() const = 0;
 
 	void set_light_index(unsigned int index);
 	unsigned int get_light_index() const;
 
-	virtual void set_uniform_name(std::string name) = 0;
 	virtual std::string get_uniform_name() const = 0;
 
 	void set_diffuse_color(glm::vec3 diffuse);
@@ -44,9 +45,8 @@ public:
 	void set_specular_color(glm::vec3 specular);
 	glm::vec3 get_specular_color() const;
 
-	virtual void UpdateShader() = 0;
+	virtual void UpdateShader(Shader& shader) = 0;
 
-	__declspec(property(get = get_light_color	, put = set_light_color))		glm::vec3		lightColor;
 	__declspec(property(get = get_light_index	, put = set_light_index))		unsigned int	index;
 	__declspec(property(get = get_uniform_name	, put = set_uniform_name))		std::string		uniformName;
 	__declspec(property(get = get_diffuse_color	, put = set_diffuse_color))		glm::vec3		diffuseColor;
@@ -55,11 +55,11 @@ public:
 
 protected:
 	bool			_isApplied = false;
+	bool			_isUpdated = false;
 	glm::vec3		_diffuseColor;
 	glm::vec3		_specularColor;
 	unsigned int	_index;
 	std::string		_uniformName;
-
 };
 
 #endif

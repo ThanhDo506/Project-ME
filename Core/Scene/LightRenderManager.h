@@ -1,10 +1,10 @@
-#ifndef LIGHTMANAGER_H
-#define LIGHTMANAGER_H
+#ifndef LIGHT_RENDER_MANAGER_H
+#define LIGHT_RENDER_MANAGER_H
 
 #include "../Render/Lighting/Light.h"
 #include <list>
 
-class LightManager {
+class LightRenderManager {
 
 public:
 	bool addLight(Light* light);

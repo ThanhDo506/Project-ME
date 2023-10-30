@@ -159,7 +159,10 @@
     <ClCompile Include="Core\Events\Input.cpp" />
     <ClCompile Include="Core\main.cpp" />
     <ClCompile Include="Core\Render\Camera\Camera.cpp" />
+    <ClCompile Include="Core\Render\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="Core\Render\Lighting\Light.cpp" />
+    <ClCompile Include="Core\Render\Lighting\PointLight.cpp" />
+    <ClCompile Include="Core\Render\Lighting\SpotLight.cpp" />
     <ClCompile Include="Core\Render\Object\Material.cpp" />
     <ClCompile Include="Core\Render\Object\MeshRenderer.cpp" />
     <ClCompile Include="Core\Render\Object\Renderable.cpp" />

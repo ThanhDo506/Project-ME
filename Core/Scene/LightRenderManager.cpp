@@ -1,48 +1,44 @@
 #include "LightRenderManager.h"
 
-bool LightManager::addLight(Light* light) 
+bool LightRenderManager::addLight(Light* light)
 {
-	if (light == nullptr)
+	if (light == nullptr || light->_isApplied)
 	{
-		APP_INFO("Nullptr light");
+		APP_INFO("Nullptr light or light has been added to registry.");
+		return false;
 	}
-	if (!light->_isApplied)
+
+	light->_isApplied = true;
+	_lights.push_back(light);
+	switch (light->lightType)
 	{
-		light->_isApplied = true;
-		_lights.push_back(light);
-		switch (light->lightType)
-		{
-		case LightType::DirectionalLight:
+		case Light::LightType::DirectionalLight:
 			light->index = _directionalLightCount++;
 			break;
-		case LightType::PointLight:
+		case Light::LightType::PointLight:
 			light->index = _pointLightCount++;
 			break;
-		case LightType::SpotLight:
+		case Light::LightType::SpotLight:
 			light->index = _spotLightCount++;
 			break;
 		default:
 			APP_WARN("Unknow type of light.");
 			return false;
-		}
-	} else {
-		APP_WARN("Light has been added to registry.");
-		return false;
 	}
 	return true;
 }
 
-bool LightManager::removeLight(Light* light) 
+bool LightRenderManager::removeLight(Light* light)
 {
 	return true;
 }
 
-void LightManager::Update() 
+void LightRenderManager::Update()
 {
 	
 }
 
-void LightManager::Clean()
+void LightRenderManager::Clean()
 {
 
 }
