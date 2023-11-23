@@ -1,33 +1,42 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../Render/Camera/Camera.h"
 #include "../Components/GameObject.h"
+
+class GameObject;
 
 class Scene {
 	friend class SceneManager;
 
 public:
-	// this behavior like MonoBehavior of Unity Engine
-	#pragma region MonoBehavior
-	void Awake();
-
-	void Start();
-
+	Scene(std::string name) : _name(name) {}
+	//// this behavior like MonoBehavior of Unity Engine
 	void Update();
 
-	void FixedUpdate();
-	#pragma endregion
+	//GameObject* Instantiate(const GameObject& original);
 
-	GameObject* Instantiate(const GameObject& base);
-	GameObject* Instantiate(const GameObject& base, glm::vec3 position, glm::quat rotation, glm::vec3 scale);
-	GameObject* Instantiate(const GameObject& base, glm::vec3 position, glm::quat rotation, glm::vec3 scale, GameObject* parent);
+	//GameObject* Instantiate(const GameObject& original,
+	//	glm::vec3 position,
+	//	glm::quat rotation,
+	//	glm::vec3 scale);
 
-	GameObject* findGameObject(std::string name);
+	//GameObject* Instantiate(const GameObject& original, 
+	//	glm::vec3 position,
+	//	glm::quat rotation,
+	//	glm::vec3 scale,
+	//	GameObject* parent);
+
+	//GameObject* FindGameObject(std::string name);
+
+	//std::vector<GameObject*> FindGameObjectsWithTag(std::string tag);
+
+	//GameObject* FindWithTag(std::string tag);
+
+	//void Destroy(GameObject* gameObject, float time = 0.0);
 
 private:
-	std::list<GameObject*> _gameObjectList;
-	GameObject* _mainCamera;
+	std::vector<GameObject*> _gameObjects;
+	std::string _name;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define LIGHT_RENDER_MANAGER_H
 
 #include "../Render/Lighting/Light.h"
+#include "../Render/Object/Shader.h"
 #include <list>
 
 class LightRenderManager {

@@ -6,7 +6,7 @@ LightRenderManager::LightRenderManager()
 
 bool LightRenderManager::addLight(Light& light)
 {
-	if (light._isApplied)
+	/*if (light._isApplied)
 	{
 		APP_INFO("Light has been added to registry.");
 		return false;
@@ -28,7 +28,7 @@ bool LightRenderManager::addLight(Light& light)
 		default:
 			APP_WARN("Unknow type of light.");
 			return false;
-	}
+	}*/
 	return true;
 }
 
@@ -41,7 +41,7 @@ void LightRenderManager::Update(Shader& shader)
 {
 	for (auto light : _lights)
 	{
-		light->UpdateShader(shader);
+		//light->UpdateShader(shader);
 	}
 }
 

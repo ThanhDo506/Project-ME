@@ -3,17 +3,17 @@
 
 #include "Shader.h"
 #include "../../common.h"
+#include "../../Components/Component.h"
 #include "Material.h"
-#include "../Camera/Camera.h"
 #include "Mesh.h"
 
 class Shader;
 class Material;
 class Camera;
 
-class Renderer : public Component {
+class Renderer{
 public:
-	Renderer(GameObject* gameObject, Material* material, Shader* shader, std::vector<Mesh*> meshes);
+	Renderer(Material* material, Shader* shader, std::vector<Mesh*> meshes);
 	void update_shader();
 	void Render();
 
@@ -28,7 +28,6 @@ private:
 
 
 private:
-	//
 	Material*					_material;
 	Shader*						_shader;
 	std::vector<Mesh*>			_meshes;

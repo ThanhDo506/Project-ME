@@ -12,12 +12,12 @@ Time& Time::instance()
     return instance;
 }
 
-double Time::deltaTime() const
+double Time::get_delta_time()
 {
-    return _deltaTime;
+    return Time::instance()._deltaTime;
 }
 
-double Time::time() const
+double Time::get_time()
 {
-    return _time;
+    return Time::instance()._time;
 }

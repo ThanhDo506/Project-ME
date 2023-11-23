@@ -64,6 +64,8 @@ private:
 	Logger(const Logger& obj) = delete;
 	void operator=(const Logger& obj) = delete;
 	Logger() = default;
+	~Logger() = default;
+
 	static Logger* instance() {
 		if (_instance == NULL) {
 			_instance = new Logger();

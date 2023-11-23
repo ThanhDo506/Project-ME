@@ -37,8 +37,8 @@ void Logger::run()
 
 void Logger::print(Log& log)
 {
-	static std::time_t t = std::time(0);
-	static std::tm* now = localtime(&t);
+	std::time_t t = std::time(0);
+	std::tm* now = localtime(&t);
 	
 	printf("\033[1;32m[%d:%d:%2d] ", now->tm_hour, now->tm_min, now->tm_sec);
 

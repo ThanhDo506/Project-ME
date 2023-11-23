@@ -4,7 +4,7 @@ Application::Application(WindowSetting& setting) {
 	this->_setting = setting;
 	Init(setting);
 	_sceneManager = new SceneManager();
-	_sceneManager->add_scene(new Scene(), "Main Scene");
+	_sceneManager->add_scene(new Scene("Main Scene"), "Main Scene");
 	_sceneManager->_currentScene = _sceneManager->_scenes["Main Scene"];
 }
 
@@ -23,22 +23,20 @@ void Application::Run() {
 		return;
 	}
 	APP_INFO("Init OpenGL success");
+	Time& time = Time::instance();
 
-	Time::instance()._lastUpdatedTime = 0.0;
 	while (!glfwWindowShouldClose(_glfwWindow))
 	{
-		// Calculate timer
-		Time::instance()._time = glfwGetTime();
-		Time::instance()._deltaTime = Time::instance()._time - Time::instance()._lastUpdatedTime;
-		Time::instance()._lastUpdatedTime = Time::instance()._time;
+		time._time = glfwGetTime();
+		time._deltaTime = time._time - time._lastUpdateTime;
+		time._lastUpdateTime = time._time;
+
 		Input::instance().reset();
 		glfwPollEvents();
-		
-
 		Update();
-
 		// TODO: Render here
 		// Begin frame
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -57,11 +55,7 @@ void Application::Run() {
 void Application::Update() {
 	// Update
 	Input::instance().update();
-
-	// FixedUpdate
-
-	// Update GUI
-
+	std::cout << "Update call at " << Time::get_time() << std::endl;
 }
 
 void Application::Clean() {
@@ -80,7 +74,7 @@ void Application::initContext(WindowSetting& setting)
 
 	_glfwWindow = glfwCreateWindow(_setting.width, _setting.height, _setting.title, nullptr, nullptr);
 	glfwMakeContextCurrent(_glfwWindow);
-	glfwSwapInterval(_setting.isVSync);
+	glfwSwapInterval(/*_setting.isVSync*/ true);
 
 	if (glewInit() != GLEW_OK) {
 		APP_CRITICAL("Init GLEW failure!");

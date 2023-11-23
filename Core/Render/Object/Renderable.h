@@ -2,8 +2,8 @@
 #define RENDERABLE_H
 
 #include "Vertex.h"
-#include "../../Render/Camera/Camera.h"
 #include "../../Render/Object/Shader.h"
+#include "../../Render/Camera/Camera.h"
 #include <vector>
 
 class Renderable {

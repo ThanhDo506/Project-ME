@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(GameObject* gameObject, Material* material, Shader* shader, std::vector<Mesh*> meshes) : Component(gameObject, "Renderer")
+Renderer::Renderer(Material* material, Shader* shader, std::vector<Mesh*> meshes)
 {
 	_material = material;
 	_shader = shader;
@@ -9,7 +9,7 @@ Renderer::Renderer(GameObject* gameObject, Material* material, Shader* shader, s
 
 void Renderer::update_shader()
 {
-	if (!_gameObject->isActive())
+	/*if (!_gameObject->isActive())
 		return;
 	if (!_material->is_must_update() || !_material->is_texture_changed() )
 		return;
@@ -50,19 +50,19 @@ void Renderer::update_shader()
 	_shader->SetFloat("_Material.metallic", _material->metallic);
 	_shader->SetFloat("_Material.metallic", _material->metallic);
 	_shader->SetFloat("_Material.metallic", _material->metallic);
-	_shader->SetFloat("_Material.metallic", _material->metallic);
+	_shader->SetFloat("_Material.metallic", _material->metallic);*/
 }
 
 void Renderer::Render()
 {
-	// if game object is inactive, no render
-	if (!_gameObject->isActive())
-		return;
+	//// if game object is inactive, no render
+	//if (!_gameObject->isActive())
+	//	return;
 
-	_shader->Active();
-	for (auto mesh : _meshes) {
-		mesh->Draw();
-	}
+	//_shader->Active();
+	//for (auto mesh : _meshes) {
+	//	mesh->Draw();
+	//}
 }
 
 Shader* Renderer::get_shader()

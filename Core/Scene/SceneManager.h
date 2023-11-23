@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include <unordered_map>
 #include "../common.h"
-#include "RendererManager.h"
 
 class SceneManager
 {
@@ -22,8 +21,6 @@ public:
 
 	void Update();
 	
-	void FixedUpdate();
-
 	void Render();
 
 private:

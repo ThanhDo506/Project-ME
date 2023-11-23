@@ -44,11 +44,6 @@ void SceneManager::Update()
 	_currentScene->Update();
 }
 
-void SceneManager::FixedUpdate()
-{
-	_currentScene->FixedUpdate();
-}
-
 void SceneManager::Render()
 {
 	if (!_currentScene) {

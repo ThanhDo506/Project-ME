@@ -5,18 +5,21 @@ class Time
 {
 public:
     static Time& instance();
-    double deltaTime() const;
-    double time() const;
+    static double get_delta_time();
+    static double get_time();
+
+    __declspec(property(get = get_time))		        double time;
+    __declspec(property(get = get_delta_time))		    double deltaTime;
 
 private:
     Time(const Time& obj) = delete;
     void operator=(const Time& obj) = delete;
     Time();
-    double _timeStep = 1.0 / 60.0;
-    double _time;
-    double _deltaTime;
-    double _lastUpdatedTime;
-    double _timeSinceStartScene;
+
+    double _timeStep                = 1.0 / 60.0;
+    double _time                    = 0;
+    double _deltaTime               = 0;
+    double _lastUpdateTime          = 0;
     
     friend class Application;
 };
