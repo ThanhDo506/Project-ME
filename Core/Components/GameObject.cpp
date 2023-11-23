@@ -105,9 +105,9 @@ void GameObject::set_parent(GameObject* parent) {
 		if (it != this->_parent->_children.end()) {
 			this->_parent->_children.erase(it);
 			parent->_children.push_back(this);
+			this->_parent = parent;
 		}
-	}
-	else {
+	} else {
 		//* set new parent
 		this->_parent = parent;
 		//* add to child list of new parent if not nullptr

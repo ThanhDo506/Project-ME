@@ -127,5 +127,13 @@ int main() {
     std::cout << std::is_same<decltype(gObj->GetComponent<A>()),B*>::value << std::endl;
     std::cout << std::endl;
     print_hierachy(root, 0);
+    std::cout << "-----------------------------------------------------------\n";
+
+    GameObject* duma = copyObj->_children[0];
+    std::cout << duma << std::endl;
+    duma->set_parent(c2Obj);
+
+    print_hierachy(root, 0);
+    std::cout << "-----------------------------------------------------------\n";
     Logger::clean();
 }
