@@ -68,23 +68,15 @@ void Component::set_gameObject(GameObject* gameObject)
 {
 	if (this->_gameObject != nullptr) {
 		auto it = this->_gameObject->_components.find(typeid(this));
+		if (it != this->_gameObject->_components.end()) {
+			this->_gameObject->_components.erase(it);
+		}
 	}
-	////* remove from child list of old parent
-	//if (this->_parent != nullptr) {
-	//	auto it = std::find(this->_parent->_children.begin(), this->_parent->_children.end(), this);
-	//	if (it != this->_parent->_children.end()) {
-	//		this->_parent->_children.erase(it);
-	//		parent->_children.push_back(this);
-	//	}
-	//}
-	//else {
-	//	//* set new parent
-	//	this->_parent = parent;
-	//	//* add to child list of new parent if not nullptr
-	//	if (this->_parent) {
-	//		this->_parent->_children.push_back(this);
-	//	}
-	//}
+	else {
+		APP_ERROR("Must attach component to a valid GameObject!");
+	}
+	this->_gameObject = gameObject;
+	this->_gameObject->_components.insert({typeid(this), this});
 }
 
 

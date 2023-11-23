@@ -10,7 +10,8 @@ GameObject::GameObject(const GameObject& baseGameObject)
 	this->set_parent(baseGameObject._parent);
 	// TODO add component
 	for (auto component : baseGameObject._components) {
-		this->_components.insert({ component.first , component.second->Clone() });
+		auto copyComp = component.second->Clone();
+		copyComp->set_gameObject(this);
 #if _DEBUG
 		APP_INFO("Add %s", typeid(component.second).name());
 #endif
@@ -32,8 +33,7 @@ GameObject::GameObject(const GameObject& baseGameObject,
 	// TODO add component
 	for (auto component : baseGameObject._components) {
 		auto copyComp = component.second->Clone();
-		copyComp->_gameObject = this;
-		this->_components.insert({ component.first , component.second });
+		copyComp->set_gameObject(this);
 #if _DEBUG
 		APP_INFO("Add %s", typeid(component.second).name());
 #endif
