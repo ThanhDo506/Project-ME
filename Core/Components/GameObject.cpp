@@ -27,7 +27,10 @@ GameObject::GameObject(const GameObject& baseGameObject,
 	std::string name, 
 	GameObject* parent)
 	: _name(name), 
-	_active(baseGameObject._active)
+	_active(baseGameObject._active),
+	_hasChanged(true),
+	_tag(baseGameObject.tag),
+	_scene(baseGameObject._scene)
 {
 
 	// TODO add component
@@ -51,7 +54,9 @@ GameObject::GameObject(Transform transform,
 	GameObject* parent,
 	bool isActive) 
 	: _name(name),
-	_active(isActive)
+	_active(isActive),
+	_hasChanged(true),
+	_tag("")
 {
 	this->AddComponent<Transform>(transform);
 	this->set_parent(parent);

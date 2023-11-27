@@ -1,8 +1,10 @@
 #include "Shader.h"
 
-Shader::Shader(const char* name, const char* vertPath, const char* fragPath, const char* geoPath) {
-	std::string vertShaderSrc = readShaderFile(vertPath);
-	std::string fragShaderSrc = readShaderFile(fragPath);
+Shader::Shader(std::string name, const char* vertPath, const char* fragPath, const char* geoPath) 
+	: _name(name)
+{
+	std::string vertShaderSrc = read_shader_file(vertPath);
+	std::string fragShaderSrc = read_shader_file(fragPath);
 	const char* vertexSource = vertShaderSrc.c_str();
 	const char* fragmentSource = fragShaderSrc.c_str();
 
@@ -54,7 +56,7 @@ void Shader::Delete() {
 	glDeleteProgram(_id);
 }
 
-GLint Shader::getUniformLocation(const char* uniform) {
+GLint Shader::get_uniform_location(const char* uniform) {
 	return glGetUniformLocation(_id, uniform);
 }
 
@@ -122,6 +124,16 @@ void Shader::SetVec4(const std::string& uniformName, const float& x, const float
 	SetVec4(uniformName.c_str(), x, y, z, w);
 }
 
+std::string Shader::get_name() const
+{
+	return this->_name;
+}
+
+void Shader::set_name(std::string newName)
+{
+	this->_name = newName;
+}
+
 void Shader::SetFloat(const char* uniformName, float value)
 {
 	glUniform1f(glGetUniformLocation(_id, uniformName), value);
@@ -187,10 +199,6 @@ void Shader::SetVec4(const char* uniformName, const float& x, const float& y, co
 	glUniform4f(glGetUniformLocation(this->_id, uniformName), x, y, z, w);
 }
 
-std::string Shader::getName() const {
-	return _name;
-}
-
 void Shader::getGLError(const GLuint& id, ShaderType glType)
 {
 	GLint success;
@@ -217,7 +225,7 @@ void Shader::getGLError(const GLuint& id, ShaderType glType)
 	}
 }
 
-std::string Shader::readShaderFile(const char* filePath)
+std::string Shader::read_shader_file(const char* filePath)
 {
 	std::ifstream file(filePath, std::ios::binary);
 	if (file)

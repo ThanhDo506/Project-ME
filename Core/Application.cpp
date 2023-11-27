@@ -45,7 +45,6 @@ void Application::Run() {
 		// End frame
 		GUI::instance().Draw();
 
-
 		glfwSwapBuffers(_glfwWindow);
 	}
 
@@ -55,7 +54,6 @@ void Application::Run() {
 void Application::Update() {
 	// Update
 	Input::instance().update();
-	std::cout << "Update call at " << Time::get_time() << std::endl;
 }
 
 void Application::Clean() {

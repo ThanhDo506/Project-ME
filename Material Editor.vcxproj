@@ -152,6 +152,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Render\RenderingSystem\CameraRegistry.cpp" />
     <ClCompile Include="Core\Render\Camera\Camera.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Components\Component.cpp" />
@@ -175,6 +176,8 @@
     <ClCompile Include="Core\Render\Object\Mesh.cpp" />
     <ClCompile Include="Core\Scene\SceneRenderer.cpp" />
     <ClCompile Include="Core\Render\Lighting\Light.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\Rendering.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\LightRegistry.cpp" />
     <ClCompile Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
     <ClCompile Include="third-party\imgui\imgui_demo.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="third-party\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Render\RenderingSystem\CameraRegistry.h" />
     <ClInclude Include="Core\Render\Camera\Camera.h" />
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\common.h" />
@@ -210,6 +214,8 @@
     <ClInclude Include="Core\Render\Object\Mesh.h" />
     <ClInclude Include="Core\Scene\SceneRenderer.h" />
     <ClInclude Include="Core\Render\Lighting\Light.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\Rendering.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\LightRegistry.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />

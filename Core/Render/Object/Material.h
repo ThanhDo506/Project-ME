@@ -5,6 +5,7 @@
 #include "../../utilities/Logger.h"
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Shader.h"
 
 enum RenderFace {
 	Front,
@@ -30,25 +31,25 @@ public:
 
 	bool		is_texture_changed() const;
 
-	Texture get_diffuse_map() const;
+	Texture& get_diffuse_map();
 	void	set_diffuse_map(Texture diffuseMap);
 
-	Texture get_roughness_map() const;
+	Texture& get_roughness_map();
 	void	set_roughness_map(Texture roughnessMap);
 
-	Texture get_metallic_map() const;
+	Texture& get_metallic_map();
 	void	set_metallic_map(Texture metallicMap);
 
-	Texture get_ao_map() const;
+	Texture& get_ao_map();
 	void	set_ao_map(Texture aoMap);
 
-	Texture get_normal_map() const;
+	Texture& get_normal_map();
 	void	set_normal_map(Texture normalMap);
 
-	Texture get_height_map() const;
+	Texture& get_height_map();
 	void	set_height_map(Texture heightMap);
 
-	Texture get_emission_map() const;
+	Texture& get_emission_map();
 	void	set_emission_map(Texture emissionMap);
 
 	float	get_metallic() const;
@@ -102,6 +103,9 @@ public:
 	short		get_priority_render() const;
 	void		set_priority_render(short newPriority);
 
+	Shader* get_shader();
+	void	set_shader(Shader* shader);
+
 	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture			diffuseMap;
 	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture			roughnessMap;
 	__declspec(property(get = get_metallic_map, put = set_metallic_map))							Texture			metallicMap;
@@ -132,8 +136,10 @@ public:
 	__declspec(property(get = get_blending_mode, put = set_blending_mode))							BlendingMode	blendingMode;
 	__declspec(property(get = is_use_specular_highlight, put = set_use_specular_highlight))			bool			specularHighlight;
 	__declspec(property(get = is_use_enviroment_reflections, put = set_use_enviroment_reflections)) bool			enviromentReflection;
-	__declspec(property(get = isMustUpdate))														bool			isMushUpdate;
+	__declspec(property(get = is_must_update))														bool			isMushUpdate;
 	__declspec(property(get = get_priority_render, put = set_priority_render))						short			priorityRender;
+
+	__declspec(property(get = get_shader, put = set_shader))										Shader*			shader;
 
 private:
 	Texture						_diffuseMap;
@@ -143,16 +149,17 @@ private:
 	Texture						_normalMap;
 	Texture						_emissionMap;
 	Texture						_heightMap;
+
 	float						_metallic;
 	float						_smoothness;
 	float						_aoStrength;
-	float						_alphaClippingThreshold;
+	float						_alphaClippingThreshold = 0;
 	glm::vec4					_reflectColor;
-	bool						_useEmissionMap;
-	bool						_useMetallicMap;
-	bool						_receivedShadow;
-	glm::vec2					_tilling;
-	glm::vec2					_offset;
+	bool						_useEmissionMap = false;
+	bool						_useMetallicMap = false;
+	bool						_receivedShadow = false;
+	glm::vec2					_tilling = glm::vec2(0.0, 0.0);
+	glm::vec2					_offset = glm::vec2(0.0, 0.0);
 	SurfaceType					_surfaceType;
 	RenderFace					_renderFace;
 	BlendingMode				_blendingMode;
@@ -162,6 +169,8 @@ private:
 	bool						_useAlphaClipping = false;
 	bool						_textureChanged = true;
 	short						_priorityRender = 0;
+
+	Shader*						_shader;
 };
 
 #endif

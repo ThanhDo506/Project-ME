@@ -71,8 +71,10 @@ struct TextureSetting {
 };
 
 class Texture {
-
 private:
+	/**
+	 * true if color space is sRGB, false is linear.
+	 */
 	bool			_sRGB;
 	TextureShape	_textureShape;
 	TextureType		_textureType;
@@ -81,13 +83,19 @@ private:
 	GLint			_width;
 	GLint			_height;
 	GLint			_numChannel;
+	std::string		_path;
 
 public:
+	/**
+	 * @return true if color space is sRGB, false if linear.
+	 */
+	bool is_sRGB() const;
+
 	void Clean();
 
-	void bindTextureUnit(GLuint unit);
+	void bind_texture_unit(GLuint unit);
 
-	static GLenum textureShapeToGLTarget(TextureShape textureShape);
+	static GLenum texture_shape_to_GL_target(TextureShape textureShape);
 
 	bool load2DTexture(const char* path, TextureSetting& texSetting);
 
@@ -102,9 +110,10 @@ public:
 	bool loadCubeTexture(std::vector<const char*> paths, TextureSetting& textureSetting);
 
 	bool loadHdr(const char* path, TextureSetting& textureSetting);
-private:
-	
 
+	std::string get_path() const;
+
+private:
 	void applySetting(const TextureSetting& textureSetting);
 };
 

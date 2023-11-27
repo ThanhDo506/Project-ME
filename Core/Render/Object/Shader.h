@@ -21,13 +21,12 @@ private:
 	std::string _name;
 
 public:
-	Shader(const char* name, const char* vertPath, const char* fragPath, const char* geoPath = "");
+	Shader(std::string name, const char* vertPath, const char* fragPath, const char* geoPath = "");
 
 	void Active();
-
 	void Delete();
 
-	GLint getUniformLocation(const char* uniform);
+	GLint get_uniform_location(const char* uniform);
 
 	void SetBool(const char* uniformName, bool value);
 	void SetInt(const char* uniformName, int value);
@@ -59,12 +58,16 @@ public:
 	void SetVec4(const std::string& uniformName, const glm::vec4& value);
 	void SetVec4(const std::string& uniformName, const float& x, const float& y, const float& z, const float& w);
 
-	std::string getName() const;
+	std::string get_name() const;
+	void		set_name(std::string newName);
+
+	__declspec(property(get = get_name,
+						put = set_name))	std::string name;
 private:
 	// Ref: Victor Gordan
 	// 12th - July - 2023
 	// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%204%20-%20Organizing/shaderClass.cpp
-	std::string readShaderFile(const char* filePath);
+	std::string read_shader_file(const char* filePath);
 
 	void getGLError(const GLuint& id, ShaderType glType);
 };

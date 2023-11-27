@@ -7,29 +7,22 @@
 #include "Material.h"
 #include "Mesh.h"
 
-class Shader;
 class Material;
-class Camera;
 
-class Renderer{
+class Renderer : public Component {
 public:
-	Renderer(Material* material, Shader* shader, std::vector<Mesh*> meshes);
+	Renderer(Material* material, std::vector<Mesh*> meshes);
 	void update_shader();
 	void Render();
 
-	Shader* get_shader();
-	void	set_shader(Shader* shader);
 	Material*	get_material();
 	void		set_material(Material* material);
 
-	__declspec(property(get = get_shader, put = set_shader)) Shader* shader;
-	__declspec(property(get = get_material, put = set_material)) Material* material;
-private:
-
+	__declspec(property(get = get_material, 
+						put = set_material))	Material* material;
 
 private:
 	Material*					_material;
-	Shader*						_shader;
 	std::vector<Mesh*>			_meshes;
 };
 

@@ -1,79 +1,79 @@
 #include "Material.h"
 
-Texture Material::get_diffuse_map() const
+Texture& Material::get_diffuse_map() 
 {
-    return _diffuseMap;
+    return this->_diffuseMap;
 }
 
 void Material::set_diffuse_map(Texture diffuseMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _diffuseMap = diffuseMap;
 }
 
-Texture Material::get_roughness_map() const
+Texture& Material::get_roughness_map()
 {
-    return _roughnessMap;
+    return this->_roughnessMap;
 }
 
 void Material::set_roughness_map(Texture roughnessMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _roughnessMap = roughnessMap;
 }
 
-Texture Material::get_metallic_map() const
+Texture& Material::get_metallic_map()
 {
-    return _metallicMap;
+    return this->_metallicMap;
 }
 
 void Material::set_metallic_map(Texture metallicMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _metallicMap = metallicMap;
 }
 
-Texture Material::get_ao_map() const
+Texture& Material::get_ao_map()
 {
-    return _aoMap;
+    return this->_aoMap;
 }
 
 void Material::set_ao_map(Texture aoMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _aoMap = aoMap;
 }
 
-Texture Material::get_normal_map() const
+Texture& Material::get_normal_map()
 {
-    return _normalMap;
+    return this->_normalMap;
 }
 
 void Material::set_normal_map(Texture normalMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _normalMap;
 }
 
-Texture Material::get_height_map() const
+Texture& Material::get_height_map()
 {
-    return _heightMap;
+    return this->_heightMap;
 }
 
 void Material::set_height_map(Texture heightMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _heightMap = heightMap;
 }
 
-Texture Material::get_emission_map() const
+Texture& Material::get_emission_map()
 {
-    return _emissionMap;
+    return this->_emissionMap;
 }
 
 void Material::set_emission_map(Texture emissionMap)
 {
-    _mustUpdate = true;
+    _textureChanged = true;
     _emissionMap = emissionMap;
 }
 
@@ -271,4 +271,14 @@ short Material::get_priority_render() const
 void Material::set_priority_render(short newPriority)
 {
     _priorityRender = newPriority;
+}
+
+Shader* Material::get_shader()
+{
+    return this->_shader;
+}
+
+void Material::set_shader(Shader* shader)
+{
+    this->_shader = shader;
 }

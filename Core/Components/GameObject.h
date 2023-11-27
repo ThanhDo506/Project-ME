@@ -122,9 +122,6 @@ public:
 			if (!HasComponent<T>()) {
 				APP_INFO("Erased component %s from %s now safe to delete!", typeid(component).name(), this->_name.c_str());
 			}
-			else {
-				APP_INFO("Dafug");
-			}
 			delete component;
 			return;
 		}

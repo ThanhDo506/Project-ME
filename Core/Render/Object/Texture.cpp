@@ -1,12 +1,17 @@
 #include "Texture.h"
 #include <glm/gtc/type_ptr.hpp>
 
-void Texture::Clean() 
+bool Texture::is_sRGB() const
+{
+	return this->_sRGB;
+}
+
+void Texture::Clean()
 {
 	glDeleteTextures(1, &_id);
 }
 
-void Texture::bindTextureUnit(GLuint unit) 
+void Texture::bind_texture_unit(GLuint unit) 
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
 
@@ -27,7 +32,7 @@ void Texture::bindTextureUnit(GLuint unit)
 	}
 }
 
-GLenum Texture::textureShapeToGLTarget(TextureShape textureShape)
+GLenum Texture::texture_shape_to_GL_target(TextureShape textureShape)
 {
 	switch (textureShape) {
 	case Texture2D:
@@ -214,9 +219,14 @@ bool Texture::loadHdr(const char* path, TextureSetting& textureSetting)
 	return true;
 }
 
+std::string Texture::get_path() const
+{
+	return _path;
+}
+
 void Texture::applySetting(const TextureSetting& textureSetting)
 {
-	GLenum target = textureShapeToGLTarget(_textureShape);
+	GLenum target = texture_shape_to_GL_target(_textureShape);
 	switch (textureSetting.textureFilter)
 	{
 	case PointFiltering:
