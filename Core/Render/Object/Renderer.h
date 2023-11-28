@@ -1,6 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "../RenderingSystem/Rendering.h"
 #include "Shader.h"
 #include "../../common.h"
 #include "../../Components/Component.h"
@@ -11,18 +12,20 @@ class Material;
 
 class Renderer : public Component {
 public:
-	Renderer(Material* material, std::vector<Mesh*> meshes);
+	Renderer(const Material& material, std::vector<Mesh*> meshes);
+	~Renderer();
+
 	void update_shader();
 	void Render();
 
-	Material*	get_material();
-	void		set_material(Material* material);
+	Material&	get_material();
+	void		set_material(const Material& material);
 
 	__declspec(property(get = get_material, 
-						put = set_material))	Material* material;
+						put = set_material))	Material& material;
 
 private:
-	Material*					_material;
+	Material					_material;
 	std::vector<Mesh*>			_meshes;
 };
 

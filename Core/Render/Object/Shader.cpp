@@ -74,52 +74,52 @@ void Shader::SetIntArray(const char* uniformName, int* values, uint32_t count)
 {
 }
 
-void Shader::SetFloat(const std::string& uniformName, float value)
+void Shader::SetFloat(std::string uniformName, float value)
 {
 	SetFloat(uniformName.c_str(), value);
 }
 
-void Shader::SetMat2(const std::string& uniformName, const glm::mat2& value)
+void Shader::SetMat2(std::string uniformName, const glm::mat2& value)
 {
 	SetMat2(uniformName.c_str(), value);
 }
 
-void Shader::SetMat3(const std::string& uniformName, const glm::mat3& value)
+void Shader::SetMat3(std::string uniformName, const glm::mat3& value)
 {
 	SetMat3(uniformName.c_str(), value);
 }
 
-void Shader::SetMat4(const std::string& uniformName, const glm::mat4& value)
+void Shader::SetMat4(std::string uniformName, const glm::mat4& value)
 {
 	SetMat4(uniformName.c_str(), value);
 }
 
-void Shader::SetVec2(const std::string& uniformName, const glm::vec2& value)
+void Shader::SetVec2(std::string uniformName, const glm::vec2& value)
 {
 	SetVec2(uniformName.c_str(), value);
 }
 
-void Shader::SetVec2(const std::string& uniformName, const float& x, const float& y)
+void Shader::SetVec2(std::string uniformName, const float& x, const float& y)
 {
 	SetVec2(uniformName.c_str(), x, y);
 }
 
-void Shader::SetVec3(const std::string& uniformName, const glm::vec3& value)
+void Shader::SetVec3(std::string uniformName, const glm::vec3& value)
 {
 	SetVec3(uniformName.c_str(), value);
 }
 
-void Shader::SetVec3(const std::string& uniformName, const float& x, const float& y, const float& z)
+void Shader::SetVec3(std::string uniformName, const float& x, const float& y, const float& z)
 {
 	SetVec3(uniformName.c_str(), x, y, z);
 }
 
-void Shader::SetVec4(const std::string& uniformName, const glm::vec4& value)
+void Shader::SetVec4(std::string uniformName, const glm::vec4& value)
 {
 	SetVec4(uniformName.c_str(), value);
 }
 
-void Shader::SetVec4(const std::string& uniformName, const float& x, const float& y, const float& z, const float& w)
+void Shader::SetVec4(std::string uniformName, const float& x, const float& y, const float& z, const float& w)
 {
 	SetVec4(uniformName.c_str(), x, y, z, w);
 }

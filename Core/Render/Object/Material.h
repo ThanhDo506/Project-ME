@@ -103,8 +103,8 @@ public:
 	short		get_priority_render() const;
 	void		set_priority_render(short newPriority);
 
-	Shader* get_shader();
-	void	set_shader(Shader* shader);
+	Shader*		get_shader();
+	void		set_shader(Shader* shader);
 
 	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture			diffuseMap;
 	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture			roughnessMap;

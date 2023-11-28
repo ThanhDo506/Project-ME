@@ -4,12 +4,19 @@ Light::Light()
 	: Component(nullptr)
 	, _isMustUpdate(true)
 {
+	Rendering::add_light_to_registry(this);
 }
 
 Light::Light(GameObject* gameObject, bool isActive)
 	: Component(gameObject, isActive)
 	, _isMustUpdate(true)
 {
+	Rendering::add_light_to_registry(this);
+}
+
+Light::~Light()
+{
+	Rendering::remove_light_from_registry(this);
 }
 
 bool Light::is_must_update() const

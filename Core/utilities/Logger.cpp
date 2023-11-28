@@ -27,11 +27,11 @@ void Logger::run()
 	std::cout << "\033[1;31m[SYSTEM]\033[0;0m: Start log thread!\n";
 	std::queue<Log>* logPtr = &Logger::instance()->_logHolder;
 	while (!instance()->_stopPrint) {
-		if (logPtr->size() > 0) {
+		while (logPtr->size() > 0) {
 			print(logPtr->front());
 			logPtr->pop();
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 

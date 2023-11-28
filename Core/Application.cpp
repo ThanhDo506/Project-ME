@@ -41,7 +41,6 @@ void Application::Run() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-
 		// End frame
 		GUI::instance().Draw();
 

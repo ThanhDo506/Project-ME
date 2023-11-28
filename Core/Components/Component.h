@@ -36,35 +36,15 @@ public:
 	bool is_active() const;
 
 	GameObject* get_gameObject();
+	void set_gameObject(GameObject* gameObject);
+	void attach_to_gameObject(GameObject* gameObject);
 
-	//template <typename T, typename... Args>
-	//T* AddComponent(Args&&... args) {
-	//	return this->_gameObject->AddComponent<T>(args);
-	//}
-
-	//template <typename T>
-	//bool HasComponent() {
-	//	return this->_gameObject->HasComponent<T>();
-	//}
-
-	//template<typename T>
-	//T* GetComponent() {
-	//	return this->_gameObject->GetComponent<T>();
-	//}
-
-	//template<typename T>
-	//void RemoveComponent() {
-	//	this->_gameObject->RemoveComponent<T>();
-	//}
 	virtual std::string to_string() const;
 
 	__declspec(property(get = get_gameObject))				GameObject* gameObject;
-
 protected:
 	bool		_active;
 	GameObject* _gameObject;
-
-	void set_gameObject(GameObject* gameObject);
 };
 
 class Transform : public Component {
@@ -76,23 +56,24 @@ public:
 	Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation);
 
 	/**
-	 * @brief The green axis of the transform in world space.
+	 * @return The green axis of the transform in world space.
 	 */
 	glm::vec3	up() const;
 
 	/**
-	 * @brief Returns a normalized vector representing the blue axis of the transform in world
+	 * @return A normalized vector representing the blue axis of the transform in world
 	 * space.
 	 */
 	glm::vec3	forward() const;
 
 	/**
-	 * @brief The red axis of the transform in world space.
+	 * @return The red axis of the transform in world space.
 	 */
 	glm::vec3	right() const;
 
 	glm::vec3	get_local_euler_angles() const;
 	void		set_local_euler_angles(glm::vec3 eulerAngles);
+	// Todo: should optimize this func :(((
 	glm::vec3	get_world_euler_angles() const;
 	void		set_world_euler_angles(glm::vec3 eulerAngles);
 

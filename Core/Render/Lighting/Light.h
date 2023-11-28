@@ -3,6 +3,7 @@
 
 #include "../../Components/Component.h"
 #include "../Object/Shader.h"
+#include "../RenderingSystem/Rendering.h"
 
 enum class LightType {
 	Directional,
@@ -16,6 +17,7 @@ class Light : public Component
 public:
 	Light();
 	Light(GameObject* gameObject, bool isActive = true);
+	~Light();
 
 	bool		is_must_update() const;
 

@@ -4,7 +4,7 @@ GameObject::GameObject(const GameObject& baseGameObject)
 	: _active(baseGameObject._active), 
 	_name(baseGameObject._name + " (Copy)"), 
 	_hasChanged(true),
-	_tag(baseGameObject.tag),
+	_tag(baseGameObject._tag),
 	_scene(baseGameObject._scene)
 {
 	this->set_parent(baseGameObject._parent);

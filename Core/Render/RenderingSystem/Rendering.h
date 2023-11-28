@@ -3,19 +3,15 @@
 
 #include <vector>
 #include "../Object/Renderer.h"
-#include "LightRegistry.h"
-#include "CameraRegistry.h"
-
+#include "../Lighting/Light.h"
+#include "../Camera/Camera.h"
 
 class Rendering
 {
-	friend class Light;
-	friend class Camera;
-	friend class Renderer;
 private:
-	LightRegistry _lightRegistry;
-	CameraRegistry _cameraRegistry;
-	std::vector<Renderer*> _rendererComponentsRegistry;
+	std::vector<Light*>		_lightRegistry;
+	std::vector<Camera*>	_cameraRegistry;
+	std::vector<Renderer*>	_rendererRegistry;
 
 #pragma region Singleton
 	Rendering(const Rendering& obj) = delete;
@@ -29,8 +25,20 @@ public:
 	static void UpdateData();
 	static void Render();
 
-	static LightRegistry* get_light_registry();
-	static CameraRegistry* get_camera_registry();
+#pragma region Renderer Registry
+	static void add_renderer_to_registry(Renderer* renderer);
+	static void add_camera_to_registry(Camera* camera);
+#pragma endregion
+
+#pragma region Camera Registry
+	static void remove_renderer_from_registry(Renderer* renderer);
+	static void remove_camera_from_registry(Camera* camera);
+#pragma endregion
+
+#pragma region Light Registry
+	static void add_light_to_registry(Light* light);
+	static void remove_light_from_registry(Light* light);
+#pragma endregion
 };
 
 

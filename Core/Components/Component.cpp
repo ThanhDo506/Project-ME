@@ -66,17 +66,23 @@ std::string Component::to_string() const
 
 void Component::set_gameObject(GameObject* gameObject)
 {
+	if (gameObject == nullptr) {
+		APP_ERROR("Must attach component to a NON NULL GameObject!");
+		return;
+	}
 	if (this->_gameObject != nullptr) {
 		auto it = this->_gameObject->_components.find(typeid(this));
 		if (it != this->_gameObject->_components.end()) {
 			this->_gameObject->_components.erase(it);
 		}
 	}
-	else {
-		APP_ERROR("Must attach component to a valid GameObject!");
-	}
 	this->_gameObject = gameObject;
 	this->_gameObject->_components.insert({typeid(this), this});
+}
+
+void Component::attach_to_gameObject(GameObject* gameObject)
+{
+	this->set_gameObject(gameObject);
 }
 
 
@@ -124,6 +130,17 @@ void Transform::set_local_euler_angles(glm::vec3 eulerAngles)
 	));
 }
 
+glm::vec3 Transform::get_world_euler_angles() const
+{
+	glm::vec3 res = this->get_local_euler_angles();
+	GameObject* g = this->_gameObject->_parent;
+	while (g != nullptr) {
+		res += g->GetComponent<Transform>()->get_local_euler_angles();
+		g = g->_parent;
+	}
+	return res;
+}
+
 glm::vec3 Transform::get_local_position() const
 {
 	return _position;
@@ -134,6 +151,21 @@ void Transform::set_local_position(glm::vec3 newPosition)
 	_position = newPosition;
 }
 
+glm::vec3 Transform::get_world_position() const
+{
+	glm::vec3 res = _position;
+	GameObject* g = this->_gameObject->_parent;
+	while (g != nullptr) {
+		res += g->GetComponent<Transform>()->_position;
+		g = g->_parent;
+	}
+	return res;
+}
+
+void Transform::set_world_position(glm::vec3 position)
+{
+}
+
 glm::vec3 Transform::get_local_scale() const
 {
 	return _scale;
@@ -142,6 +174,17 @@ glm::vec3 Transform::get_local_scale() const
 void Transform::set_local_scale(glm::vec3 newScale)
 {
 	_scale = newScale;
+}
+
+glm::vec3 Transform::get_world_scale() const
+{
+	glm::vec3 res = _scale;
+	GameObject* g = this->_gameObject->_parent;
+	while (g != nullptr) {
+		res *= g->GetComponent<Transform>()->_scale;
+		g = g->_parent;
+	}
+	return res;
 }
 
 glm::quat Transform::get_local_rotation() const

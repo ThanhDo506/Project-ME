@@ -58,6 +58,22 @@
 //        }
 //        std::cout << component.second->to_string() << " || Address: " << component.second;
 //        std::cout << " || Attach to: " << component.second->gameObject->name << std::endl;
+//        Transform* t = dynamic_cast<Transform*>(component.second);
+//        if (t) {
+//            for (int i = 0; i < level + 3; i++) {
+//                std::cout << "\t";
+//            }
+//            std::cout << "Position: " << t->position.x << " " << t->position.y << " " << t->position.z << std::endl;
+//            for (int i = 0; i < level + 3; i++) {
+//                std::cout << "\t";
+//            }
+//            std::cout << "Scale: " << t->scale.x << " " << t->scale.y << " " << t->scale.z << std::endl;
+//            for (int i = 0; i < level + 3; i++) {
+//                std::cout << "\t";
+//            }
+//            glm::vec3 rotation = t->get_local_euler_angles();
+//            std::cout << "Rotation: " << rotation.x << " " << rotation.y << " " << rotation.z << std::endl;
+//        }
 //    }
 //    if (!root->_children.empty()) {
 //        for (int i = 0; i < level; i++) {
@@ -71,49 +87,24 @@
 //}
 //
 //int main() {
-//    /*Logger::init();
-//    WindowSetting setting = {
-//        1600,
-//        900,
-//        0,
-//        "Material Editor",
-//        false,
-//        false,
-//        false
-//    };
-//    Application* app = new Application(setting);
-//    app->Run();
-//    Logger::clean();
-//    system("pause");
-//    return 0;*/
 //    GameObject* root = new GameObject(Transform(), "root");
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
 //
 //    GameObject* gObj = new GameObject(Transform(), "gObj", root);
 //    gObj->AddComponent<A>(10);
 //    gObj->AddComponent<B>("asdasd");
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
 //
+//    GameObject* c1Obj = new GameObject(Transform(glm::vec3(5.0f), glm::vec3(1.0f), glm::vec3(45.0f)), "c1Obj", gObj);
 //
-//    GameObject* c1Obj = new GameObject(Transform(glm::vec3(0.0), glm::vec3(1.0), glm::vec3(0.0)), "c1Obj", gObj);
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
-//
-//    GameObject* c2Obj = new GameObject(Transform(glm::vec3(0.0), glm::vec3(1.0), glm::vec3(0.0)), "c2Obj", gObj);
+//    GameObject* c2Obj = new GameObject(Transform(glm::vec3(7.0f), glm::vec3(2.0f), glm::vec3(90.0f)), "c2Obj", gObj);
 //    c2Obj->AddComponent<B>("asd");
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
 //
-//    GameObject* c3Obj = new GameObject(Transform(glm::vec3(0.0), glm::vec3(1.0), glm::vec3(0.0)), "c3Obj", c1Obj);
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
+//    GameObject* c3Obj = new GameObject(Transform(glm::vec3(8.0f), glm::vec3(5.0f), glm::vec3(45.0f)), "c3Obj", c1Obj);
 //
 //
 //    GameObject* copyObj = new GameObject(*gObj);
 //    //copyObj->parent = root;
 //    copyObj->name = "copyObj";
+//
 //    print_hierachy(root, 0);
 //    std::cout << "-----------------------------------------------------------\n";
 //
@@ -127,15 +118,29 @@
 //    std::cout << "gObj " << gObj->_components.size() << " || copyObj " << copyObj->_components.size() << std::endl;
 //    std::cout << std::is_same<decltype(gObj->GetComponent<A>()), B*>::value << std::endl;
 //    std::cout << std::endl;
-//    print_hierachy(root, 0);
-//    std::cout << "-----------------------------------------------------------\n";
 //
-//    GameObject* duma = copyObj->_children[0];
-//    std::cout << duma << std::endl;
-//    duma->set_parent(c2Obj);
+//    copyObj->_children[0]->set_parent(c2Obj);
 //
 //    print_hierachy(root, 0);
 //    std::cout << "-----------------------------------------------------------\n";
+//
+//    if (c2Obj == nullptr) {
+//        std::cout << "dafug\n";
+//    }
+//    else {
+//        Transform* tr = c3Obj->GetComponent<Transform>();
+//        if (!tr) {
+//            std::cout << "dafug\n";
+//        }
+//        else {
+//            glm::vec3 t = tr->get_world_position();
+//            std::cout << "Position: " << t.x << " " << t.y << " " << t.z << std::endl;
+//            t = tr->get_world_scale();
+//            std::cout << "Scale: " << t.x << " " << t.y << " " << t.z << std::endl;
+//            glm::vec3 rotation = tr->get_world_euler_angles();
+//            std::cout << "Rotation: " << rotation.x << " " << rotation.y << " " << rotation.z << std::endl;
+//        }
+//    }
 //    Logger::clean();
 //}
 #pragma endregion

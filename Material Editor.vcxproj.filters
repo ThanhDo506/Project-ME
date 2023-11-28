@@ -114,12 +114,6 @@
     <ClCompile Include="Core\Render\RenderingSystem\Rendering.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Render\RenderingSystem\LightRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Render\RenderingSystem\CameraRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\utilities\Logger.h">
@@ -240,12 +234,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Render\RenderingSystem\Rendering.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Render\RenderingSystem\LightRegistry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Render\RenderingSystem\CameraRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
