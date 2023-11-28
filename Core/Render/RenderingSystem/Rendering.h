@@ -6,6 +6,10 @@
 #include "../Lighting/Light.h"
 #include "../Camera/Camera.h"
 
+class Light;
+class Renderer;
+class Camera;
+
 class Rendering
 {
 private:
