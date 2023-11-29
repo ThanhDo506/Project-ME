@@ -17,11 +17,17 @@ enum ShaderType {
 class Shader {
 
 private:
+	/**
+	 * Do not modify this attribute.
+	 */
 	GLuint _id;
 	std::string _name;
 
 public:
 	Shader(std::string name, const char* vertPath, const char* fragPath, const char* geoPath = "");
+	~Shader();
+
+	void clean();
 
 	void Active();
 	void Delete();
@@ -60,6 +66,8 @@ public:
 
 	std::string get_name() const;
 	void		set_name(std::string newName);
+
+	static Shader* get_default_shader();
 
 	__declspec(property(get = get_name,
 						put = set_name))	std::string name;

@@ -48,6 +48,17 @@ Shader::Shader(std::string name, const char* vertPath, const char* fragPath, con
 	}
 }
 
+Shader::~Shader()
+{
+	this->clean();
+}
+
+void Shader::clean()
+{
+	glDeleteShader(this->_id);
+	this->_id = 0;
+}
+
 void Shader::Active() {
 	glUseProgram(_id);
 }
@@ -132,6 +143,15 @@ std::string Shader::get_name() const
 void Shader::set_name(std::string newName)
 {
 	this->_name = newName;
+}
+
+Shader* Shader::get_default_shader()
+{
+	static Shader* s;
+	if (!s) {
+		s = new Shader("Default Shader", "Resources/GLSL/default.vert", "Resources/GLSL/default.frag");
+	}
+	return s;
 }
 
 void Shader::SetFloat(const char* uniformName, float value)

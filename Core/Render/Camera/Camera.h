@@ -44,6 +44,8 @@ public:
 
 	void set_render_to_texture(bool val);
 	bool is_render_to_texture() const;
+
+	Camera* Clone() const override;
 private:
 	bool		_isRenderToTexture = false;
 	Texture*	_renderToTexture;

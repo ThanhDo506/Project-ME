@@ -55,6 +55,8 @@ public:
 
 	Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation);
 
+	Transform(glm::vec3 position, glm::vec3 scale, glm::vec3 eulerAngle);
+
 	/**
 	 * @return The green axis of the transform in world space.
 	 */

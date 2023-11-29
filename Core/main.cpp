@@ -7,6 +7,7 @@
 //#include "Application.h"
 //#include "../Core/Components/Component.h"
 //#include "../Core/Components/GameObject.h"
+//#include "../../Core/Render/Lighting/Light.h"
 //
 //class A : public Component {
 //public:
@@ -126,13 +127,11 @@
 //
 //    if (c2Obj == nullptr) {
 //        std::cout << "dafug\n";
-//    }
-//    else {
+//    } else {
 //        Transform* tr = c3Obj->GetComponent<Transform>();
 //        if (!tr) {
 //            std::cout << "dafug\n";
-//        }
-//        else {
+//        } else {
 //            glm::vec3 t = tr->get_world_position();
 //            std::cout << "Position: " << t.x << " " << t.y << " " << t.z << std::endl;
 //            t = tr->get_world_scale();
@@ -141,6 +140,18 @@
 //            std::cout << "Rotation: " << rotation.x << " " << rotation.y << " " << rotation.z << std::endl;
 //        }
 //    }
+//
+//    Light* l = new Light();
+//    l->attach_to_gameObject(c2Obj);
+//    std::cout << l->get_gameObject()->name << std::endl;
+//    glm::vec3 r1 = glm::degrees(
+//        glm::eulerAngles(
+//            glm::quat(glm::vec3(
+//                glm::radians(30.0f), 
+//                glm::radians(90.0f), 
+//                glm::radians(45.0f)))));
+//    std::cout << r1.x << " " << r1.y << " " << r1.z << std::endl;
+//    c2Obj->AddComponent<Light>();
 //    Logger::clean();
 //}
 #pragma endregion

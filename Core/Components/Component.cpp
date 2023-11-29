@@ -104,6 +104,12 @@ Transform::Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation)
 	_scale(scale),
 	_rotation(rotation) { }
 
+Transform::Transform(glm::vec3 position, glm::vec3 scale, glm::vec3 eulerAngle)
+	: Component(nullptr, true),
+	_position(position),
+	_scale(scale),
+	_rotation(glm::quat(glm::radians(eulerAngle))) { }
+
 glm::vec3 Transform::up() const {
 	return _rotation * glm::vec3(0.0, 1.0, 0.0);
 }
@@ -116,22 +122,15 @@ glm::vec3 Transform::right() const {
 	return _rotation * glm::vec3(1.0, 0.0, 0.0);
 }
 
-glm::vec3 Transform::get_local_euler_angles() const
-{
+glm::vec3 Transform::get_local_euler_angles() const {
 	return glm::degrees(glm::eulerAngles(_rotation));
 }
 
-void Transform::set_local_euler_angles(glm::vec3 eulerAngles)
-{
-	_rotation = glm::quat(glm::vec3(
-		glm::radians(eulerAngles.x),
-		glm::radians(eulerAngles.y),
-		glm::radians(eulerAngles.z)
-	));
+void Transform::set_local_euler_angles(glm::vec3 eulerAngles) {
+	_rotation = glm::quat(glm::radians(eulerAngles));
 }
 
-glm::vec3 Transform::get_world_euler_angles() const
-{
+glm::vec3 Transform::get_world_euler_angles() const {
 	glm::vec3 res = this->get_local_euler_angles();
 	GameObject* g = this->_gameObject->_parent;
 	while (g != nullptr) {

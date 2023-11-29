@@ -79,6 +79,9 @@ private:
 	TextureShape	_textureShape;
 	TextureType		_textureType;
 	GLenum			_internalFormat;
+	/**
+	 * Do not modify this attribute.
+	 */
 	GLuint			_id = 0;
 	GLint			_width;
 	GLint			_height;
@@ -86,6 +89,7 @@ private:
 	std::string		_path;
 
 public:
+	~Texture();
 	/**
 	 * @return true if color space is sRGB, false if linear.
 	 */

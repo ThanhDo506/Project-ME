@@ -241,5 +241,8 @@
     <None Include="Design Proj\Material Editor.vpp" />
     <None Include="Resources\GLSL\PBR.frag" />
     <None Include="Resources\GLSL\PBR.glsl" />
+    <None Include="Resources\GLSL\default.vert" />
+    <None Include="Resources\GLSL\default.frag" />
+    <None Include="Resources\GLSL\Camera.glsl" />
   </ItemGroup>
 </Project>

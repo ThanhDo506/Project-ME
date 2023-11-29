@@ -1,6 +1,11 @@
 #include "Texture.h"
 #include <glm/gtc/type_ptr.hpp>
 
+Texture::~Texture()
+{
+	this->Clean();
+}
+
 bool Texture::is_sRGB() const
 {
 	return this->_sRGB;

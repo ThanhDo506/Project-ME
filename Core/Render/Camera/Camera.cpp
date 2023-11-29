@@ -99,3 +99,8 @@ bool Camera::is_render_to_texture() const
 {
 	return _isRenderToTexture;
 }
+
+Camera* Camera::Clone() const
+{
+	return new Camera(*this);
+}

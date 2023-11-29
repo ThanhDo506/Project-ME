@@ -71,7 +71,7 @@ void Renderer::Render()
 		return;
 
 	this->_material.shader->Active();
-	for (auto mesh : _meshes) {
+	for (Mesh* mesh : this->_meshes) {
 		mesh->Draw();
 	}
 }
@@ -84,4 +84,9 @@ Material& Renderer::get_material()
 void Renderer::set_material(const Material& material)
 {
 	_material = material;
+}
+
+Renderer* Renderer::Clone() const
+{
+	return new Renderer(*this);
 }

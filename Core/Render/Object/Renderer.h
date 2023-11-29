@@ -21,6 +21,8 @@ public:
 	Material&	get_material();
 	void		set_material(const Material& material);
 
+	Renderer* Clone() const override;
+
 	__declspec(property(get = get_material, 
 						put = set_material))	Material& material;
 

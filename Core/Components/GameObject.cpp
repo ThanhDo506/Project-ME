@@ -32,7 +32,6 @@ GameObject::GameObject(const GameObject& baseGameObject,
 	_tag(baseGameObject.tag),
 	_scene(baseGameObject._scene)
 {
-
 	// TODO add component
 	for (auto component : baseGameObject._components) {
 		auto copyComp = component.second->Clone();

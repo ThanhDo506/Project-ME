@@ -48,6 +48,10 @@ public:
 	LightType	get_light_type() const;
 	void		set_light_type(LightType type);
 
+	Light* Clone() const override;
+
+	std::string to_string() const;
+
 	__declspec(property(get = get_color,
 						put = set_color))			glm::vec3 color;
 	__declspec(property(get = get_ambient,
@@ -76,8 +80,8 @@ private:
 	glm::vec3	_innerSpotAngle = glm::vec3(1.0);
 	float		_range			= 10.0;
 	float		_intensity		= 1.0;
-	LightType	_lightType;
-	bool		_isMustUpdate;
+	LightType	_lightType		= LightType::Point;
+	bool		_isMustUpdate	= true;
 };
 
 #endif

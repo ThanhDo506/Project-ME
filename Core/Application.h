@@ -6,6 +6,7 @@
 #include "Events/Input.h"
 #include "UI/GUI.h"
 #include "Scene/SceneManager.h"
+#include "../Core/Render/RenderingSystem/Rendering.h"
 
 struct WindowSetting {
 	GLint width = 1920;

@@ -92,16 +92,24 @@ void Rendering::UpdateData()
 
 void Rendering::Render()
 {
-	// render Opaque shader
-	for (auto renderer : Rendering::instance()._rendererRegistry) {
-		if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Opaque)
-			renderer->Render();
-	}
+	for (Camera* camera : Rendering::instance()._cameraRegistry) {
+		// render Opaque shader
+		for (auto renderer : Rendering::instance()._rendererRegistry) {
+			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Opaque) {
+				renderer->Render();
+				Shader* shader = renderer->material.shader;
+				shader->SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
+				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
+				static Transform t = Transform(glm::vec3(0.0, 0.0, -10.0), glm::vec3(1.0), glm::vec3(0.0));
+				shader->SetMat4("_TransformMatrix", t.get_matrix_transform());
+			}
+		}
 
-	// update Transparent shader
-	for (auto renderer : Rendering::instance()._rendererRegistry) {
-		if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Transparent)
-			renderer->Render();
+		// update Transparent shader
+		for (auto renderer : Rendering::instance()._rendererRegistry) {
+			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Transparent)
+				renderer->Render();
+		}
 	}
 }
 

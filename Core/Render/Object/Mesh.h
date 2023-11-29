@@ -8,11 +8,12 @@ struct Vertex;
 
 class Mesh
 {
+	friend class Renderer;
 public:
 	// TODO: should make a static/dynamic buffer
 	// Here just static buffer
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
-
+	~Mesh();
 	/**
 	 * Draw the mesh. Please bind shader before call Draw.
 	 */

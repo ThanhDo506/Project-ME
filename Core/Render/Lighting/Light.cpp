@@ -123,3 +123,13 @@ void Light::set_light_type(LightType type)
 	_lightType = type;
 }
 
+Light* Light::Clone() const
+{
+	return new Light(*this);
+}
+
+std::string Light::to_string() const
+{
+	return "Light";
+}
+

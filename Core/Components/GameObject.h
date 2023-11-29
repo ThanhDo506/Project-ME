@@ -121,9 +121,9 @@ public:
 			this->_components.erase(typeid(T));
 			if (!HasComponent<T>()) {
 				APP_INFO("Erased component %s from %s now safe to delete!", typeid(component).name(), this->_name.c_str());
+				return;
 			}
 			delete component;
-			return;
 		}
 	}
 
@@ -133,8 +133,7 @@ public:
 						put = set_name))		std::string name;
 	__declspec(property(get = get_tag,
 						put = set_tag))			std::string tag;
-	__declspec(property(get = get_scene))		Scene* scene;
-
+	__declspec(property(get = get_scene))		Scene*		scene;
 };
 
 #endif
