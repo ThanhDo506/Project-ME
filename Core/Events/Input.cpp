@@ -11,6 +11,9 @@ void Input::init(Application* application)
 {
     this->p_application = application;
     p_glfwWindow = application->_glfwWindow;
+    this->_deltaMousePosition = glm::vec2(0.0);
+    this->_lastMousePosition = glm::vec2(0.0);
+    this->_mousePosition = glm::vec2(0.0);
 }
 
 void Input::update()
@@ -23,8 +26,8 @@ void Input::update()
 
 void Input::reset()
 {
-    Input::instance()._deltaMousePosition = Input::instance()._mousePosition - Input::instance()._lastMousePosition;
-    Input::instance()._lastMousePosition = Input::instance()._mousePosition;
+    Input::instance()._deltaMousePosition = { 0, 0 };
+    Input::instance()._lastMousePosition = { 0,0 };
 }
 
 void Input::clean()
@@ -39,8 +42,9 @@ void Input::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void Input::mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    Input::instance()._mousePosition = glm::vec2(xposIn, yposIn);
+    glfwGetCursorPos(window, &Input::instance()._mousePosition.x, &Input::instance()._mousePosition.y);
     Input::instance()._deltaMousePosition = Input::instance()._mousePosition - Input::instance()._lastMousePosition;
+    Input::instance()._lastMousePosition = Input::instance()._mousePosition;
 }
 
 Input& Input::instance()
@@ -49,12 +53,12 @@ Input& Input::instance()
     return instance;
 }
 
-glm::vec2 Input::getMousePosition()
+glm::dvec2 Input::getMousePosition()
 {
     return Input::instance()._mousePosition;
 }
 
-glm::vec2 Input::getDeltaMousePosition()
+glm::dvec2 Input::getDeltaMousePosition()
 {
     return Input::instance()._deltaMousePosition;
 }
@@ -67,6 +71,23 @@ void Input::setMousePosition(glm::vec2 pos)
 void Input::setDeltaMousePosition(glm::vec2 pos)
 {
     Input::instance()._deltaMousePosition = pos;
+}
+
+void Input::lock_mouse_cursor(bool lock)
+{
+    Input::instance()._isLockCursor = lock;
+}
+
+bool Input::is_lock_mouse_cursor()
+{
+    return Input::instance()._isLockCursor;
+}
+
+void Input::reset_cursor_position()
+{
+    if (!Input::instance().p_glfwWindow)
+        return;
+    glfwSetCursorPos(Input::instance().p_glfwWindow, 1600/2, 900 / 2);
 }
 
 GLFWwindow* Input::getWindowManipulator() const

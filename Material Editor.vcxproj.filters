@@ -114,6 +114,21 @@
     <ClCompile Include="Core\Render\RenderingSystem\Rendering.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Render\RenderingSystem\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Render\RenderingSystem\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Render\RenderingSystem\Cylinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Render\RenderingSystem\RenderBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Render\Camera\CameraController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\utilities\Logger.h">
@@ -236,6 +251,21 @@
     <ClInclude Include="Core\Render\RenderingSystem\Rendering.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Render\RenderingSystem\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Render\RenderingSystem\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Render\RenderingSystem\Cylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Render\RenderingSystem\RenderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Render\Camera\CameraController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
@@ -244,5 +274,58 @@
     <None Include="Resources\GLSL\default.vert" />
     <None Include="Resources\GLSL\default.frag" />
     <None Include="Resources\GLSL\Camera.glsl" />
+    <None Include="Resources\ibl\brown_photostudio_02_2k.hdr" />
+    <None Include="Resources\ibl\dikhololo_night_2k.hdr" />
+    <None Include="Resources\ibl\evening_road_01_puresky_2k.hdr" />
+    <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k (1).hdr" />
+    <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k.hdr" />
+    <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
+    <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Core\Render\RenderingSystem\Sphere.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\images\Skybox\back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\Skybox\bottom.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\Skybox\front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\Skybox\left.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\Skybox\right.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\Skybox\top.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\metal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\images\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\fonts\Cousine-Regular.ttf" />
+    <Font Include="Resources\fonts\DroidSans.ttf" />
+    <Font Include="Resources\fonts\Karla-Regular.ttf" />
+    <Font Include="Resources\fonts\ProggyClean.ttf" />
+    <Font Include="Resources\fonts\ProggyTiny.ttf" />
+    <Font Include="Resources\fonts\Roboto-Medium.ttf" />
   </ItemGroup>
 </Project>

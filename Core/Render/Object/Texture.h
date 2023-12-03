@@ -71,6 +71,7 @@ struct TextureSetting {
 };
 
 class Texture {
+	friend class FrameBuffer;
 private:
 	/**
 	 * true if color space is sRGB, false is linear.

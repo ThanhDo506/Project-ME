@@ -1,77 +1,77 @@
 #include "Material.h"
 
-Texture& Material::get_diffuse_map() 
+Texture* Material::get_diffuse_map() 
 {
     return this->_diffuseMap;
 }
 
-void Material::set_diffuse_map(Texture diffuseMap)
+void Material::set_diffuse_map(Texture* diffuseMap)
 {
     _textureChanged = true;
     _diffuseMap = diffuseMap;
 }
 
-Texture& Material::get_roughness_map()
+Texture* Material::get_roughness_map()
 {
     return this->_roughnessMap;
 }
 
-void Material::set_roughness_map(Texture roughnessMap)
+void Material::set_roughness_map(Texture* roughnessMap)
 {
     _textureChanged = true;
     _roughnessMap = roughnessMap;
 }
 
-Texture& Material::get_metallic_map()
+Texture* Material::get_metallic_map()
 {
     return this->_metallicMap;
 }
 
-void Material::set_metallic_map(Texture metallicMap)
+void Material::set_metallic_map(Texture* metallicMap)
 {
     _textureChanged = true;
     _metallicMap = metallicMap;
 }
 
-Texture& Material::get_ao_map()
+Texture* Material::get_ao_map()
 {
     return this->_aoMap;
 }
 
-void Material::set_ao_map(Texture aoMap)
+void Material::set_ao_map(Texture* aoMap)
 {
     _textureChanged = true;
     _aoMap = aoMap;
 }
 
-Texture& Material::get_normal_map()
+Texture* Material::get_normal_map()
 {
     return this->_normalMap;
 }
 
-void Material::set_normal_map(Texture normalMap)
+void Material::set_normal_map(Texture* normalMap)
 {
     _textureChanged = true;
     _normalMap;
 }
 
-Texture& Material::get_height_map()
+Texture* Material::get_height_map()
 {
     return this->_heightMap;
 }
 
-void Material::set_height_map(Texture heightMap)
+void Material::set_height_map(Texture* heightMap)
 {
     _textureChanged = true;
     _heightMap = heightMap;
 }
 
-Texture& Material::get_emission_map()
+Texture* Material::get_emission_map()
 {
     return this->_emissionMap;
 }
 
-void Material::set_emission_map(Texture emissionMap)
+void Material::set_emission_map(Texture* emissionMap)
 {
     _textureChanged = true;
     _emissionMap = emissionMap;
@@ -273,12 +273,12 @@ void Material::set_priority_render(short newPriority)
     _priorityRender = newPriority;
 }
 
-Shader* Material::get_shader()
+Shader& Material::get_shader()
 {
     return this->_shader;
 }
 
-void Material::set_shader(Shader* shader)
+void Material::set_shader(Shader shader)
 {
     this->_shader = shader;
 }

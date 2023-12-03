@@ -35,9 +35,9 @@ LightRenderManager* SceneRenderer::get_light_render_manager()
 void SceneRenderer::Update()
 {
 	for (auto renderer : _renderers) {
-		renderer->material.shader->Active();
+		renderer->material.shader.Active();
 		// Update Lighting
-		_lightRenderManager.Update(*renderer->material.shader);
+		_lightRenderManager.Update(renderer->material.shader);
 
 		// Update Material
 		renderer->update_shader();

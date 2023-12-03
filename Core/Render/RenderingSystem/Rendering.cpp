@@ -13,9 +13,11 @@ void Rendering::UpdateData()
 	// update material & lighting
 	// this material always receive lighting (will make non receive lighting in the future)
 	for (auto renderer : Rendering::instance()._rendererRegistry) {
+		// Update Lighting
 		renderer->update_shader();
 
-		Shader* shader = renderer->material.shader;
+		// Update Material
+		Shader* shader = &renderer->material.shader;
 		shader->Active();
 		unsigned int directionalCount = 0;
 		unsigned int pointCount = 0;
@@ -96,12 +98,26 @@ void Rendering::Render()
 		// render Opaque shader
 		for (auto renderer : Rendering::instance()._rendererRegistry) {
 			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Opaque) {
+				switch (renderer->material.renderFace)
+				{
+				case Back:
+					glCullFace(GL_BACK);
+					break;
+				case Both:
+					glCullFace(GL_FRONT_AND_BACK);
+					break;
+				case Front:
+				default:
+					glCullFace(GL_FRONT);
+					break;
+				}
+				Shader* shader = &renderer->material.shader;
+				shader->Active();
 				renderer->Render();
-				Shader* shader = renderer->material.shader;
 				shader->SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
 				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
-				static Transform t = Transform(glm::vec3(0.0, 0.0, -10.0), glm::vec3(1.0), glm::vec3(0.0));
-				shader->SetMat4("_TransformMatrix", t.get_matrix_transform());
+				shader->SetMat4("_TransformMatrix", 
+					renderer->gameObject->GetComponent<Transform>()->get_matrix_transform());
 			}
 		}
 

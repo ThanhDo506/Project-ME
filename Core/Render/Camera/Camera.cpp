@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(CameraType type, float near, float far, float fieldOfView, int width, int height, GameObject* gameObject)
-	: Component(gameObject)
+	: Component(nullptr)
 	, _cameraType(type)
 	, _nearClipping(near)
 	, _farClipping(far)
@@ -10,6 +10,7 @@ Camera::Camera(CameraType type, float near, float far, float fieldOfView, int wi
 	, _height(height)
 {
 	Rendering::add_camera_to_registry(this);
+	attach_to_gameObject(gameObject);
 }
 
 Camera::~Camera()

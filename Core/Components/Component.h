@@ -108,9 +108,9 @@ public:
 	 * \param quaternion: base quaternion
 	 * \return Euler angles from quaternion.
 	 */
-	static glm::vec3 quaternion_to_euler_angles(glm::quat& quaternion);
-	static glm::quat euler_angles_to_quaternion(glm::vec3& eulerAngles);
-	static glm::quat euler_angles_to_quaternion(float& pitch, float& yaw, float& roll);
+	static glm::vec3 quaternion_to_euler_angles(const glm::quat& quaternion);
+	static glm::quat euler_angles_to_quaternion(const glm::vec3& eulerAngles);
+	static glm::quat euler_angles_to_quaternion(const float& pitch, const float& yaw, const float& roll);
 
 	glm::vec3	get_position() const;
 	void		set_position(glm::vec3 newPosition);

@@ -204,12 +204,12 @@ glm::mat4 Transform::get_matrix_transform() const
 	return positionMtx * rotationMtx * scaleMtx;
 }
 
-glm::vec3 Transform::quaternion_to_euler_angles(glm::quat& quaternion)
+glm::vec3 Transform::quaternion_to_euler_angles(const glm::quat& quaternion)
 {
 	return glm::eulerAngles(quaternion);
 }
 
-glm::quat Transform::euler_angles_to_quaternion(glm::vec3& eulerAngles)
+glm::quat Transform::euler_angles_to_quaternion(const glm::vec3& eulerAngles)
 {
 	return glm::quat(glm::vec3(
 		glm::radians(eulerAngles.x),
@@ -218,7 +218,7 @@ glm::quat Transform::euler_angles_to_quaternion(glm::vec3& eulerAngles)
 	));
 }
 
-glm::quat Transform::euler_angles_to_quaternion(float& pitch, float& yaw, float& roll)
+glm::quat Transform::euler_angles_to_quaternion(const float& pitch, const float& yaw, const float& roll)
 {
 	return glm::quat(glm::vec3(
 		glm::radians(pitch),

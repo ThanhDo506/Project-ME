@@ -28,13 +28,16 @@ Shader::Shader(std::string name, const char* vertPath, const char* fragPath, con
 
 	_id = glCreateProgram();
 	glAttachShader(_id, vertexShader);
+
 	glAttachShader(_id, fragmentShader);
+
 	if (geometryShader != 0) {
 		glAttachShader(_id, geometryShader);
+		getGLError(this->_id, ShaderType::ProgramShader);
 	}
 	glLinkProgram(_id);
 	// Check link error
-	getGLError(this->_id, ShaderType::ProgramShader);
+	//getGLError(this->_id, ShaderType::ProgramShader);
 
 	glDetachShader(_id, vertexShader);
 	glDetachShader(_id, fragmentShader);
@@ -145,13 +148,13 @@ void Shader::set_name(std::string newName)
 	this->_name = newName;
 }
 
-Shader* Shader::get_default_shader()
+Shader& Shader::get_default_shader()
 {
 	static Shader* s;
 	if (!s) {
 		s = new Shader("Default Shader", "Resources/GLSL/default.vert", "Resources/GLSL/default.frag");
 	}
-	return s;
+	return *s;
 }
 
 void Shader::SetFloat(const char* uniformName, float value)

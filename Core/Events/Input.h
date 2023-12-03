@@ -7,13 +7,17 @@
 
 class Input
 {
+    friend class Application;
 public:
     static Input& instance();
-    static glm::vec2 getMousePosition();
-    static glm::vec2 getDeltaMousePosition();
+    static glm::dvec2 getMousePosition();
+    static glm::dvec2 getDeltaMousePosition();
 
     static void setMousePosition(glm::vec2 pos);
     static void setDeltaMousePosition(glm::vec2 pos);
+    static void lock_mouse_cursor(bool lock);
+    static bool is_lock_mouse_cursor();
+    static void reset_cursor_position();
     GLFWwindow* getWindowManipulator() const;
 private:
     Input(const Input& obj) = delete;
@@ -31,10 +35,9 @@ private:
 
     Application* p_application;
     GLFWwindow* p_glfwWindow;
-    glm::vec2 _mousePosition = { 0.0,0.0 };
-    glm::vec2 _lastMousePosition = { 0.0,0.0 };
-    glm::vec2 _deltaMousePosition = { 0.0,0.0 };
-
-    friend class Application;
+    glm::dvec2   _mousePosition = { 0.0,0.0 };
+    glm::dvec2   _lastMousePosition = { 0.0,0.0 };
+    glm::dvec2   _deltaMousePosition = { 0.0,0.0 };
+    bool        _isLockCursor = false;
 };
 #endif

@@ -52,7 +52,7 @@ Mesh::~Mesh()
 void Mesh::Draw()
 {
     glBindVertexArray(_vao);
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLE_STRIP, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 }
 

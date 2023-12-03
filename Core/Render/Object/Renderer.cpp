@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+
+
 Renderer::Renderer(const Material& material, std::vector<Mesh*> meshes)
 	: Component(nullptr)
 	, _material(material)
@@ -25,43 +27,57 @@ void Renderer::update_shader()
 		|| !_material.is_texture_changed())
 		return;
 
-	Shader* shader = material.shader;
-	shader->Active();
+	Shader& shader = material.shader;
+	shader.Active();
 	if (_material.is_texture_changed()) {
-		shader->SetFloat2("_Material.tilling", _material.tilling);
-		shader->SetFloat2("_Material.offset", _material.offset);
+		int c = 0;
+		shader.SetFloat2("_Material.tilling", _material.tilling);
+		shader.SetFloat2("_Material.offset", _material.offset);
 
-		_material.diffuseMap.		bind_texture_unit(0);
-		shader->SetInt("_Material.diffuseMap"		, 0);
+		if (_material.diffuseMap) {
+			_material.diffuseMap->bind_texture_unit(c);
+			shader.SetInt("_Material.diffuseMap", c++);
+		}
 
-		_material.roughnessMap.	bind_texture_unit(1);
-		shader->SetInt("_Material.roughnessMap"		, 1);
+		if (_material.roughnessMap) {
+			_material.roughnessMap->bind_texture_unit(c);
+			shader.SetInt("_Material.roughnessMap", c++);
+		}
 
-		_material.metallicMap.	bind_texture_unit(2);
-		shader->SetInt("_Material.metallicMap"		, 2);
+		if (_material.metallicMap) {
+			_material.metallicMap->bind_texture_unit(c);
+			shader.SetInt("_Material.metallicMap", c++);
+		}
 
-		_material.aoMap.			bind_texture_unit(3);
-		shader->SetInt("_Material.aoMap"			, 3);
+		if (_material.aoMap) {
+			_material.aoMap->bind_texture_unit(c);
+			shader.SetInt("_Material.aoMap", c++);
+		}
 
-		_material.bumpMap.		bind_texture_unit(4);
-		shader->SetInt("_Material.normalMap"		, 4);
+		if (_material.bumpMap) {
+			_material.bumpMap->bind_texture_unit(c);
+			shader.SetInt("_Material.normalMap", c++);
+		}
 
-		_material.emissionMap.	bind_texture_unit(5);
-		shader->SetInt("_Material.emissionMap"		, 5);
+		if (_material.emissionMap) {
+			_material.emissionMap->bind_texture_unit(c);
+			shader.SetInt("_Material.emissionMap", c++);
+		}
 
-		_material.heightMap.		bind_texture_unit(6);
-		shader->SetInt("_Material.parallaxMap"		, 6);
-		return;
+		if (_material.heightMap) {
+			_material.heightMap->bind_texture_unit(c);
+			shader.SetInt("_Material.parallaxMap", c++);
+		}
 	}
 	
-	shader->SetFloat("_Material.metallic", _material.metallic);
-	shader->SetFloat("_Material.smoothness", _material.smoothness);
-	shader->SetFloat("_Material.occolusionStrength", _material.aoStrength);
-	shader->SetBool("_Material.useAlphaClipping", _material.useAlphaClipping);
-	shader->SetFloat("_Material.alphaClippingThreshold", _material.alphaClippingThreshold);
-	shader->SetVec4("_Material.reflectColor", _material.reflectColor);
-	shader->SetBool("_Material.useEmission", _material.useEmissionMap);
-	shader->SetBool("_Material.useMetallic", _material.useMetallicMap);
+	shader.SetFloat("_Material.metallic",				_material.metallic);
+	shader.SetFloat("_Material.smoothness",				_material.smoothness);
+	shader.SetFloat("_Material.occolusionStrength",		_material.aoStrength);
+	shader.SetBool("_Material.useAlphaClipping",		_material.useAlphaClipping);
+	shader.SetFloat("_Material.alphaClippingThreshold", _material.alphaClippingThreshold);
+	shader.SetVec4("_Material.reflectColor",			_material.reflectColor);
+	shader.SetBool("_Material.useEmission",				_material.useEmissionMap);
+	shader.SetBool("_Material.useMetallic",				_material.useMetallicMap);
 }
 
 void Renderer::Render()
@@ -70,7 +86,7 @@ void Renderer::Render()
 	if (!_gameObject->is_active())
 		return;
 
-	this->_material.shader->Active();
+	this->_material.shader.Active();
 	for (Mesh* mesh : this->_meshes) {
 		mesh->Draw();
 	}

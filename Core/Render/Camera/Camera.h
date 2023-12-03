@@ -2,8 +2,8 @@
 #define CAMERA_H
 
 #include "../../Components/Component.h"
-#include "../Object/Texture.h"
 #include "../RenderingSystem/Rendering.h"
+#include "../RenderingSystem/FrameBuffer.h"
 
 enum class CameraType {
 	Perspective,
@@ -47,13 +47,13 @@ public:
 
 	Camera* Clone() const override;
 private:
-	bool		_isRenderToTexture = false;
-	Texture*	_renderToTexture;
-	float		_nearClipping;
-	float		_farClipping;
-	float		_fieldOfView;
-	int			_width, _height;
-	CameraType	_cameraType;
+	bool			_isRenderToTexture = false;
+	FrameBuffer*	_renderToTexture = nullptr;
+	float			_nearClipping;
+	float			_farClipping;
+	float			_fieldOfView;
+	int				_width, _height;
+	CameraType		_cameraType;
 };
 
 #endif

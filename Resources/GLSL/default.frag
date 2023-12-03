@@ -1,4 +1,4 @@
-#version 460 core
+#version 330 core
 
 const float PI = 3.14159265359;
 
@@ -20,6 +20,9 @@ const float PI = 3.14159265359;
 
 struct Material {
     sampler2D diffuseMap;
+    sampler2D roughnessMap;
+    vec2 tilling;
+    vec2 offset;
 };
 
 struct Attenuation {
@@ -58,16 +61,17 @@ struct SpotLight {
     Attenuation attenuation;
 };
 
+void calculate_TilingAndOffset(inout vec2 UV, vec2 Tiling, vec2 Offset);
+
 in VS_OUT {
-    vec3 CameraPosition;
-    vec3 FragmentPosition;
-    vec3 Normal;
-    vec4 Color;
-    vec2 TexCoord;
-    vec3 Tangent;
-    mat3 TBN;
-    vec3 TangentViewPosition;
-    vec3 TangentFragPosition;
+	vec3 position;
+	vec3 normal;
+	vec4 color;
+	vec2 texcoord;
+	vec3 tangent;
+	mat3 tbn;
+	vec3 cameraPosition;
+	vec3 cameraDirection;
 } fs_in;
 
 uniform Material _Material;
@@ -82,5 +86,15 @@ uniform SpotLight _SpotLights[MAX_SPOT_LIGHT];
 uniform int _SpotLightCount;
 
 void main() {
-    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+//    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+//    calculate_TilingAndOffset(fs_in.texcoord, _Material.tilling, _Material.offset);
+    gl_FragColor = mix(fs_in.color, 
+    mix(
+        texture(_Material.diffuseMap, fs_in.texcoord * _Material.tilling + _Material.offset), 
+        texture(_Material.roughnessMap, fs_in.texcoord * _Material.tilling + _Material.offset), 0.5), 0.9);
+}
+
+void calculate_TilingAndOffset(inout vec2 UV, vec2 Tiling, vec2 Offset)
+{
+    UV = UV * Tiling + Offset;
 }

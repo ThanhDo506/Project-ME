@@ -27,30 +27,31 @@ enum BlendingMode {
 
 class Material {
 public:
+
 	bool		is_must_update() const;
 
 	bool		is_texture_changed() const;
 
-	Texture& get_diffuse_map();
-	void	set_diffuse_map(Texture diffuseMap);
+	Texture* get_diffuse_map();
+	void	set_diffuse_map(Texture* diffuseMap);
 
-	Texture& get_roughness_map();
-	void	set_roughness_map(Texture roughnessMap);
+	Texture* get_roughness_map();
+	void	set_roughness_map(Texture* roughnessMap);
 
-	Texture& get_metallic_map();
-	void	set_metallic_map(Texture metallicMap);
+	Texture* get_metallic_map();
+	void	set_metallic_map(Texture* metallicMap);
 
-	Texture& get_ao_map();
-	void	set_ao_map(Texture aoMap);
+	Texture* get_ao_map();
+	void	set_ao_map(Texture* aoMap);
 
-	Texture& get_normal_map();
-	void	set_normal_map(Texture normalMap);
+	Texture* get_normal_map();
+	void	set_normal_map(Texture* normalMap);
 
-	Texture& get_height_map();
-	void	set_height_map(Texture heightMap);
+	Texture* get_height_map();
+	void	set_height_map(Texture* heightMap);
 
-	Texture& get_emission_map();
-	void	set_emission_map(Texture emissionMap);
+	Texture* get_emission_map();
+	void	set_emission_map(Texture* emissionMap);
 
 	float	get_metallic() const;
 	void	set_metallic(float metallic);
@@ -103,20 +104,20 @@ public:
 	short		get_priority_render() const;
 	void		set_priority_render(short newPriority);
 
-	Shader*		get_shader();
-	void		set_shader(Shader* shader);
+	Shader&		get_shader();
+	void		set_shader(Shader shader);
 
-	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture			diffuseMap;
-	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture			roughnessMap;
-	__declspec(property(get = get_metallic_map, put = set_metallic_map))							Texture			metallicMap;
-	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			occlusionMap;
-	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			ambientOccolusionMap;
-	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture			aoMap;
-	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			normalMap;
-	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture			bumpMap;
-	__declspec(property(get = get_height_map, put = set_height_map))								Texture			heightMap;
-	__declspec(property(get = get_height_map, put = set_height_map))								Texture			parallaxMap;
-	__declspec(property(get = get_emission_map, put = set_emission_map))							Texture			emissionMap;
+	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture*			diffuseMap;
+	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture*			roughnessMap;
+	__declspec(property(get = get_metallic_map, put = set_metallic_map))							Texture*			metallicMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture*			occlusionMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture*			ambientOccolusionMap;
+	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture*			aoMap;
+	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture*			normalMap;
+	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture*		bumpMap;
+	__declspec(property(get = get_height_map, put = set_height_map))								Texture*			heightMap;
+	__declspec(property(get = get_height_map, put = set_height_map))								Texture*			parallaxMap;
+	__declspec(property(get = get_emission_map, put = set_emission_map))							Texture*			emissionMap;
 
 	__declspec(property(get = get_metallic, put = set_metallic))									float			metallic;
 	__declspec(property(get = get_smoothness, put = set_smoothness))								float			smoothness;
@@ -139,30 +140,31 @@ public:
 	__declspec(property(get = is_must_update))														bool			isMushUpdate;
 	__declspec(property(get = get_priority_render, put = set_priority_render))						short			priorityRender;
 
-	__declspec(property(get = get_shader, put = set_shader))										Shader*			shader;
+	__declspec(property(get = get_shader, put = set_shader))										Shader&			shader;
 
 private:
-	Texture						_diffuseMap;
-	Texture						_roughnessMap;
-	Texture						_metallicMap;
-	Texture						_aoMap;
-	Texture						_normalMap;
-	Texture						_emissionMap;
-	Texture						_heightMap;
+	Texture*					_diffuseMap;
+	Texture*					_roughnessMap;
+	Texture*					_metallicMap;
+	Texture*					_aoMap;
+	Texture*					_normalMap;
+	Texture*					_emissionMap;
+	Texture*					_heightMap;
 
 	float						_metallic;
 	float						_smoothness;
 	float						_aoStrength;
 	float						_alphaClippingThreshold = 0;
+	glm::vec2					_tilling = glm::vec2(1.0, 1.0);
+	glm::vec2					_offset = glm::vec2(0.5, 0.0);
 	glm::vec4					_reflectColor;
 	bool						_useEmissionMap = false;
 	bool						_useMetallicMap = false;
 	bool						_receivedShadow = false;
-	glm::vec2					_tilling = glm::vec2(0.0, 0.0);
-	glm::vec2					_offset = glm::vec2(0.0, 0.0);
-	SurfaceType					_surfaceType;
-	RenderFace					_renderFace;
-	BlendingMode				_blendingMode;
+
+	SurfaceType					_surfaceType = Opaque;
+	RenderFace					_renderFace = Front;
+	BlendingMode				_blendingMode = Alpha;
 	bool						_useSpecularHighlight = false;
 	bool						_useEnviromentReflections = false;
 	bool						_mustUpdate = true;
@@ -170,7 +172,7 @@ private:
 	bool						_textureChanged = true;
 	short						_priorityRender = 0;
 
-	Shader*						_shader;
+	Shader						_shader = Shader::get_default_shader();
 };
 
 #endif

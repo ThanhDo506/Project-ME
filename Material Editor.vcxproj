@@ -152,6 +152,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Render\Camera\CameraController.cpp" />
     <ClCompile Include="Core\Render\Camera\Camera.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Components\Component.cpp" />
@@ -176,6 +177,10 @@
     <ClCompile Include="Core\Scene\SceneRenderer.cpp" />
     <ClCompile Include="Core\Render\Lighting\Light.cpp" />
     <ClCompile Include="Core\Render\RenderingSystem\Rendering.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\FrameBuffer.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\Cylinder.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\Sphere.cpp" />
+    <ClCompile Include="Core\Render\RenderingSystem\RenderBuffer.cpp" />
     <ClCompile Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
     <ClCompile Include="third-party\imgui\imgui_demo.cpp" />
@@ -187,6 +192,7 @@
     <ClCompile Include="third-party\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Render\Camera\CameraController.h" />
     <ClInclude Include="Core\Render\Camera\Camera.h" />
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\common.h" />
@@ -212,6 +218,10 @@
     <ClInclude Include="Core\Scene\SceneRenderer.h" />
     <ClInclude Include="Core\Render\Lighting\Light.h" />
     <ClInclude Include="Core\Render\RenderingSystem\Rendering.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\FrameBuffer.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\Cylinder.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\Sphere.h" />
+    <ClInclude Include="Core\Render\RenderingSystem\RenderBuffer.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
@@ -235,6 +245,37 @@
     <None Include="Resources\GLSL\default.vert" />
     <None Include="Resources\GLSL\PBR.frag" />
     <None Include="Resources\GLSL\PBR.glsl" />
+    <None Include="Resources\ibl\brown_photostudio_02_2k.hdr" />
+    <None Include="Resources\ibl\dikhololo_night_2k.hdr" />
+    <None Include="Resources\ibl\evening_road_01_puresky_2k.hdr" />
+    <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k (1).hdr" />
+    <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k.hdr" />
+    <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
+    <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Core\Render\RenderingSystem\Sphere.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\images\awesomeface.png" />
+    <Image Include="Resources\images\container.jpg" />
+    <Image Include="Resources\images\metal.png" />
+    <Image Include="Resources\images\Skybox\back.jpg" />
+    <Image Include="Resources\images\Skybox\bottom.jpg" />
+    <Image Include="Resources\images\Skybox\front.jpg" />
+    <Image Include="Resources\images\Skybox\left.jpg" />
+    <Image Include="Resources\images\Skybox\right.jpg" />
+    <Image Include="Resources\images\Skybox\top.jpg" />
+    <Image Include="Resources\images\wall.jpg" />
+    <Image Include="Resources\images\wood.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\fonts\Cousine-Regular.ttf" />
+    <Font Include="Resources\fonts\DroidSans.ttf" />
+    <Font Include="Resources\fonts\Karla-Regular.ttf" />
+    <Font Include="Resources\fonts\ProggyClean.ttf" />
+    <Font Include="Resources\fonts\ProggyTiny.ttf" />
+    <Font Include="Resources\fonts\Roboto-Medium.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

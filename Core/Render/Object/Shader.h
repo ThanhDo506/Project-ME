@@ -67,7 +67,7 @@ public:
 	std::string get_name() const;
 	void		set_name(std::string newName);
 
-	static Shader* get_default_shader();
+	static Shader& get_default_shader();
 
 	__declspec(property(get = get_name,
 						put = set_name))	std::string name;

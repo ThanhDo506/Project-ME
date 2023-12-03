@@ -177,6 +177,5 @@ int main() {
     Application* app = new Application(setting);
     app->Run();
     Logger::clean();
-    system("pause");
     return 0;
 }
