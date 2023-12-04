@@ -166,8 +166,8 @@
 int main() {
     Logger::init();
     WindowSetting setting = {
-        1600,
-        900,
+        1920,
+        1080,
         0,
         "Material Editor",
         false,

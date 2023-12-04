@@ -65,7 +65,7 @@ struct TextureSetting {
 	 */
 	MappingCubeType		mappingCubeType			= CubicEnviroment;
 	TextureType			textureType				= Default;
-	TextureFilterMode	textureFilter			= PointFiltering;
+	TextureFilterMode	textureFilter			= BilinearFiltering;
 	TextureWrapMode		textureWrapMode			= Repeat;
 	TextureAlphaSource	textureAlphaSrc			= TextureAlpha;
 };

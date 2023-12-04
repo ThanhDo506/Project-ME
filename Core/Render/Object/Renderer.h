@@ -20,6 +20,13 @@ public:
 
 	Material&	get_material();
 	void		set_material(const Material& material);
+	
+	std::vector<Mesh*>& get_meshes();
+	/// <summary>
+	/// This will delete completly old meshes
+	/// </summary>
+	/// <param name="meshes"></param>
+	void				set_meshes(const std::vector<Mesh*>& meshes);
 
 	Renderer* Clone() const override;
 

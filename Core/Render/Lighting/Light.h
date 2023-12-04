@@ -11,6 +11,12 @@ enum class LightType {
 	Point
 };
 
+struct Attenuation {
+	float constant;
+	float linear;
+	float quadratic;
+};
+
 class Light : public Component
 {	
 	friend class LightRegistry;
@@ -19,6 +25,7 @@ public:
 	Light(GameObject* gameObject, bool isActive = true);
 	~Light();
 
+	void		set_mush_update(bool val);
 	bool		is_must_update() const;
 
 	glm::vec3	get_color() const;
@@ -45,6 +52,9 @@ public:
 	float		get_intensity() const;
 	void		set_intensity(float range);
 
+	Attenuation	get_attenuation() const;
+	void		set_attenuation(const Attenuation& attenuation);
+
 	LightType	get_light_type() const;
 	void		set_light_type(LightType type);
 
@@ -64,6 +74,8 @@ public:
 						put = set_spot_angle))		glm::vec3 spotAngle;
 	__declspec(property(get = get_inner_angle,
 						put = set_inner_angle))		glm::vec3 innerSpotAngle;
+	__declspec(property(get = get_attenuation,
+						put = set_attenuation))		Attenuation attenuation;
 	__declspec(property(get = get_range,
 						put = set_range))			float range;
 	__declspec(property(get = get_intensity,
@@ -78,6 +90,7 @@ private:
 	glm::vec3	_specular		= glm::vec3(0.0);
 	glm::vec3	_spotAngle		= glm::vec3(0.0);
 	glm::vec3	_innerSpotAngle = glm::vec3(1.0);
+	Attenuation _attenuation	= { 1.0, 0.7, 1.8 };
 	float		_range			= 10.0;
 	float		_intensity		= 1.0;
 	LightType	_lightType		= LightType::Point;

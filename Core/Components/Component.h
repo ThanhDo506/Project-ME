@@ -12,6 +12,7 @@
 class GameObject;
 
 class Component {
+	friend class GUI;
 	friend class GameObject;
 public:
 	Component(const Component& base);
@@ -30,6 +31,7 @@ public:
 	virtual void OnDestroy();
 	virtual void OnEnable();
 	virtual void OnDisable();
+	virtual void OnGui() = 0;
 
     void set_active(bool val);
 
@@ -122,6 +124,8 @@ public:
 	Transform* Clone() const override {
 		return new Transform(*this);
 	}
+
+	void OnGui() override;
 
 	std::string to_string() const override { return "Transform"; }
 

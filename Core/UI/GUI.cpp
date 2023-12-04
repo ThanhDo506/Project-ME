@@ -35,12 +35,64 @@ void GUI::Draw()
 {
     canvas();
     ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void GUI::Clean()
 {
+    this->root = nullptr;
 }
 
 void GUI::canvas()
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    static ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    if (_showDemoWidget) {
+        ImGui::ShowDemoWindow(&_showDemoWidget);
+    }
+    {
+        if (ImGui::Begin("Setting"))
+        {
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+            if (ImGui::TreeNode("Other setting"))
+            {
+                if (ImGui::Checkbox("Show style editor", &this->_showStyleEditor))
+                    ImGui::ShowStyleEditor();
+                ImGui::TreePop();
+            }
+        }
+        ImGui::End();
+    }
+    {
+        if (ImGui::TreeNode("Hierachy")) {
+            if (this->root) {
+                print_hierachy(root);
+            }
+        }
+        ImGui::TreePop();
+    }
+
+}
+
+void GUI::print_hierachy(GameObject* root)
+{
+    if (ImGui::TreeNode(root->name.c_str())) {
+        for (auto child : root->_children) {
+            print_hierachy(child);
+        }
+        ImGui::TreePop();
+    }
+}
+
+void GUI::print_components(GameObject* gameObject)
+{
+    ImGui::Begin("Components");
+    for (auto component : gameObject->_components) {
+        
+    }
+    ImGui::End();
 }

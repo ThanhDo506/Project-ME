@@ -26,7 +26,8 @@ void CameraController::Update()
             glfwSetInputMode(Input::instance().getWindowManipulator(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
-    camera_rotation();
+    if (this->_isForcus)
+        camera_rotation();
     camera_movement();
 }
 
@@ -74,10 +75,10 @@ void CameraController::camera_rotation()
 {
         glm::dvec2 currentMousePos;
         glfwGetCursorPos(Input::instance().getWindowManipulator(), &currentMousePos.x, &currentMousePos.y);
-        glm::dvec2 delta = glm::dvec2(800, 450) - currentMousePos;
+        glm::dvec2 delta = glm::dvec2(960, 540) - currentMousePos;
 
-        rotationX += _sensitivityY * delta.y * 0.001;
-        rotationY += _sensitivityX * delta.x * 0.001;
+        rotationX -= _sensitivityY * delta.y * static_cast<float>(Time::get_delta_time()) * 0.01f;
+        rotationY += _sensitivityX * delta.x * static_cast<float>(Time::get_delta_time()) * 0.01f;
 
         if (rotationX <= -89.5f)
         {
@@ -89,5 +90,5 @@ void CameraController::camera_rotation()
         }
         static Transform* t = _camera->gameObject->GetComponent<Transform>();
         t->rotation = Transform::euler_angles_to_quaternion(rotationX, rotationY, 0.0f);
-        glfwSetCursorPos(Input::instance().getWindowManipulator(), 800, 450);
+        glfwSetCursorPos(Input::instance().getWindowManipulator(), 960, 540);
 }

@@ -52,7 +52,7 @@ Texture* Material::get_normal_map()
 void Material::set_normal_map(Texture* normalMap)
 {
     _textureChanged = true;
-    _normalMap;
+    _normalMap = normalMap;
 }
 
 Texture* Material::get_height_map()
@@ -278,7 +278,7 @@ Shader& Material::get_shader()
     return this->_shader;
 }
 
-void Material::set_shader(Shader shader)
+void Material::set_shader(const Shader& shader)
 {
     this->_shader = shader;
 }

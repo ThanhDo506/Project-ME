@@ -63,14 +63,14 @@ GameObject::GameObject(Transform transform,
 
 GameObject::~GameObject()
 {
-	for (auto component : this->_components) {
-		delete component.second;
-	}
-	this->_components.clear();
 	for (GameObject* child : this->_children) {
 		delete child;
 	}
 	this->_children.clear();
+	for (auto component : this->_components) {
+		delete component.second;
+	}
+	this->_components.clear();
 }
 
 std::string GameObject::get_name() const {

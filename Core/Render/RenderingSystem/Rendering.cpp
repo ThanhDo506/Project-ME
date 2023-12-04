@@ -38,25 +38,29 @@ void Rendering::UpdateData()
 								light->diffuse);
 							shader->SetFloat("_DirectionalLights[" + std::to_string(directionalCount) + "].intensity",
 								light->intensity);
+							light->set_mush_update(false);
 						}
 						directionalCount++;
 						break;
 					case LightType::Point:
 						if (light->is_must_update()) {
+							std::cout << "Update Light";
+							Transform* t = light->gameObject->GetComponent<Transform>();
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].color", 
 								light->color);
+							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].position",
+								t->position);
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].ambient",
 								light->ambient);
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].specular",
 								light->specular);
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].diffuse",
 								light->diffuse);
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].direction",
-								light->get_gameObject()->GetComponent<Transform>()->forward());
-							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].range",
+							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].radius",
 								light->range);
 							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].intensity",
 								light->intensity);
+							light->set_mush_update(false);
 						}
 						pointCount++;
 						break;
@@ -80,6 +84,7 @@ void Rendering::UpdateData()
 								light->range);
 							shader->SetFloat("_SpotLights[" + std::to_string(spotCount) + "].intensity",
 								light->intensity);
+							light->set_mush_update(false);
 						}
 						spotCount++;
 						break;

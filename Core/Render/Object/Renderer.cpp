@@ -102,6 +102,20 @@ void Renderer::set_material(const Material& material)
 	_material = material;
 }
 
+std::vector<Mesh*>& Renderer::get_meshes()
+{
+	return this->_meshes;
+}
+
+void Renderer::set_meshes(const std::vector<Mesh*>& meshes)
+{
+	for (auto mesh : this->_meshes) {
+		delete mesh;
+	}
+	this->_meshes.clear();
+	this->_meshes = meshes;
+}
+
 Renderer* Renderer::Clone() const
 {
 	return new Renderer(*this);

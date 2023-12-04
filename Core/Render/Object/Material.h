@@ -105,7 +105,7 @@ public:
 	void		set_priority_render(short newPriority);
 
 	Shader&		get_shader();
-	void		set_shader(Shader shader);
+	void		set_shader(const Shader& shader);
 
 	__declspec(property(get = get_diffuse_map, put = set_diffuse_map))								Texture*			diffuseMap;
 	__declspec(property(get = get_roughness_map, put = set_roughness_map))							Texture*			roughnessMap;
@@ -114,7 +114,7 @@ public:
 	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture*			ambientOccolusionMap;
 	__declspec(property(get = get_ao_map, put = set_ao_map))										Texture*			aoMap;
 	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture*			normalMap;
-	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture*		bumpMap;
+	__declspec(property(get = get_normal_map, put = set_normal_map))								Texture*			bumpMap;
 	__declspec(property(get = get_height_map, put = set_height_map))								Texture*			heightMap;
 	__declspec(property(get = get_height_map, put = set_height_map))								Texture*			parallaxMap;
 	__declspec(property(get = get_emission_map, put = set_emission_map))							Texture*			emissionMap;

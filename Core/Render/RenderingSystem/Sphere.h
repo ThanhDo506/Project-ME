@@ -12,11 +12,17 @@ class Sphere : public GameObject
 public:
 	Sphere(Transform transform, float radius = 1.0, int sector = 3, int stack = 2, bool smooth = false);
 
-
 private:
-	float _radius = 1.0;
-	int _sectors = 3;
-	int _stack = 2;
+	void build_vertices_flat();
+	void build_vertices_smooth();
+	void set(float radius, int sectors, int stacks, bool smooth);
+	void clean_meshes();
+	glm::vec3 computeFaceNormal(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3);
+private:
+	float	_radius;
+	int		_sectors;
+	int		_stack;
+	bool	_smooth;
 };
 
 #endif

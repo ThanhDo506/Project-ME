@@ -1,5 +1,19 @@
 #include "Component.h"
 
+#pragma region ImGui lib
+#include "../../third-party/imgui/imgui.h"
+#include "../../third-party/imgui/imgui_impl_glfw.h"
+#include "../../third-party/imgui/imgui_impl_opengl3.h"
+#include <stdio.h>
+#define GL_SILENCE_DEPRECATION
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#endif
+#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
+#pragma comment(lib, "legacy_stdio_definitions")
+#endif
+#pragma endregion
+
 Component::Component(const Component& base)
 	: _gameObject(base._gameObject), _active(base._active)
 {
@@ -17,7 +31,7 @@ Component::Component(GameObject* owner, bool isActive)
 
 Component::~Component()
 {
-	this->_gameObject = nullptr;
+	this->set_gameObject(nullptr);
 }
 
 void Component::Awake()
@@ -66,10 +80,6 @@ std::string Component::to_string() const
 
 void Component::set_gameObject(GameObject* gameObject)
 {
-	if (gameObject == nullptr) {
-		APP_ERROR("Must attach component to a NON NULL GameObject!");
-		return;
-	}
 	if (this->_gameObject != nullptr) {
 		auto it = this->_gameObject->_components.find(typeid(this));
 		if (it != this->_gameObject->_components.end()) {
@@ -77,7 +87,9 @@ void Component::set_gameObject(GameObject* gameObject)
 		}
 	}
 	this->_gameObject = gameObject;
-	this->_gameObject->_components.insert({typeid(this), this});
+	if (this->_gameObject != nullptr) {
+		this->_gameObject->_components.insert({ typeid(this), this });
+	}
 }
 
 void Component::attach_to_gameObject(GameObject* gameObject)
@@ -255,5 +267,17 @@ glm::quat Transform::get_rotation() const
 void Transform::set_rotation(glm::quat newRotation)
 {
 	_rotation = newRotation;
+}
+
+void Transform::OnGui()
+{
+	ImGui::TreeNode("Transform");
+	ImGui::DragFloat3("Position", &this->position[0]);
+	ImGui::DragFloat3("Scale", &this->position[0]);
+
+	glm::vec3 euler = Transform::get_local_euler_angles();
+	ImGui::DragFloat3("Rotation", &euler[0]);
+
+	ImGui::TreePop();
 }
 

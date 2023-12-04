@@ -33,7 +33,10 @@ void Application::Run() {
 	APP_INFO("Init OpenGL success");
 
 #pragma region test
+	GameObject* root = new GameObject(Transform(), "root");
 	GameObject* g = new GameObject((Transform(glm::vec3(0,0,5),glm::vec3(1), glm::vec3(0,0,30))));
+	g->set_parent(root);
+	g->set_name("g");
 	Material material = Material();
 	std::vector<Vertex> vertices1 = {
 		// positions          // colors           // texture coords
@@ -71,21 +74,55 @@ void Application::Run() {
 		1, 2, 3  // second triangle
 	};
 	std::vector<Mesh*> meshes = { new Mesh(vertices1, indices1)};
-	material.diffuseMap = new Texture();
 	TextureSetting ts;
-	material.diffuseMap->load2DTexture("Resources/images/wall.jpg", ts);
+
+
 	material.roughnessMap = new Texture();
-	material.roughnessMap->load2DTexture("Resources/images/awesomeface.png", ts);
+	material.roughnessMap->load2DTexture("Resources/images/rustediron/roughness.png", ts);
+
+	material.metallicMap = new Texture();
+	material.metallicMap->load2DTexture("Resources/images/rustediron/metallic.png", ts);
+
+	material.normalMap = new Texture();
+	material.normalMap->load2DTexture("Resources/images/rustediron/normal.png", ts);
+
+	material.aoMap = new Texture();
+	material.aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
+
+	ts.sRGB = true;
+	ts.maxMipmapsLevel = 4;
+	material.diffuseMap = new Texture();
+	material.diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
+
+	material.set_shader(Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag"));
+
 	Renderer* r = new Renderer(material, meshes);
 	r->attach_to_gameObject(g);
 
-	Sphere* s = new Sphere(Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
+	Sphere* s = new Sphere(
+		Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)),
+		1.5f, 32, 16, true);
+	s->set_parent(root);
+	s->set_name("Sphere");
 
 	GameObject* cameraHolder = new GameObject(Transform());
+	cameraHolder->set_name("camera Holder");
+	cameraHolder->set_parent(root);
 	Camera* camera = new Camera(CameraType::Perspective, 0.0001, 1000.0, 60.0, _setting.width, _setting.height, cameraHolder);
 	CameraController* cameraController = new CameraController();
 	cameraController->attach_to_gameObject(cameraHolder);
 	cameraController->set_camera(camera);
+
+	GameObject* lightHolder = new GameObject(Transform());
+	lightHolder->set_name("Light Holder");
+
+	GameObject* light1 = new GameObject(Transform(glm::vec3(0,0,5),glm::vec3(1.0), glm::vec3(0)));
+	light1->set_name("Light 1");
+	light1->set_parent(lightHolder);
+	Light * l = light1->AddComponent<Light>();
+	l->color = glm::vec3(150.0f, 150.0f, 150.0f);
+
+	GUI::instance().root = root;
 #pragma endregion
 	Time& time = Time::instance();
 	Input& input = Input::instance();
@@ -96,28 +133,20 @@ void Application::Run() {
 		time._deltaTime = time._time - time._lastUpdateTime;
 		time._lastUpdateTime = time._time;
 
-
 		// render scene
 		glfwPollEvents();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		
 		Rendering::UpdateData();
 		Rendering::Render();
 		GUI::instance().Draw();
 
-
-		ImGui::EndFrame();
 		glfwSwapBuffers(_glfwWindow);
 		// update scene
 		Update();
 		cameraController->Update();
 	}
-	delete g;
-	delete cameraHolder;
+	delete root;
 	Clean();
 }
 
@@ -127,6 +156,7 @@ void Application::Update() {
 }
 
 void Application::Clean() {
+	GUI::instance().Clean();
 	Input::instance().clean();
 	glfwDestroyWindow(_glfwWindow);
 	glfwTerminate();

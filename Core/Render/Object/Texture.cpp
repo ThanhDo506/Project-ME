@@ -52,10 +52,10 @@ GLenum Texture::texture_shape_to_GL_target(TextureShape textureShape)
 
 bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
 {
-	if (_id != 0) {
-		APP_WARN("This texture has been initialized, if want to recreate please use Clean() first.");
-		return false;
-	}
+	//if (_id) {
+	//	APP_WARN("This texture has been initialized, if want to recreate please use Clean() first.");
+	//	return false;
+	//}
 
 	this->_textureShape = TextureShape::Texture2D;
 	this->_textureType = textureSetting.textureType;

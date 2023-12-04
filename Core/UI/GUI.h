@@ -17,6 +17,7 @@
 
 #include "../../Core/common.h"
 #include "../../Core/Application.h"
+#include "../../Core/Components/GameObject.h"
 
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
@@ -26,24 +27,31 @@
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
 
+class GameObject;
+
 class GUI
 {
-
+    friend class Application;
 public:
     static GUI& instance();
 
     void Init(Application* application, const char* glfwVersion = "#version 330");
     void Draw();
     void Clean();
+
 private:
-    Application* _application;
     GUI();
     GUI(const GUI& obj) = delete;
     void operator=(const GUI& obj) = delete;
-
     void canvas();
+    void print_hierachy(GameObject* root);
+    void print_components(GameObject* gameObject);
+private:
+    Application* _application;
+    bool _showDemoWidget = true;
+    bool _showStyleEditor = false;
 
-	friend class Application;
+    GameObject* root = NULL;
 };
 
 #endif // !GUI_H

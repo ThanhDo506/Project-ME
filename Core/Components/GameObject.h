@@ -14,6 +14,7 @@ class Component;
 class Transform;
 
 class GameObject {
+	friend class GUI;
 	friend class Transform;
 	friend class Component;
 	friend class Scene;
@@ -94,6 +95,7 @@ public:
 
 	template <typename T, typename... Args>
 	T* AddComponent(Args&&... args) {
+		this->RemoveComponent<T>();
 		T* component = new T(std::forward<Args>(args)...);
 		this->_components.insert(std::make_pair<std::type_index, Component*>(typeid(T), component));
 		component->_gameObject = this;
@@ -119,10 +121,9 @@ public:
 		if (HasComponent<T>()) {
 			T* component = GetComponent<T>();
 			this->_components.erase(typeid(T));
-			if (!HasComponent<T>()) {
-				APP_INFO("Erased component %s from %s now safe to delete!", typeid(component).name(), this->_name.c_str());
-				return;
-			}
+			//if (!HasComponent<T>()) {
+			//	APP_INFO("Erased component %s from %s now safe to delete!", typeid(component).name(), this->_name.c_str());
+			//}
 			delete component;
 		}
 	}

@@ -19,6 +19,11 @@ Light::~Light()
 	Rendering::remove_light_from_registry(this);
 }
 
+void Light::set_mush_update(bool val)
+{
+	this->_isMustUpdate = val;
+}
+
 bool Light::is_must_update() const
 {
 	return this->_isMustUpdate;
@@ -110,6 +115,16 @@ void Light::set_intensity(float range)
 {
 	_isMustUpdate = true;
 	_intensity = range;
+}
+
+Attenuation Light::get_attenuation() const
+{
+	return this->_attenuation;
+}
+
+void Light::set_attenuation(const Attenuation& attenuation)
+{
+	this->_attenuation = attenuation;
 }
 
 LightType Light::get_light_type() const
