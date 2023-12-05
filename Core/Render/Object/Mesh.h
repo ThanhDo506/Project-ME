@@ -17,7 +17,7 @@ public:
 	/**
 	 * Draw the mesh. Please bind shader before call Draw.
 	 */
-	void Draw();
+	void Draw(const GLenum& mode);
 
 	void Clean();
 private:

@@ -10,7 +10,8 @@ class GameObject;
 class Sphere : public GameObject
 {
 public:
-	Sphere(Transform transform, float radius = 1.0, int sector = 3, int stack = 2, bool smooth = false);
+	Sphere(Transform transform);
+	/*Sphere(Transform transform, float radius = 1.0, int sector = 3, int stack = 2, bool smooth = false);
 
 private:
 	void build_vertices_flat();
@@ -22,7 +23,7 @@ private:
 	float	_radius;
 	int		_sectors;
 	int		_stack;
-	bool	_smooth;
+	bool	_smooth;*/
 };
 
 #endif

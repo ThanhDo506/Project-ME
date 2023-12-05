@@ -43,7 +43,7 @@ CameraController* CameraController::Clone() const
 
 void CameraController::camera_movement()
 {
-    static Transform* t = _camera->gameObject->GetComponent<Transform>();
+    Transform* t = _camera->gameObject->GetComponent<Transform>();
     // Handles key inputs
     if (glfwGetKey(Input::instance().getWindowManipulator(), GLFW_KEY_W) == GLFW_PRESS)
     {

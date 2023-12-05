@@ -26,6 +26,7 @@ enum BlendingMode {
 };
 
 class Material {
+	friend class Renderer;
 public:
 
 	bool		is_must_update() const;
@@ -151,9 +152,9 @@ private:
 	Texture*					_emissionMap;
 	Texture*					_heightMap;
 
-	float						_metallic;
-	float						_smoothness;
-	float						_aoStrength;
+	float						_metallic = 0.1;
+	float						_smoothness = 0.2;
+	float						_aoStrength = 0.3;
 	float						_alphaClippingThreshold = 0;
 	glm::vec2					_tilling = glm::vec2(1.0, 1.0);
 	glm::vec2					_offset = glm::vec2(0.5, 0.0);

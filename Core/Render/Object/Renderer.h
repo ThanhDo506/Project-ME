@@ -10,6 +10,19 @@
 
 class Material;
 
+enum DrawMode {
+	Points,
+	Lines,
+	LineLoop,
+	LineStrip,
+	Triangles,
+	TriangleStrip,
+	TriangleFan,
+	Quads,
+	QuadStrip,
+	Polygon
+};
+
 class Renderer : public Component {
 public:
 	Renderer(const Material& material, std::vector<Mesh*> meshes);
@@ -33,9 +46,14 @@ public:
 	__declspec(property(get = get_material, 
 						put = set_material))	Material& material;
 
+	void			set_draw_mode(const DrawMode& mode);
+private:
+	static GLenum	draw_mode_to_gl_enum(const DrawMode& mode);
+
 private:
 	Material					_material;
 	std::vector<Mesh*>			_meshes;
+	GLenum						_drawMode = GL_TRIANGLES;
 };
 
 #endif

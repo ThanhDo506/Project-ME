@@ -239,6 +239,7 @@
     <ClInclude Include="third-party\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Core\UI\haizzz.text" />
     <None Include="Design Proj\Material Editor.vpp" />
     <None Include="Resources\GLSL\Camera.glsl" />
     <None Include="Resources\GLSL\default.frag" />

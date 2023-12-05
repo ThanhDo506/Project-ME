@@ -6,7 +6,7 @@ in VS_OUT {
     vec3 position;
 	vec3 normal;
 	vec4 color;
-	vec2 texcoord;
+	vec2 uv;
 	vec3 tangent;
 	mat3 tbn;
 	vec3 cameraPosition;
@@ -69,7 +69,7 @@ struct Material {
     sampler2D   aoMap;
     sampler2D   normalMap;
     sampler2D   emissionMap;
-    sampler2D   heightMap;
+    sampler2D   parallaxMap;
 
     vec2        tilling;
     vec2        offset;
@@ -79,6 +79,9 @@ struct Material {
 	float       aoStrength;
 	float       alphaClippingThreshold;
 	bool		useAlphaClipping;
+    bool        useEmission;
+    bool        useMetallic;
+
 };
 
 uniform Material _Material;
@@ -112,11 +115,11 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness);
 /************************************************************/
 
 void main() {
-//    vec3 albedo = pow(texture(_Material.diffuseMap, fs_in.texcoord).rgb, vec3(2.2));
-    vec3 albedo = texture(_Material.diffuseMap, fs_in.texcoord).rgb;
-    float metallic = texture(_Material.metallicMap, fs_in.texcoord).r;
-    float roughness = texture(_Material.roughnessMap, fs_in.texcoord).r;
-    float ao = texture(_Material.aoMap, fs_in.texcoord).r;
+    vec3 albedo = pow(texture(_Material.diffuseMap, fs_in.uv).rgb, vec3(2.2));
+//    vec3 albedo = texture(_Material.diffuseMap, fs_in.uv).rgb;
+    float metallic = texture(_Material.metallicMap, fs_in.uv).r;
+    float roughness = texture(_Material.roughnessMap, fs_in.uv).r;
+    float ao = texture(_Material.aoMap, fs_in.uv).r;
 
     vec3 N = getNormalFromMap();
     vec3 V = normalize(fs_in.cameraPosition - fs_in.worldPosition);
@@ -127,13 +130,13 @@ void main() {
 
     vec3 Lo = vec3(0.0);
 
-    for(int i = 0; i < MAX_POINT_LIGHT; ++i) 
+    for(int i = 0; i < _PointLightCount; ++i) 
     {
         // calculate per-light radiance
         vec3 L = normalize(_PointLights[i].position - fs_in.worldPosition);
         vec3 H = normalize(V + L);
         float distance = length(_PointLights[i].position - fs_in.worldPosition);
-        float attenuation = 1.0 / (distance * distance);
+        float attenuation = 1.0 / (distance);
         vec3 radiance = _PointLights[i].color * attenuation;
 
         // Cook-Torrance BRDF
@@ -187,12 +190,12 @@ float calculateAttenuation(Attenuation attenuation, float distance) {
 /**************************** PBR **********************************/
 
 vec3 getNormalFromMap() {
-    vec3 tangentNormal = texture(_Material.normalMap, fs_in.texcoord).xyz * 2.0 - 1.0;
+    vec3 tangentNormal = texture(_Material.normalMap, fs_in.uv).xyz * 2.0 - 1.0;
 
     vec3 Q1  = dFdx(fs_in.worldPosition);
     vec3 Q2  = dFdy(fs_in.worldPosition);
-    vec2 st1 = dFdx(fs_in.texcoord);
-    vec2 st2 = dFdy(fs_in.texcoord);
+    vec2 st1 = dFdx(fs_in.uv);
+    vec2 st2 = dFdy(fs_in.uv);
 
     vec3 N   = normalize(fs_in.normal);
     vec3 T  = normalize(Q1 * st2.t - Q2 * st1.t);

@@ -31,7 +31,9 @@ public:
 	virtual void OnDestroy();
 	virtual void OnEnable();
 	virtual void OnDisable();
-	virtual void OnGui() = 0;
+	virtual void OnGui() { };
+	virtual void OnPreRender() { };
+	virtual void OnPostRender() { };
 
     void set_active(bool val);
 
@@ -126,8 +128,13 @@ public:
 	}
 
 	void OnGui() override;
+	void OnPreRender() override {}
+	void OnPostRender() override { this->_isMustUpdate = false; };
+
 
 	std::string to_string() const override { return "Transform"; }
+	bool is_must_update() const;
+	void set_must_update();
 
 	__declspec(property(get = get_position, put = set_position)) glm::vec3 position;
 	__declspec(property(get = get_scale, put = set_scale)) glm::vec3 scale;
@@ -137,6 +144,7 @@ private:
 	glm::vec3 _position;
 	glm::vec3 _scale;
 	glm::quat _rotation;
+	bool	  _isMustUpdate = true;
 };
 
 #endif

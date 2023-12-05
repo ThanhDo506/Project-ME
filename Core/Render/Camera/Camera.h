@@ -5,7 +5,7 @@
 #include "../RenderingSystem/Rendering.h"
 #include "../RenderingSystem/FrameBuffer.h"
 
-enum class CameraType {
+enum CameraType {
 	Perspective,
 	Ortho,
 	Physic
@@ -46,6 +46,8 @@ public:
 	bool is_render_to_texture() const;
 
 	Camera* Clone() const override;
+	void OnGui() override;
+
 private:
 	bool			_isRenderToTexture = false;
 	FrameBuffer*	_renderToTexture = nullptr;

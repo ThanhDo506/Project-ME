@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "../../../third-party/imgui/imgui.h"
 
 Camera::Camera(CameraType type, float near, float far, float fieldOfView, int width, int height, GameObject* gameObject)
 	: Component(nullptr)
@@ -83,7 +84,7 @@ glm::mat4 Camera::get_projection_matrix() const
 		return glm::perspective(glm::radians(this->_fieldOfView), _width * 1.0f / _height, _nearClipping, _farClipping);
 		break;
 	case CameraType::Ortho:
-		return glm::ortho(0.0f, _width * 1.0f, 0.0f, _height * 1.0f, _nearClipping, _farClipping);
+		return glm::ortho(0.0f, 16.0f, 0.0f, 9.0f, _nearClipping, _farClipping);
 		break;
 	case CameraType::Physic:
 	default:
@@ -104,4 +105,36 @@ bool Camera::is_render_to_texture() const
 Camera* Camera::Clone() const
 {
 	return new Camera(*this);
+}
+
+void Camera::OnGui()
+{
+	if (ImGui::TreeNode("Camera")) {
+		if (ImGui::TreeNode("Projection")) {
+			// Camera type
+			static const char*	cameraType[] = { "Perspective", "Orthographic", "Physic" };
+			static int			currentItem = 0;
+			if (ImGui::Combo("Camera type", &currentItem, cameraType, IM_ARRAYSIZE(cameraType))) {
+				switch (currentItem)
+				{
+				case CameraType::Perspective:
+					this->_cameraType = Perspective;
+					break;
+				case CameraType::Ortho:
+					this->_cameraType = Ortho;
+					break;
+				case CameraType::Physic:
+					this->_cameraType = Physic;
+					break;
+				default: break;
+				}
+			}
+			if (this->_cameraType != Ortho) {
+				ImGui::DragFloat("Fov", &this->_fieldOfView, 1, 0, 175, "%.f");
+			}
+			ImGui::DragFloat("Near", &this->_nearClipping, 0.005, 0.001, 1000, "%.3f");
+			ImGui::DragFloat("Far", &this->_farClipping, 10, 1000, 10000, "%.f");
+		}
+		ImGui::TreePop();
+	}
 }

@@ -37,8 +37,7 @@ void Application::Run() {
 	GameObject* g = new GameObject((Transform(glm::vec3(0,0,5),glm::vec3(1), glm::vec3(0,0,30))));
 	g->set_parent(root);
 	g->set_name("g");
-	Material material = Material();
-	std::vector<Vertex> vertices1 = {
+	std::vector<Vertex> vertices = {
 		// positions          // colors           // texture coords
 		Vertex{
 			glm::vec3(0.5f, 0.5f, 0.0f),
@@ -69,41 +68,36 @@ void Application::Run() {
 			glm::vec3(0.0f, 0.0f, 0.0f),
 		} // top left 
 	};
-	std::vector<unsigned int> indices1 = {
+	std::vector<unsigned int> indices = {
 		0, 1, 3, // first triangle
 		1, 2, 3  // second triangle
 	};
-	std::vector<Mesh*> meshes = { new Mesh(vertices1, indices1)};
 	TextureSetting ts;
-
-
-	material.roughnessMap = new Texture();
-	material.roughnessMap->load2DTexture("Resources/images/rustediron/roughness.png", ts);
-
-	material.metallicMap = new Texture();
-	material.metallicMap->load2DTexture("Resources/images/rustediron/metallic.png", ts);
-
-	material.normalMap = new Texture();
-	material.normalMap->load2DTexture("Resources/images/rustediron/normal.png", ts);
-
-	material.aoMap = new Texture();
-	material.aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
-
-	ts.sRGB = true;
 	ts.maxMipmapsLevel = 4;
-	material.diffuseMap = new Texture();
-	material.diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
-
-	material.set_shader(Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag"));
-
-	Renderer* r = new Renderer(material, meshes);
-	r->attach_to_gameObject(g);
-
+	ts.textureFilter = TrilinearFiltering;
 	Sphere* s = new Sphere(
-		Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)),
-		1.5f, 32, 16, true);
+		Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
 	s->set_parent(root);
 	s->set_name("Sphere");
+	Material& materialPBR = s->GetComponent<Renderer>()->get_material();
+	materialPBR.renderFace = Both;
+	materialPBR.shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
+	materialPBR.roughnessMap = new Texture();
+	materialPBR.roughnessMap->load2DTexture("Resources/images/rustediron/roughness.png", ts);
+
+	materialPBR.metallicMap = new Texture();
+	materialPBR.metallicMap->load2DTexture("Resources/images/rustediron/metallic.png", ts);
+
+	materialPBR.normalMap = new Texture();
+	materialPBR.normalMap->load2DTexture("Resources/images/rustediron/normal.png", ts);
+
+	materialPBR.aoMap = new Texture();
+	materialPBR.aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
+
+	ts.sRGB = true;
+	materialPBR.diffuseMap = new Texture();
+	materialPBR.diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
+
 
 	GameObject* cameraHolder = new GameObject(Transform());
 	cameraHolder->set_name("camera Holder");
@@ -113,14 +107,20 @@ void Application::Run() {
 	cameraController->attach_to_gameObject(cameraHolder);
 	cameraController->set_camera(camera);
 
+	GameObject* c1 = new GameObject(Transform());
+	c1->set_name("c1");
+	c1->set_parent(cameraHolder);
+
 	GameObject* lightHolder = new GameObject(Transform());
 	lightHolder->set_name("Light Holder");
+	lightHolder->set_parent(root);
 
-	GameObject* light1 = new GameObject(Transform(glm::vec3(0,0,5),glm::vec3(1.0), glm::vec3(0)));
+	GameObject* light1 = new GameObject(Transform(glm::vec3(0,0,8),glm::vec3(1.0), glm::vec3(0)));
 	light1->set_name("Light 1");
 	light1->set_parent(lightHolder);
 	Light * l = light1->AddComponent<Light>();
-	l->color = glm::vec3(150.0f, 150.0f, 150.0f);
+	l->set_light_type(Point);
+	l->color = glm::vec3(0.2f, 0.75f, 0.5f);
 
 	GUI::instance().root = root;
 #pragma endregion
@@ -136,9 +136,13 @@ void Application::Run() {
 		// render scene
 		glfwPollEvents();
 
+		// call GameObject OnPreRender() here
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Rendering::UpdateData();
 		Rendering::Render();
+
+		// call GameObject OnPostRender() here
 		GUI::instance().Draw();
 
 		glfwSwapBuffers(_glfwWindow);
@@ -174,7 +178,7 @@ void Application::initContext(WindowSetting& setting)
 
 	_glfwWindow = glfwCreateWindow(_setting.width, _setting.height, _setting.title, nullptr, nullptr);
 	glfwMakeContextCurrent(_glfwWindow);
-	glfwSwapInterval(/*_setting.isVSync*/ true);
+	glfwSwapInterval(_setting.isVSync);
 
 	if (glewInit() != GLEW_OK) {
 		APP_CRITICAL("Init GLEW failure!");
@@ -191,6 +195,8 @@ void Application::initContext(WindowSetting& setting)
 
 	glViewport(0, 0, setting.width, setting.height);
 	APP_INFO("Viewport: %4d x %4d", setting.width, setting.height);
+
+	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);

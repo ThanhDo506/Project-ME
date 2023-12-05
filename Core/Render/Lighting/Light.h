@@ -5,7 +5,7 @@
 #include "../Object/Shader.h"
 #include "../RenderingSystem/Rendering.h"
 
-enum class LightType {
+enum LightType {
 	Directional,
 	Spot,
 	Point
@@ -60,6 +60,8 @@ public:
 
 	Light* Clone() const override;
 
+	void OnGui() override;
+
 	std::string to_string() const;
 
 	__declspec(property(get = get_color,
@@ -84,12 +86,12 @@ public:
 						put = set_light_type))		LightType lightType;
 
 private:
-	glm::vec3	_color			= glm::vec3(1.0);
-	glm::vec3	_ambient		= glm::vec3(1.0);
+	glm::vec3	_color			= glm::vec3(1.0, 1.0, 1.0);
+	glm::vec3	_ambient		= glm::vec3(1.0, 1.0, 1.0);
 	glm::vec3	_diffuse		= glm::vec3(0.0);
 	glm::vec3	_specular		= glm::vec3(0.0);
 	glm::vec3	_spotAngle		= glm::vec3(0.0);
-	glm::vec3	_innerSpotAngle = glm::vec3(1.0);
+	glm::vec3	_innerSpotAngle = glm::vec3(1.0, 1.0, 1.0);
 	Attenuation _attenuation	= { 1.0, 0.7, 1.8 };
 	float		_range			= 10.0;
 	float		_intensity		= 1.0;

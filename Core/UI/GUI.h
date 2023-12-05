@@ -52,6 +52,7 @@ private:
     bool _showStyleEditor = false;
 
     GameObject* root = NULL;
+    GameObject* selectedGameObject = NULL;
 };
 
 #endif // !GUI_H

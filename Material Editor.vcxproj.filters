@@ -270,7 +270,6 @@
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
     <None Include="Resources\GLSL\PBR.frag" />
-    <None Include="Resources\GLSL\PBR.glsl" />
     <None Include="Resources\GLSL\default.vert" />
     <None Include="Resources\GLSL\default.frag" />
     <None Include="Resources\GLSL\Camera.glsl" />
@@ -281,9 +280,8 @@
     <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k.hdr" />
     <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
     <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Core\Render\RenderingSystem\Sphere.txt" />
+    <None Include="Resources\GLSL\PBR.vert" />
+    <None Include="Core\UI\haizzz.text" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\images\Skybox\back.jpg">

@@ -11,8 +11,8 @@ class CameraController : public Component
 {
 public:
     CameraController(float speed = 3.5f,
-        float sensitivityX = 200.0f,
-        float sensitivityY = 200.0f);
+        float sensitivityX = 2000.0f,
+        float sensitivityY = 2000.0f);
     void Update() override;
     void set_camera(Camera* camera);
 

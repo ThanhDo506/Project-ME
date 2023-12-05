@@ -19,7 +19,7 @@ out VS_OUT {
 	vec3 position;
 	vec3 normal;
 	vec4 color;
-	vec2 texcoord;
+	vec2 uv;
 	vec3 tangent;
 	mat3 tbn;
 	vec3 cameraPosition;
@@ -34,7 +34,7 @@ void main() {
 	vs_out.position = aPosition;
 	vs_out.normal = _NormalMatrix * aNormal;
 	vs_out.color = aColor;
-	vs_out.texcoord = aTexCoord;
+	vs_out.uv = aTexCoord;
 	vs_out.tangent = aTangent;
 	vs_out.tbn = get_TBN(aTangent,aNormal);
 	vs_out.cameraPosition = get_camera_position(_Camera);

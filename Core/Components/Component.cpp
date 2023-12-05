@@ -223,11 +223,11 @@ glm::vec3 Transform::quaternion_to_euler_angles(const glm::quat& quaternion)
 
 glm::quat Transform::euler_angles_to_quaternion(const glm::vec3& eulerAngles)
 {
-	return glm::quat(glm::vec3(
-		glm::radians(eulerAngles.x),
-		glm::radians(eulerAngles.y),
-		glm::radians(eulerAngles.z)
-	));
+	return glm::quat(glm::radians(glm::vec3(
+		eulerAngles.x,
+		eulerAngles.y,
+		eulerAngles.z
+	)));
 }
 
 glm::quat Transform::euler_angles_to_quaternion(const float& pitch, const float& yaw, const float& roll)
@@ -271,13 +271,26 @@ void Transform::set_rotation(glm::quat newRotation)
 
 void Transform::OnGui()
 {
-	ImGui::TreeNode("Transform");
-	ImGui::DragFloat3("Position", &this->position[0]);
-	ImGui::DragFloat3("Scale", &this->position[0]);
+	if (ImGui::TreeNode("Transform")) {
+		ImGui::DragFloat3("Position", &this->_position[0]);
+		ImGui::DragFloat3("Scale", &this->_scale[0]);
 
-	glm::vec3 euler = Transform::get_local_euler_angles();
-	ImGui::DragFloat3("Rotation", &euler[0]);
+		glm::vec3 rotation = glm::degrees(glm::eulerAngles(this->_rotation));
 
-	ImGui::TreePop();
+		if (ImGui::DragFloat3("Rotation", &rotation[0])) {
+			 this->_rotation = glm::quat(glm::radians(rotation));
+		}
+		ImGui::TreePop();
+	}
+}
+
+bool Transform::is_must_update() const
+{
+	return this->_isMustUpdate;
+}
+
+void Transform::set_must_update()
+{
+	this->_isMustUpdate = true;
 }
 

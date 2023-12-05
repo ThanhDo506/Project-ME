@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "../../../third-party/imgui/imgui.h"
 
 Light::Light() 
 	: Component(nullptr)
@@ -141,6 +142,37 @@ void Light::set_light_type(LightType type)
 Light* Light::Clone() const
 {
 	return new Light(*this);
+}
+
+void Light::OnGui()
+{
+	if (ImGui::TreeNode("Light")) {
+		static const char*	lightType[] = {"Directional", "Point", "Spot"};
+		static int			currentItem = 0;
+		if (ImGui::Combo("Light type", &currentItem, lightType, IM_ARRAYSIZE(lightType))) {
+			switch (currentItem)
+			{
+			case LightType::Directional:
+				this->_lightType = Directional;
+				break;
+			case LightType::Point:
+				this->_lightType = Point;
+				break;
+			case LightType::Spot:
+				this->_lightType = Spot;
+				break;
+			default: 
+				this->lightType = Directional;
+				break;
+			}
+			this->_isMustUpdate = true;
+		}
+		
+		if (ImGui::ColorEdit3("Color", &this->_color[0])) {
+			this->_isMustUpdate = true;
+		}
+		ImGui::TreePop();
+	}
 }
 
 std::string Light::to_string() const

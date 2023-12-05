@@ -19,15 +19,22 @@ void Rendering::UpdateData()
 		// Update Material
 		Shader* shader = &renderer->material.shader;
 		shader->Active();
+		/*for (unsigned int i = 0; i < 4; i++) {
+			shader->SetVec3("_PointLights[" + std::to_string(i) + "].position", glm::vec3(0.0, 0.0, 1.0 * i));
+			shader->SetVec3("_PointLights[" + std::to_string(i) + "].color", glm::vec3(0.25 * i, 0.1 * i, 0.5));
+		}
+		shader->SetInt("_PointLightCount", 4);*/
 		unsigned int directionalCount = 0;
 		unsigned int pointCount = 0;
 		unsigned int spotCount = 0;
 		for (auto light : Rendering::instance()._lightRegistry) {
 			if (light->gameObject->is_active() && light->is_active()) {
+				Transform* lightTransform = light->get_gameObject()->GetComponent<Transform>();
 				switch (light->get_light_type())
 				{
 					case LightType::Directional:
-						if (light->is_must_update()) {
+						shader->SetVec3("_DirectionalLights[" + std::to_string(pointCount) + "].direction",
+							lightTransform->forward());
 							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].color", 
 								light->color);
 							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].ambient", 
@@ -38,18 +45,16 @@ void Rendering::UpdateData()
 								light->diffuse);
 							shader->SetFloat("_DirectionalLights[" + std::to_string(directionalCount) + "].intensity",
 								light->intensity);
-							light->set_mush_update(false);
-						}
 						directionalCount++;
 						break;
 					case LightType::Point:
-						if (light->is_must_update()) {
-							std::cout << "Update Light";
-							Transform* t = light->gameObject->GetComponent<Transform>();
+						shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].position",
+							lightTransform->position);
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].color", 
 								light->color);
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].position",
-								t->position);
+	/*						printf("Pos: %f %f %f color %f %f %f\n",
+								lightTransform->position.x, lightTransform->position.y, lightTransform->position.z,
+								light->color.r, light->color.g, light->color.b);*/
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].ambient",
 								light->ambient);
 							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].specular",
@@ -60,8 +65,6 @@ void Rendering::UpdateData()
 								light->range);
 							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].intensity",
 								light->intensity);
-							light->set_mush_update(false);
-						}
 						pointCount++;
 						break;
 					case LightType::Spot:
@@ -75,7 +78,7 @@ void Rendering::UpdateData()
 							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].diffuse",
 								light->diffuse);
 							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].direction",
-								light->get_gameObject()->GetComponent<Transform>()->forward());
+								lightTransform->position);
 							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].innerAngle",
 								light->innerSpotAngle);
 							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].outterAngle",
@@ -103,16 +106,19 @@ void Rendering::Render()
 		// render Opaque shader
 		for (auto renderer : Rendering::instance()._rendererRegistry) {
 			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Opaque) {
+				Transform* transform = renderer->gameObject->GetComponent<Transform>();
 				switch (renderer->material.renderFace)
 				{
 				case Back:
+					glEnable(GL_CULL_FACE);
 					glCullFace(GL_BACK);
 					break;
 				case Both:
-					glCullFace(GL_FRONT_AND_BACK);
+					glDisable(GL_CULL_FACE);
 					break;
 				case Front:
 				default:
+					glEnable(GL_CULL_FACE);
 					glCullFace(GL_FRONT);
 					break;
 				}
@@ -121,54 +127,16 @@ void Rendering::Render()
 				renderer->Render();
 				shader->SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
 				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
-				shader->SetMat4("_TransformMatrix", 
-					renderer->gameObject->GetComponent<Transform>()->get_matrix_transform());
+				glm::mat4 transformMatrix = transform->get_matrix_transform();
+				shader->SetMat4("_TransformMatrix", transformMatrix);
+				shader->SetMat4("_NormalMatrix", glm::transpose(glm::inverse(glm::mat3(transformMatrix))));
+			}
+
+			// update Transparent shader
+			for (auto renderer : Rendering::instance()._rendererRegistry) {
+				if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Transparent)
+					renderer->Render();
 			}
 		}
-
-		// update Transparent shader
-		for (auto renderer : Rendering::instance()._rendererRegistry) {
-			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Transparent)
-				renderer->Render();
-		}
 	}
-}
-
-void Rendering::add_renderer_to_registry(Renderer* renderer)
-{
-	Rendering::instance()._rendererRegistry.push_back(renderer);
-}
-
-void Rendering::add_light_to_registry(Light* light)
-{
-	Rendering::instance()._lightRegistry.push_back(light);
-}
-
-void Rendering::add_camera_to_registry(Camera* camera)
-{
-	Rendering::instance()._cameraRegistry.push_back(camera);
-}
-
-void Rendering::remove_renderer_from_registry(Renderer* renderer)
-{
-	auto it = std::find(Rendering::instance()._rendererRegistry.begin(),
-		Rendering::instance()._rendererRegistry.end(),
-		renderer);
-	Rendering::instance()._rendererRegistry.erase(it);
-}
-
-void Rendering::remove_light_from_registry(Light* light)
-{
-	auto it = std::find(Rendering::instance()._lightRegistry.begin(),
-		Rendering::instance()._lightRegistry.end(),
-		light);
-	Rendering::instance()._lightRegistry.erase(it);
-}
-
-void Rendering::remove_camera_from_registry(Camera* camera)
-{
-	auto it = std::find(Rendering::instance()._cameraRegistry.begin(),
-		Rendering::instance()._cameraRegistry.end(),
-		camera);
-	Rendering::instance()._cameraRegistry.erase(it);
 }

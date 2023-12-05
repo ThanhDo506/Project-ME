@@ -68,19 +68,32 @@ void GUI::canvas()
         ImGui::End();
     }
     {
-        if (ImGui::TreeNode("Hierachy")) {
+        if (ImGui::Begin("Hierachy")) {
             if (this->root) {
                 print_hierachy(root);
             }
         }
-        ImGui::TreePop();
+        ImGui::End();
+    }
+    {
+        if (this->selectedGameObject) {
+            if (ImGui::Begin("Components")) {
+                for (auto component : this->selectedGameObject->_components) {
+                    component.second->OnGui();
+                }
+            }
+            ImGui::End();
+        }
     }
 
 }
 
 void GUI::print_hierachy(GameObject* root)
 {
-    if (ImGui::TreeNode(root->name.c_str())) {
+    if (ImGui::TreeNodeEx(root->name.c_str())) {
+        if (ImGui::IsItemClicked()) {
+            this->selectedGameObject = root;
+        }
         for (auto child : root->_children) {
             print_hierachy(child);
         }

@@ -68,16 +68,19 @@ void Renderer::update_shader()
 			_material.heightMap->bind_texture_unit(c);
 			shader.SetInt("_Material.parallaxMap", c++);
 		}
+		APP_INFO("Update texture of %s shader", shader.name.c_str());
+		_material._textureChanged = false;
 	}
 	
 	shader.SetFloat("_Material.metallic",				_material.metallic);
 	shader.SetFloat("_Material.smoothness",				_material.smoothness);
-	shader.SetFloat("_Material.occolusionStrength",		_material.aoStrength);
+	shader.SetFloat("_Material.aoStrength",				_material.aoStrength);
 	shader.SetBool("_Material.useAlphaClipping",		_material.useAlphaClipping);
 	shader.SetFloat("_Material.alphaClippingThreshold", _material.alphaClippingThreshold);
 	shader.SetVec4("_Material.reflectColor",			_material.reflectColor);
 	shader.SetBool("_Material.useEmission",				_material.useEmissionMap);
 	shader.SetBool("_Material.useMetallic",				_material.useMetallicMap);
+	APP_INFO("Update attributes of %s shader",	shader.name.c_str());
 }
 
 void Renderer::Render()
@@ -88,7 +91,7 @@ void Renderer::Render()
 
 	this->_material.shader.Active();
 	for (Mesh* mesh : this->_meshes) {
-		mesh->Draw();
+		mesh->Draw(this->_drawMode);
 	}
 }
 
@@ -119,4 +122,48 @@ void Renderer::set_meshes(const std::vector<Mesh*>& meshes)
 Renderer* Renderer::Clone() const
 {
 	return new Renderer(*this);
+}
+
+void Renderer::set_draw_mode(const DrawMode& mode)
+{
+	this->_drawMode = draw_mode_to_gl_enum(mode);
+}
+
+GLenum Renderer::draw_mode_to_gl_enum(const DrawMode& mode)
+{
+	switch (mode)
+	{
+	case TriangleStrip:
+		return GL_TRIANGLE_STRIP;
+		break;
+	case Points:
+		return GL_POINTS;
+		break;
+	case Lines:
+		return GL_LINES;
+		break;
+	case LineLoop:
+		return GL_LINE_LOOP;
+		break;
+	case LineStrip:
+		return GL_LINE_STRIP;
+		break;
+	case Triangles:
+		return GL_TRIANGLES;
+		break;
+	case TriangleFan:
+		return GL_TRIANGLE_FAN;
+		break;
+	case Quads:
+		return GL_QUADS;
+		break;
+	case QuadStrip:
+		return GL_QUAD_STRIP;
+		break;
+	case Polygon:
+		return GL_POLYGON;
+		break;
+	default:
+		break;
+	}
 }
