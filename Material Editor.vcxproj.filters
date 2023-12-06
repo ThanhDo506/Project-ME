@@ -281,7 +281,10 @@
     <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
     <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
     <None Include="Resources\GLSL\PBR.vert" />
-    <None Include="Core\UI\haizzz.text" />
+    <None Include="Resources\GLSL\error.frag" />
+    <None Include="Resources\GLSL\error.vert" />
+    <None Include="Resources\GLSL\fbo.frag" />
+    <None Include="Resources\GLSL\fbo.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\images\Skybox\back.jpg">

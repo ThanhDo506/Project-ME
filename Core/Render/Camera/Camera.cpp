@@ -12,10 +12,13 @@ Camera::Camera(CameraType type, float near, float far, float fieldOfView, int wi
 {
 	Rendering::add_camera_to_registry(this);
 	attach_to_gameObject(gameObject);
+
+	this->_frameBuffer = new FrameBuffer(width, height);
 }
 
 Camera::~Camera()
 {
+	delete this->_frameBuffer;
 	Rendering::remove_camera_from_registry(this);
 }
 
@@ -49,22 +52,22 @@ CameraType Camera::get_camera_type() const
 	return _cameraType;
 }
 
-int Camera::get_width() const
+unsigned int Camera::get_width() const
 {
 	return _width;
 }
 
-void Camera::set_width(int width)
+void Camera::set_width(const unsigned int& width)
 {
 	_width = width;
 }
 
-void Camera::set_height(int height) 
+void Camera::set_height(const unsigned int& height)
 {
 	_height = height;
 }
 
-int Camera::get_height() const
+unsigned int Camera::get_height() const
 {
 	return _height;
 }
@@ -137,4 +140,14 @@ void Camera::OnGui()
 		}
 		ImGui::TreePop();
 	}
+}
+
+void Camera::enable_frame_buffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, this->_frameBuffer->get_id());
+}
+
+void Camera::disable_frame_buffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

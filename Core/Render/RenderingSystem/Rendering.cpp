@@ -19,11 +19,7 @@ void Rendering::UpdateData()
 		// Update Material
 		Shader* shader = &renderer->material.shader;
 		shader->Active();
-		/*for (unsigned int i = 0; i < 4; i++) {
-			shader->SetVec3("_PointLights[" + std::to_string(i) + "].position", glm::vec3(0.0, 0.0, 1.0 * i));
-			shader->SetVec3("_PointLights[" + std::to_string(i) + "].color", glm::vec3(0.25 * i, 0.1 * i, 0.5));
-		}
-		shader->SetInt("_PointLightCount", 4);*/
+
 		unsigned int directionalCount = 0;
 		unsigned int pointCount = 0;
 		unsigned int spotCount = 0;
@@ -33,62 +29,57 @@ void Rendering::UpdateData()
 				switch (light->get_light_type())
 				{
 					case LightType::Directional:
-						shader->SetVec3("_DirectionalLights[" + std::to_string(pointCount) + "].direction",
+						shader->SetVec3(std::string("_DirectionalLights[" + std::to_string(pointCount) + "].direction").c_str(),
 							lightTransform->forward());
-							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].color", 
+							shader->SetVec3(std::string("_DirectionalLights[" + std::to_string(directionalCount) + "].color").c_str(),
 								light->color);
-							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].ambient", 
+							shader->SetVec3(std::string("_DirectionalLights[" + std::to_string(directionalCount) + "].ambient").c_str(),
 								light->ambient);
-							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].specular", 
+							shader->SetVec3(std::string("_DirectionalLights[" + std::to_string(directionalCount) + "].specular").c_str(),
 								light->specular);
-							shader->SetVec3("_DirectionalLights[" + std::to_string(directionalCount) + "].diffuse", 
+							shader->SetVec3(std::string("_DirectionalLights[" + std::to_string(directionalCount) + "].diffuse").c_str(),
 								light->diffuse);
-							shader->SetFloat("_DirectionalLights[" + std::to_string(directionalCount) + "].intensity",
+							shader->SetFloat(std::string("_DirectionalLights[" + std::to_string(directionalCount) + "].intensity").c_str(),
 								light->intensity);
+						
 						directionalCount++;
 						break;
 					case LightType::Point:
-						shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].position",
+						shader->SetVec3(std::string("_PointLights[" + std::to_string(pointCount) + "].position").c_str(),
 							lightTransform->position);
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].color", 
+							shader->SetVec3(std::string("_PointLights[" + std::to_string(pointCount) + "].color").c_str(),
 								light->color);
-	/*						printf("Pos: %f %f %f color %f %f %f\n",
-								lightTransform->position.x, lightTransform->position.y, lightTransform->position.z,
-								light->color.r, light->color.g, light->color.b);*/
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].ambient",
+							shader->SetVec3(std::string("_PointLights[" + std::to_string(pointCount) + "].ambient").c_str(),
 								light->ambient);
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].specular",
+							shader->SetVec3(std::string("_PointLights[" + std::to_string(pointCount) + "].specular").c_str(),
 								light->specular);
-							shader->SetVec3("_PointLights[" + std::to_string(pointCount) + "].diffuse",
+							shader->SetVec3(std::string("_PointLights[" + std::to_string(pointCount) + "].diffuse").c_str(),
 								light->diffuse);
-							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].radius",
+							shader->SetFloat(std::string("_PointLights[" + std::to_string(pointCount) + "].radius").c_str(),
 								light->range);
-							shader->SetFloat("_PointLights[" + std::to_string(pointCount) + "].intensity",
+							shader->SetFloat(std::string("_PointLights[" + std::to_string(pointCount) + "].intensity").c_str(),
 								light->intensity);
 						pointCount++;
 						break;
 					case LightType::Spot:
-						if (light->is_must_update()) {
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].color",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].color").c_str(),
 								light->color);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].ambient",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].ambient").c_str(),
 								light->ambient);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].specular",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].specular").c_str(),
 								light->specular);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].diffuse",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].diffuse").c_str(),
 								light->diffuse);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].direction",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].direction").c_str(),
 								lightTransform->position);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].innerAngle",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].innerAngle").c_str(),
 								light->innerSpotAngle);
-							shader->SetVec3("_SpotLights[" + std::to_string(spotCount) + "].outterAngle",
+							shader->SetVec3(std::string("_SpotLights[" + std::to_string(spotCount) + "].outterAngle").c_str(),
 								light->spotAngle);
-							shader->SetFloat("_SpotLights[" + std::to_string(spotCount) + "].range",
+							shader->SetFloat(std::string("_SpotLights[" + std::to_string(spotCount) + "].range").c_str(),
 								light->range);
-							shader->SetFloat("_SpotLights[" + std::to_string(spotCount) + "].intensity",
+							shader->SetFloat(std::string("_SpotLights[" + std::to_string(spotCount) + "].intensity").c_str(),
 								light->intensity);
-							light->set_mush_update(false);
-						}
 						spotCount++;
 						break;
 				}
@@ -129,13 +120,8 @@ void Rendering::Render()
 				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
 				glm::mat4 transformMatrix = transform->get_matrix_transform();
 				shader->SetMat4("_TransformMatrix", transformMatrix);
-				shader->SetMat4("_NormalMatrix", glm::transpose(glm::inverse(glm::mat3(transformMatrix))));
-			}
-
-			// update Transparent shader
-			for (auto renderer : Rendering::instance()._rendererRegistry) {
-				if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Transparent)
-					renderer->Render();
+				glm::mat4 normalMatrix = glm::transpose(glm::inverse(glm::mat3(transformMatrix)));
+				shader->SetMat3("_NormalMatrix", normalMatrix);
 			}
 		}
 	}

@@ -239,11 +239,14 @@
     <ClInclude Include="third-party\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\UI\haizzz.text" />
     <None Include="Design Proj\Material Editor.vpp" />
     <None Include="Resources\GLSL\Camera.glsl" />
     <None Include="Resources\GLSL\default.frag" />
     <None Include="Resources\GLSL\default.vert" />
+    <None Include="Resources\GLSL\error.frag" />
+    <None Include="Resources\GLSL\error.vert" />
+    <None Include="Resources\GLSL\fbo.frag" />
+    <None Include="Resources\GLSL\fbo.vert" />
     <None Include="Resources\GLSL\PBR.frag" />
     <None Include="Resources\GLSL\PBR.vert" />
     <None Include="Resources\ibl\brown_photostudio_02_2k.hdr" />

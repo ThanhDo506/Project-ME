@@ -6,7 +6,6 @@ RenderBuffer::RenderBuffer(unsigned int width, unsigned int height)
 	glGenRenderbuffers(1, &_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, _id);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 RenderBuffer::~RenderBuffer()

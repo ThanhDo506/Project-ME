@@ -74,7 +74,7 @@ void Application::Run() {
 	};
 	TextureSetting ts;
 	ts.maxMipmapsLevel = 4;
-	ts.textureFilter = TrilinearFiltering;
+	ts.textureFilter = BilinearFiltering;
 	Sphere* s = new Sphere(
 		Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
 	s->set_parent(root);
@@ -118,9 +118,27 @@ void Application::Run() {
 	GameObject* light1 = new GameObject(Transform(glm::vec3(0,0,8),glm::vec3(1.0), glm::vec3(0)));
 	light1->set_name("Light 1");
 	light1->set_parent(lightHolder);
-	Light * l = light1->AddComponent<Light>();
+	Light * l = new Light();
+	l->attach_to_gameObject(light1);
 	l->set_light_type(Point);
-	l->color = glm::vec3(0.2f, 0.75f, 0.5f);
+
+	GameObject* light2 = new GameObject(Transform(glm::vec3(0, 2, 8), glm::vec3(1.0), glm::vec3(0)));
+	light2->set_name("Light 2");
+	light2->set_parent(lightHolder);
+	Light* l2 = new Light();
+	l2->attach_to_gameObject(light2);
+	l2->set_light_type(Point);
+
+	GameObject* light3 = new GameObject(Transform(glm::vec3(0, 4, 6), glm::vec3(1.0), glm::vec3(0)));
+	light3->set_name("Light 3");
+	light3->set_parent(lightHolder);
+	Light* l3 = new Light();
+	l3->attach_to_gameObject(light3);
+	l3->set_light_type(Point);
+
+	Material m;
+	Renderer* lr = new Renderer(m, { new Mesh(vertices, indices) });
+	lr->attach_to_gameObject(light1);
 
 	GUI::instance().root = root;
 #pragma endregion

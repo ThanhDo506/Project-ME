@@ -171,6 +171,7 @@ void Light::OnGui()
 		if (ImGui::ColorEdit3("Color", &this->_color[0])) {
 			this->_isMustUpdate = true;
 		}
+		ImGui::SliderFloat("Intensity", &this->_intensity, 0.0f, 1000.0f, "%.2f");
 		ImGui::TreePop();
 	}
 }

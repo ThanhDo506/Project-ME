@@ -92,9 +92,9 @@ private:
 	glm::vec3	_specular		= glm::vec3(0.0);
 	glm::vec3	_spotAngle		= glm::vec3(0.0);
 	glm::vec3	_innerSpotAngle = glm::vec3(1.0, 1.0, 1.0);
-	Attenuation _attenuation	= { 1.0, 0.7, 1.8 };
-	float		_range			= 10.0;
-	float		_intensity		= 1.0;
+	Attenuation _attenuation	= { 1.0f, 0.7f, 1.8f };
+	float		_range			= 10.0f;
+	float		_intensity		= 1.0f;
 	LightType	_lightType		= LightType::Point;
 	bool		_isMustUpdate	= true;
 };

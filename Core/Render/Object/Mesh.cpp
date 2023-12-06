@@ -44,9 +44,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 
 Mesh::~Mesh()
 {
-    glDeleteProgram(_vao);
-    glDeleteVertexArrays(1, &_vbo);
-    glDeleteVertexArrays(1, &_ebo);
+    glDeleteVertexArrays(1, &this->_vao);
+    glDeleteBuffers(1, &this->_vbo);
+    glDeleteBuffers(1, &this->_ebo);
 }
 
 void Mesh::Draw(const GLenum& mode)

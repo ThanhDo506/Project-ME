@@ -33,11 +33,11 @@ public:
 	void set_camera_type(CameraType newType);
 	CameraType get_camera_type() const;
 
-	int get_width() const;
-	void set_width(int width);
+	unsigned int get_width() const;
+	void set_width(const unsigned int& width);
 
-	void set_height(int height);
-	int get_height() const;
+	void set_height(const unsigned int& height);
+	unsigned int get_height() const;
 
 	glm::mat4 get_view_matrix() const;
 	glm::mat4 get_projection_matrix() const;
@@ -48,14 +48,18 @@ public:
 	Camera* Clone() const override;
 	void OnGui() override;
 
+	void enable_frame_buffer();
+	void disable_frame_buffer();
+
 private:
 	bool			_isRenderToTexture = false;
-	FrameBuffer*	_renderToTexture = nullptr;
+	FrameBuffer*	_frameBuffer = NULL;
 	float			_nearClipping;
 	float			_farClipping;
 	float			_fieldOfView;
-	int				_width, _height;
+	unsigned int	_width, _height;
 	CameraType		_cameraType;
+
 };
 
 #endif

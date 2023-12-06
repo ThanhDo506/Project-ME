@@ -68,7 +68,7 @@ void Renderer::update_shader()
 			_material.heightMap->bind_texture_unit(c);
 			shader.SetInt("_Material.parallaxMap", c++);
 		}
-		APP_INFO("Update texture of %s shader", shader.name.c_str());
+		//APP_INFO("Update texture of %s shader", shader.name.c_str());
 		_material._textureChanged = false;
 	}
 	
@@ -80,7 +80,7 @@ void Renderer::update_shader()
 	shader.SetVec4("_Material.reflectColor",			_material.reflectColor);
 	shader.SetBool("_Material.useEmission",				_material.useEmissionMap);
 	shader.SetBool("_Material.useMetallic",				_material.useMetallicMap);
-	APP_INFO("Update attributes of %s shader",	shader.name.c_str());
+	//APP_INFO("Update attributes of %s shader",	shader.name.c_str());
 }
 
 void Renderer::Render()

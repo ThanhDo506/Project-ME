@@ -53,17 +53,6 @@ public:
 	void SetVec4(const char* uniformName, const glm::vec4& value);
 	void SetVec4(const char* uniformName, const float& x, const float& y, const float& z, const float& w);
 
-	void SetFloat(std::string uniformName, float value);
-	void SetMat2(std::string uniformName, const glm::mat2& value);
-	void SetMat3(std::string uniformName, const glm::mat3& value);
-	void SetMat4(std::string uniformName, const glm::mat4& value);
-	void SetVec2(std::string uniformName, const glm::vec2& value);
-	void SetVec2(std::string uniformName, const float& x, const float& y);
-	void SetVec3(std::string uniformName, const glm::vec3& value);
-	void SetVec3(std::string uniformName, const float& x, const float& y, const float& z);
-	void SetVec4(std::string uniformName, const glm::vec4& value);
-	void SetVec4(std::string uniformName, const float& x, const float& y, const float& z, const float& w);
-
 	std::string get_name() const;
 	void		set_name(std::string newName);
 
