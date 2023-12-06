@@ -26,6 +26,7 @@ out VS_OUT {
 	mat3 tbn;
 	vec3 cameraPosition;
 	vec3 cameraDirection;
+	vec3 worldPosition;
 } vs_out;
 
 
@@ -38,6 +39,7 @@ void main() {
 	vs_out.tbn = get_TBN(aTangent,aNormal);
 	vs_out.cameraPosition = get_camera_position(_Camera);
 	vs_out.cameraDirection = normalize(vec3(_Camera.viewMatrix[2]));
+	vs_out.worldPosition = vec3(_TransformMatrix * vec4(aPosition, 1.0));
 	gl_Position = _Camera.projectionMatrix * _Camera.viewMatrix * _TransformMatrix * vec4(aPosition, 1.0);
 }
 

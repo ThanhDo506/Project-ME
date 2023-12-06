@@ -48,6 +48,8 @@ public:
 	Camera* Clone() const override;
 	void OnGui() override;
 
+	FrameBuffer* get_frame_buffer();
+
 	void enable_frame_buffer();
 	void disable_frame_buffer();
 
@@ -59,7 +61,7 @@ private:
 	float			_fieldOfView;
 	unsigned int	_width, _height;
 	CameraType		_cameraType;
-
+	bool			_isMaincamera = false;
 };
 
 #endif

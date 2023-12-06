@@ -106,6 +106,7 @@ void Application::Run() {
 	CameraController* cameraController = new CameraController();
 	cameraController->attach_to_gameObject(cameraHolder);
 	cameraController->set_camera(camera);
+	Rendering::instance().mainCamera = camera;
 
 	GameObject* c1 = new GameObject(Transform());
 	c1->set_name("c1");
@@ -156,7 +157,6 @@ void Application::Run() {
 
 		// call GameObject OnPreRender() here
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Rendering::UpdateData();
 		Rendering::Render();
 

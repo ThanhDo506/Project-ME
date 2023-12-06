@@ -6,20 +6,9 @@
 #include "RenderBuffer.h"
 #include "../../Core/Render/Object/Shader.h"
 
-constexpr float QUAD_VERTICES[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-	// positions   // texCoords
-	-1.0f,  1.0f,  0.0f, 1.0f,
-	-1.0f, -1.0f,  0.0f, 0.0f,
-	 1.0f, -1.0f,  1.0f, 0.0f,
-
-	-1.0f,  1.0f,  0.0f, 1.0f,
-	 1.0f, -1.0f,  1.0f, 0.0f,
-	 1.0f,  1.0f,  1.0f, 1.0f
-};
-
 class FrameBuffer
 {
-
+	friend class Rendering;
 public:
 	FrameBuffer(const unsigned int& width, const unsigned int& height);
 	~FrameBuffer();
@@ -32,6 +21,8 @@ public:
 
 	GLuint get_color_texture_id() const;
 	GLuint get_depth_stencil_texture() const;
+
+	Shader* get_shader();
 private:
 	GLuint _id = 0;
 	unsigned int _width, _height;
@@ -39,5 +30,7 @@ private:
 	RenderBuffer* _renderBuffer = NULL;
 	Shader* _shader = NULL;
 	GLuint _vaoQuad = 0, _vboQuad = 0;
+
+
 };
 #endif

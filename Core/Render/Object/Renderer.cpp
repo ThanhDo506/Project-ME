@@ -30,7 +30,7 @@ void Renderer::update_shader()
 	Shader& shader = material.shader;
 	shader.Active();
 	if (_material.is_texture_changed()) {
-		int c = 0;
+		int c = 1;
 		shader.SetFloat2("_Material.tilling", _material.tilling);
 		shader.SetFloat2("_Material.offset", _material.offset);
 

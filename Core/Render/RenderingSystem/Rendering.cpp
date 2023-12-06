@@ -93,8 +93,13 @@ void Rendering::UpdateData()
 
 void Rendering::Render()
 {
+	glEnable(GL_DEPTH_TEST);
 	for (Camera* camera : Rendering::instance()._cameraRegistry) {
 		// render Opaque shader
+		camera->enable_frame_buffer();
+		glViewport(0, 0, camera->get_width(), camera->get_height());
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		for (auto renderer : Rendering::instance()._rendererRegistry) {
 			if (renderer->is_active() && renderer->material.get_sufface_type() == SurfaceType::Opaque) {
 				Transform* transform = renderer->gameObject->GetComponent<Transform>();
@@ -115,14 +120,19 @@ void Rendering::Render()
 				}
 				Shader* shader = &renderer->material.shader;
 				shader->Active();
-				renderer->Render();
 				shader->SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
 				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
 				glm::mat4 transformMatrix = transform->get_matrix_transform();
 				shader->SetMat4("_TransformMatrix", transformMatrix);
 				glm::mat4 normalMatrix = glm::transpose(glm::inverse(glm::mat3(transformMatrix)));
 				shader->SetMat3("_NormalMatrix", normalMatrix);
+				renderer->Render();
 			}
 		}
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
+	glDisable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glViewport(0, 0, 1920, 1080);
+	Rendering::instance().mainCamera->get_frame_buffer()->render_frame_buffer_to_screen();
 }

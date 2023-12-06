@@ -142,6 +142,11 @@ void Camera::OnGui()
 	}
 }
 
+FrameBuffer* Camera::get_frame_buffer()
+{
+	return this->_frameBuffer;
+}
+
 void Camera::enable_frame_buffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, this->_frameBuffer->get_id());

@@ -3,6 +3,17 @@
 FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height)
 	: _width(width), _height(height)
 {
+	constexpr float QUAD_VERTICES[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+		// positions   // texCoords
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+
 	// init frame buffer
 	glGenFramebuffers(1, &this->_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->_id);
@@ -17,25 +28,25 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height)
 	_colorTexture->_numChannel = 3;
 	glGenTextures(1, &_colorTexture->_id);
 	glBindTexture(GL_TEXTURE_2D, _colorTexture->_id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->_width, this->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// attach to frame buffer
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorTexture->_id, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	// init shader to render quad
-	this->_shader = new Shader("FBO", "Resources/GLSL/fbo.vert", "Resources/GLSL/fbo.frag");
-
-	// init and attach render buffer
+	// attach color texture to frame buffer
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->_colorTexture->_id, 0);
+	// init and attach depth buffer to frame buffer
 	this->_renderBuffer = new RenderBuffer(_width, _height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderBuffer->get_id());
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		APP_ERROR("Failure to initialize Frame Buffer.");
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// init shader to render quad
+	this->_shader = new Shader("FBO", "Resources/GLSL/fbo.vert", "Resources/GLSL/fbo.frag");
 
 	// Init quad
 	glGenVertexArrays(1, &this->_vaoQuad);
@@ -43,7 +54,6 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height)
 
 	glBindVertexArray(this->_vaoQuad);
 	glBindBuffer(GL_ARRAY_BUFFER, this->_vboQuad);
-
 	glBufferData(GL_ARRAY_BUFFER, sizeof(QUAD_VERTICES), &QUAD_VERTICES, GL_STATIC_DRAW);
 
 	// bind attribute
@@ -87,8 +97,10 @@ GLuint FrameBuffer::get_id() const
 void FrameBuffer::render_frame_buffer_to_screen() const
 {
 	this->_shader->Active();
+	this->_colorTexture->bind_texture_unit(0);
+	this->_shader->SetInt("screenTexture", 0);
 	glBindVertexArray(this->_vaoQuad);
-	glBindTexture(GL_TEXTURE_2D, this->_colorTexture->_id);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 }
 
@@ -100,4 +112,9 @@ GLuint FrameBuffer::get_color_texture_id() const
 GLuint FrameBuffer::get_depth_stencil_texture() const
 {
 	return this->_renderBuffer->get_id();
+}
+
+Shader* FrameBuffer::get_shader()
+{
+	return this->_shader;
 }

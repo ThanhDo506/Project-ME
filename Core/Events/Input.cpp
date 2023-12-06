@@ -22,6 +22,25 @@ void Input::update()
     {
         glfwSetWindowShouldClose(Input::instance().p_glfwWindow, 1);
     }
+    else if (glfwGetKey(p_glfwWindow, GLFW_KEY_1) == GLFW_PRESS)
+    {
+        glLineWidth(1.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else if (glfwGetKey(p_glfwWindow, GLFW_KEY_2) == GLFW_PRESS)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+    else if (glfwGetKey(p_glfwWindow, GLFW_KEY_3) == GLFW_PRESS)
+    {
+        glPointSize(10.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    }
+    else if (glfwGetKey(p_glfwWindow, GLFW_KEY_4) == GLFW_PRESS)
+    {
+        glPointSize(10.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    }
 }
 
 void Input::reset()

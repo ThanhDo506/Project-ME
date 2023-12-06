@@ -147,8 +147,8 @@ Light* Light::Clone() const
 void Light::OnGui()
 {
 	if (ImGui::TreeNode("Light")) {
-		static const char*	lightType[] = {"Directional", "Point", "Spot"};
-		static int			currentItem = 0;
+		static const char*	lightType[] = {"Directional", "Spot", "Point"};
+		int			currentItem = _lightType;
 		if (ImGui::Combo("Light type", &currentItem, lightType, IM_ARRAYSIZE(lightType))) {
 			switch (currentItem)
 			{

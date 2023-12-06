@@ -24,6 +24,7 @@ private:
 #pragma endregion
 
 public:
+	Camera* mainCamera = nullptr;
 	static Rendering& instance();
 
 	static void UpdateData();
