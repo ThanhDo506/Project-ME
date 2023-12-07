@@ -240,6 +240,11 @@ std::string Texture::get_path() const
 	return _path;
 }
 
+GLuint Texture::get_id() const
+{
+	return this->_id;
+}
+
 void Texture::applySetting(const TextureSetting& textureSetting)
 {
 	GLenum target = texture_shape_to_GL_target(_textureShape);

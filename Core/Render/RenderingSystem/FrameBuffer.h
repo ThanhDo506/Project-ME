@@ -10,7 +10,7 @@ class FrameBuffer
 {
 	friend class Rendering;
 public:
-	FrameBuffer(const unsigned int& width, const unsigned int& height, const RenderBuffer::InternalFormat& rboInternalFormat);
+	FrameBuffer(const unsigned int& width, const unsigned int& height, const RenderBuffer::InternalFormat& rboInternalFormat, const bool& hasColoredFBO = true);
 	~FrameBuffer();
 
 	unsigned int get_width() const;
@@ -26,6 +26,7 @@ public:
 private:
 	GLuint _id = 0;
 	unsigned int _width, _height;
+	bool			_hasColoredFBO;
 	Texture* _colorTexture = NULL;
 	RenderBuffer* _renderBuffer = NULL;
 	Shader* _shader = NULL;

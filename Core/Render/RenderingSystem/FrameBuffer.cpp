@@ -1,7 +1,7 @@
 #include "FrameBuffer.h"
 
-FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height, const RenderBuffer::InternalFormat& rboInternalFormat)
-	: _width(width), _height(height)
+FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height,  const RenderBuffer::InternalFormat& rboInternalFormat, const bool& hasColoredFBO)
+	: _width(width), _height(height), _hasColoredFBO(hasColoredFBO)
 {
 	constexpr float QUAD_VERTICES[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 		// positions   // texCoords
@@ -18,22 +18,25 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height, 
 	glGenFramebuffers(1, &this->_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->_id);
 
-	// init color texture
-	this->_colorTexture = new Texture();
-	_colorTexture->_textureShape = Texture2D;
-	_colorTexture->_textureType = Default;
-	_colorTexture->_internalFormat = GL_RGB;
-	_colorTexture->_width = width;
-	_colorTexture->_height = height;
-	_colorTexture->_numChannel = 3;
-	glGenTextures(1, &_colorTexture->_id);
-	glBindTexture(GL_TEXTURE_2D, _colorTexture->_id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->_width, this->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if (this->_hasColoredFBO) {
+		// init color texture
+		this->_colorTexture = new Texture();
+		_colorTexture->_textureShape = Texture2D;
+		_colorTexture->_textureType = Default;
+		_colorTexture->_internalFormat = GL_RGB;
+		_colorTexture->_width = width;
+		_colorTexture->_height = height;
+		_colorTexture->_numChannel = 3;
+		glGenTextures(1, &_colorTexture->_id);
+		glBindTexture(GL_TEXTURE_2D, _colorTexture->_id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->_width, this->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// attach color texture to frame buffer
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->_colorTexture->_id, 0);
+		// attach color texture to frame buffer
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->_colorTexture->_id, 0);
+	}
+	
 	// init and attach depth buffer to frame buffer
 	this->_renderBuffer = new RenderBuffer(_width, _height, rboInternalFormat);
 	switch (rboInternalFormat)

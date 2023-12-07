@@ -13,6 +13,7 @@ enum CameraType {
 
 class Camera : public Component
 {
+	friend class Rendering;
 public:
 	Camera(CameraType type, 
 		float near = 0.0001, 
@@ -68,14 +69,15 @@ private:
 	//Texture
 	// 
 	// for HDR enviroment
-	//Texture			_hdrTexture;
-	//Texture			_enviromentCubemapTexture;
-	//Shader			_equirectangularToCubemapShader = Shader("EquirectangularToCubemap", "Resources/GLSL/EquirectangularToCube.vert", "Resources/GLSL/EquirectangularToCube.frag");
-	//Shader			_backgroundShader = Shader("Background", "BackgroundPBR.vert", "BackgroundPBR.frag");
-	//FrameBuffer*	_captureFbo = NULL;
-	//GLuint			_vaoCube = 0, _vboCube = 0;
-	//void			init_cube();
-	//void			render_cube();
+	GLuint			_hdrTexture;
+	GLuint			_enviromentCubemapTexture;
+	Shader			_equirectangularToCubemapShader = Shader("EquirectangularToCubemap", "Resources/GLSL/EquirectangularToCube.vert", "Resources/GLSL/EquirectangularToCube.frag");
+	Shader			_backgroundShader = Shader("Background", "Resources/GLSL/BackgroundPBR.vert", "Resources/GLSL/BackgroundPBR.frag");
+	GLuint			_captureFbo, _captureRbo;
+	GLuint			_vaoCube = 0, _vboCube = 0;
+	void			init_cube();
+public:
+	void			render_cube();
 };
 
 #endif

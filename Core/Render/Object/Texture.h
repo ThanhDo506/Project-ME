@@ -121,6 +121,7 @@ public:
 
 	std::string get_path() const;
 
+	GLuint get_id() const;
 private:
 	void applySetting(const TextureSetting& textureSetting);
 };

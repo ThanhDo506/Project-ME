@@ -284,6 +284,9 @@
     <Font Include="Resources\fonts\ProggyTiny.ttf" />
     <Font Include="Resources\fonts\Roboto-Medium.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\GLSL\test.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
