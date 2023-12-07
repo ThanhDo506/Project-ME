@@ -72,6 +72,7 @@ struct TextureSetting {
 
 class Texture {
 	friend class FrameBuffer;
+	friend class Camera;
 private:
 	/**
 	 * true if color space is sRGB, false is linear.
@@ -114,7 +115,9 @@ public:
 	 */
 	bool loadCubeTexture(std::vector<const char*> paths, TextureSetting& textureSetting);
 
-	bool loadHdr(const char* path, TextureSetting& textureSetting);
+	bool loadHdr(const char* path, const TextureSetting& textureSetting);
+
+	static Texture& loadDefaultHdr();
 
 	std::string get_path() const;
 

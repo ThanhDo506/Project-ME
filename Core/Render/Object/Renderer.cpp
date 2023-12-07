@@ -29,48 +29,50 @@ void Renderer::update_shader()
 
 	Shader& shader = material.shader;
 	shader.Active();
-	if (_material.is_texture_changed()) {
-		int c = 1;
-		shader.SetFloat2("_Material.tilling", _material.tilling);
-		shader.SetFloat2("_Material.offset", _material.offset);
+	shader.SetFloat2("_Material.tilling", _material.tilling);
+	shader.SetFloat2("_Material.offset", _material.offset);
+	//if (_material.is_texture_changed()) {
+	//	int c = 0;
+	//	shader.SetFloat2("_Material.tilling", _material.tilling);
+	//	shader.SetFloat2("_Material.offset", _material.offset);
 
-		if (_material.diffuseMap) {
-			_material.diffuseMap->bind_texture_unit(c);
-			shader.SetInt("_Material.diffuseMap", c++);
-		}
+	//	if (_material.diffuseMap) {
+	//		_material.diffuseMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.diffuseMap", c++);
+	//	}
 
-		if (_material.roughnessMap) {
-			_material.roughnessMap->bind_texture_unit(c);
-			shader.SetInt("_Material.roughnessMap", c++);
-		}
+	//	if (_material.roughnessMap) {
+	//		_material.roughnessMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.roughnessMap", c++);
+	//	}
 
-		if (_material.metallicMap) {
-			_material.metallicMap->bind_texture_unit(c);
-			shader.SetInt("_Material.metallicMap", c++);
-		}
+	//	if (_material.metallicMap) {
+	//		_material.metallicMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.metallicMap", c++);
+	//	}
 
-		if (_material.aoMap) {
-			_material.aoMap->bind_texture_unit(c);
-			shader.SetInt("_Material.aoMap", c++);
-		}
+	//	if (_material.aoMap) {
+	//		_material.aoMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.aoMap", c++);
+	//	}
 
-		if (_material.bumpMap) {
-			_material.bumpMap->bind_texture_unit(c);
-			shader.SetInt("_Material.normalMap", c++);
-		}
+	//	if (_material.bumpMap) {
+	//		_material.bumpMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.normalMap", c++);
+	//	}
 
-		if (_material.emissionMap) {
-			_material.emissionMap->bind_texture_unit(c);
-			shader.SetInt("_Material.emissionMap", c++);
-		}
+	//	if (_material.emissionMap) {
+	//		_material.emissionMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.emissionMap", c++);
+	//	}
 
-		if (_material.heightMap) {
-			_material.heightMap->bind_texture_unit(c);
-			shader.SetInt("_Material.parallaxMap", c++);
-		}
-		//APP_INFO("Update texture of %s shader", shader.name.c_str());
-		_material._textureChanged = false;
-	}
+	//	if (_material.heightMap) {
+	//		_material.heightMap->bind_texture_unit(c);
+	//		shader.SetInt("_Material.parallaxMap", c++);
+	//	}
+	//	//APP_INFO("Update texture of %s shader", shader.name.c_str());
+	//	_material._textureChanged = false;
+	//}
 	
 	shader.SetFloat("_Material.metallic",				_material.metallic);
 	shader.SetFloat("_Material.smoothness",				_material.smoothness);

@@ -129,6 +129,9 @@
     <ClCompile Include="Core\Render\Camera\CameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\utilities\Logger.h">
@@ -266,6 +269,9 @@
     <ClInclude Include="Core\Render\Camera\CameraController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
@@ -285,6 +291,10 @@
     <None Include="Resources\GLSL\error.vert" />
     <None Include="Resources\GLSL\fbo.frag" />
     <None Include="Resources\GLSL\fbo.vert" />
+    <None Include="Resources\GLSL\EquirectangularToCube.frag" />
+    <None Include="Resources\GLSL\EquirectangularToCube.vert" />
+    <None Include="Resources\GLSL\BackgroundPBR.frag" />
+    <None Include="Resources\GLSL\BackgroundPBR.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\images\Skybox\back.jpg">

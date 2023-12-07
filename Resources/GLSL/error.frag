@@ -15,5 +15,5 @@ in VS_OUT {
 } fs_in;
 
 void main() {
-    FragColor = vec4(fs_in.worldPosition, 1.0);
+    FragColor = vec4(normalize(fs_in.worldPosition), 1.0);
 }

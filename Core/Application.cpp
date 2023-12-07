@@ -20,6 +20,10 @@ void Application::Init(WindowSetting& setting) {
 	glfwSetInputMode(_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	//glfwSetScrollCallback(_glfwWindow, Input::scroll_callback);
 	APP_INFO("Init input system!");
+	int maxTextureUnits;
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+
+	APP_INFO("Max texture unit support %d", maxTextureUnits);
 
 	GUI::instance().Init(this, "#version 330");
 	APP_INFO("Init GUI!");
@@ -40,28 +44,28 @@ void Application::Run() {
 	std::vector<Vertex> vertices = {
 		// positions          // colors           // texture coords
 		Vertex{
-			glm::vec3(0.5f, 0.5f, 0.0f),
+			glm::vec3(0.1f, 0.1f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
 			glm::vec2(1.0f, 1.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f)
 		}, // top right
 		Vertex{
-			glm::vec3(0.5f, -0.5f, 0.0f),
+			glm::vec3(0.1f, -0.1f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
 			glm::vec2(1.0f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 		}, // bottom right
 		Vertex{
-			glm::vec3(-0.5f, -0.5f, 0.0f),
+			glm::vec3(-0.1f, -0.1f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 			glm::vec2(0.0f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 		}, // bottom left
 		Vertex{
-			glm::vec3(-0.5f, 0.5f, 0.0f),
+			glm::vec3(-0.1f, 0.1f, 0.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec4(1.0f, 1.0f, 1.0f, 1.0),
 			glm::vec2(0.0f, 1.0f),
@@ -94,10 +98,31 @@ void Application::Run() {
 	materialPBR.aoMap = new Texture();
 	materialPBR.aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
 
-	ts.sRGB = true;
+	//ts.sRGB = true;
 	materialPBR.diffuseMap = new Texture();
 	materialPBR.diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
 
+	Sphere* s1 = new Sphere(Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
+	s1->set_parent(root);
+	s1->name = "Sphere 1";
+	Material& m = s1->GetComponent<Renderer>()->get_material();
+	m = s1->GetComponent<Renderer>()->get_material();
+	m.renderFace = Both;
+	m.shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
+	m.roughnessMap = new Texture();
+	m.roughnessMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/roughness.png", ts);
+
+	m.metallicMap = new Texture();
+	m.metallicMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/metallic.png", ts);
+
+	m.normalMap = new Texture();
+	m.normalMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/normal.png", ts);
+
+	m.aoMap = new Texture();
+	m.aoMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/ao.png", ts);
+
+	m.diffuseMap = new Texture();
+	m.diffuseMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/albedo.png", ts);
 
 	GameObject* cameraHolder = new GameObject(Transform());
 	cameraHolder->set_name("camera Holder");
@@ -137,8 +162,7 @@ void Application::Run() {
 	l3->attach_to_gameObject(light3);
 	l3->set_light_type(Point);
 
-	Material m;
-	Renderer* lr = new Renderer(m, { new Mesh(vertices, indices) });
+	Renderer* lr = new Renderer(Material(), {new Mesh(vertices, indices)});
 	lr->attach_to_gameObject(light1);
 
 	GUI::instance().root = root;

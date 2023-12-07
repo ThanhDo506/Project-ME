@@ -55,6 +55,7 @@ public:
 
 private:
 	bool			_isRenderToTexture = false;
+	// this camera render image will be save in _frameBuffer
 	FrameBuffer*	_frameBuffer = NULL;
 	float			_nearClipping;
 	float			_farClipping;
@@ -62,6 +63,19 @@ private:
 	unsigned int	_width, _height;
 	CameraType		_cameraType;
 	bool			_isMaincamera = false;
+	//bool			_useHdrEnviroment = true;
+	// for normal cube map enviroment
+	//Texture
+	// 
+	// for HDR enviroment
+	//Texture			_hdrTexture;
+	//Texture			_enviromentCubemapTexture;
+	//Shader			_equirectangularToCubemapShader = Shader("EquirectangularToCubemap", "Resources/GLSL/EquirectangularToCube.vert", "Resources/GLSL/EquirectangularToCube.frag");
+	//Shader			_backgroundShader = Shader("Background", "BackgroundPBR.vert", "BackgroundPBR.frag");
+	//FrameBuffer*	_captureFbo = NULL;
+	//GLuint			_vaoCube = 0, _vboCube = 0;
+	//void			init_cube();
+	//void			render_cube();
 };
 
 #endif

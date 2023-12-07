@@ -1,6 +1,6 @@
 #include "FrameBuffer.h"
 
-FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height)
+FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height, const RenderBuffer::InternalFormat& rboInternalFormat)
 	: _width(width), _height(height)
 {
 	constexpr float QUAD_VERTICES[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
@@ -35,8 +35,18 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height)
 	// attach color texture to frame buffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->_colorTexture->_id, 0);
 	// init and attach depth buffer to frame buffer
-	this->_renderBuffer = new RenderBuffer(_width, _height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderBuffer->get_id());
+	this->_renderBuffer = new RenderBuffer(_width, _height, rboInternalFormat);
+	switch (rboInternalFormat)
+	{
+	case RenderBuffer::InternalFormat::DEPTH24_STENCIL8:
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderBuffer->get_id());
+		break;
+	case RenderBuffer::InternalFormat::DEPTH_COMPONENT24:
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _renderBuffer->get_id());
+		break;
+	default:
+		break;
+	}
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		APP_ERROR("Failure to initialize Frame Buffer.");
@@ -73,7 +83,6 @@ FrameBuffer::~FrameBuffer()
 {
 	delete this->_colorTexture;
 	delete this->_renderBuffer;
-
 	glDeleteVertexArrays(1, &this->_vaoQuad);
 	glDeleteBuffers(1, &this->_vboQuad);
 	glDeleteBuffers(1, &this->_id);
@@ -97,8 +106,8 @@ GLuint FrameBuffer::get_id() const
 void FrameBuffer::render_frame_buffer_to_screen() const
 {
 	this->_shader->Active();
-	this->_colorTexture->bind_texture_unit(0);
-	this->_shader->SetInt("screenTexture", 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->get_color_texture_id());
 	glBindVertexArray(this->_vaoQuad);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);

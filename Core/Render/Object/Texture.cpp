@@ -33,7 +33,7 @@ void Texture::bind_texture_unit(GLuint unit)
 		break;
 	default:
 		APP_ERROR("Invalid texture shape");
-		throw std::runtime_error("Invalid texture shape");
+		return;
 	}
 }
 
@@ -52,10 +52,10 @@ GLenum Texture::texture_shape_to_GL_target(TextureShape textureShape)
 
 bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
 {
-	//if (_id) {
-	//	APP_WARN("This texture has been initialized, if want to recreate please use Clean() first.");
-	//	return false;
-	//}
+	if (_id) {
+		APP_WARN("This texture has been initialized, if want to recreate please use Clean() first.");
+		return false;
+	}
 
 	this->_textureShape = TextureShape::Texture2D;
 	this->_textureType = textureSetting.textureType;
@@ -100,6 +100,7 @@ bool Texture::load2DTexture(const char* path, TextureSetting& textureSetting)
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 	applySetting(textureSetting);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(imageData);
 	return true;
 }
@@ -164,10 +165,11 @@ bool Texture::loadCubeTexture(std::vector<const char*> paths, TextureSetting& te
 		stbi_image_free(data);
 	}
 	applySetting(textureSetting);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	return true;
 }
 
-bool Texture::loadHdr(const char* path, TextureSetting& textureSetting)
+bool Texture::loadHdr(const char* path, const TextureSetting& textureSetting)
 {
 	if (_id != 0) {
 		APP_WARN("This texture has been initialized, if want to recreate please use Clean() first.");
@@ -220,8 +222,17 @@ bool Texture::loadHdr(const char* path, TextureSetting& textureSetting)
 
 	applySetting(textureSetting);
 	stbi_image_free(data);
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	return true;
+}
+
+Texture& Texture::loadDefaultHdr()
+{
+	static Texture texture;
+	texture.loadHdr("Resources/ibl/kloofendal_48d_partly_cloudy_puresky_2k.hdr", TextureSetting{
+
+		});
+	return texture;
 }
 
 std::string Texture::get_path() const

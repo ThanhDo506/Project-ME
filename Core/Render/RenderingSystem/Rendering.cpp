@@ -93,9 +93,11 @@ void Rendering::UpdateData()
 
 void Rendering::Render()
 {
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);	
 	for (Camera* camera : Rendering::instance()._cameraRegistry) {
-		// render Opaque shader
+		// TODO render enviroment here
+
+		// render scene to cam frame buffer
 		camera->enable_frame_buffer();
 		glViewport(0, 0, camera->get_width(), camera->get_height());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -118,17 +120,59 @@ void Rendering::Render()
 					glCullFace(GL_FRONT);
 					break;
 				}
-				Shader* shader = &renderer->material.shader;
-				shader->Active();
-				shader->SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
-				shader->SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
+				Shader& shader = renderer->material.shader;
+				Material& _material = renderer->material;
+				shader.Active();
+					// bind texture to shader before draw call
+				{
+					int c = 0;
+					if (_material.diffuseMap) {
+						_material.diffuseMap->bind_texture_unit(c);
+						shader.SetInt("_Material.diffuseMap", c++);
+					}
+
+					if (_material.roughnessMap) {
+						_material.roughnessMap->bind_texture_unit(c);
+						shader.SetInt("_Material.roughnessMap", c++);
+					}
+
+					if (_material.metallicMap) {
+						_material.metallicMap->bind_texture_unit(c);
+						shader.SetInt("_Material.metallicMap", c++);
+					}
+
+					if (_material.aoMap) {
+						_material.aoMap->bind_texture_unit(c);
+						shader.SetInt("_Material.aoMap", c++);
+					}
+
+					if (_material.bumpMap) {
+						_material.bumpMap->bind_texture_unit(c);
+						shader.SetInt("_Material.normalMap", c++);
+					}
+
+					if (_material.emissionMap) {
+						_material.emissionMap->bind_texture_unit(c);
+						shader.SetInt("_Material.emissionMap", c++);
+					}
+
+					if (_material.heightMap) {
+						_material.heightMap->bind_texture_unit(c);
+						shader.SetInt("_Material.parallaxMap", c++);
+					}
+				}
+					//APP_INFO("Update texture of %s shader", shader.name.c_str());
+				shader.SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
+				shader.SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
 				glm::mat4 transformMatrix = transform->get_matrix_transform();
-				shader->SetMat4("_TransformMatrix", transformMatrix);
-				glm::mat4 normalMatrix = glm::transpose(glm::inverse(glm::mat3(transformMatrix)));
-				shader->SetMat3("_NormalMatrix", normalMatrix);
+				shader.SetMat4("_TransformMatrix", transformMatrix);
+				shader.SetMat3("_NormalMatrix", glm::transpose(glm::inverse(glm::mat3(transformMatrix))));
 				renderer->Render();
 			}
 		}
+		
+		// TODO render enviroment to frame buffer
+		
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	glDisable(GL_DEPTH_TEST);

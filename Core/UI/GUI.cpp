@@ -78,6 +78,7 @@ void GUI::canvas()
     {
         if (this->selectedGameObject) {
             if (ImGui::Begin("Components")) {
+                ImGui::Checkbox("Active", &this->selectedGameObject->_active);
                 for (auto component : this->selectedGameObject->_components) {
                     component.second->OnGui();
                 }

@@ -181,6 +181,7 @@
     <ClCompile Include="Core\Render\RenderingSystem\Cylinder.cpp" />
     <ClCompile Include="Core\Render\RenderingSystem\Sphere.cpp" />
     <ClCompile Include="Core\Render\RenderingSystem\RenderBuffer.cpp" />
+    <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
     <ClCompile Include="third-party\imgui\imgui_demo.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Core\Render\RenderingSystem\Cylinder.h" />
     <ClInclude Include="Core\Render\RenderingSystem\Sphere.h" />
     <ClInclude Include="Core\Render\RenderingSystem\RenderBuffer.h" />
+    <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
@@ -240,9 +242,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
+    <None Include="Resources\GLSL\BackgroundPBR.frag" />
+    <None Include="Resources\GLSL\BackgroundPBR.vert" />
     <None Include="Resources\GLSL\Camera.glsl" />
     <None Include="Resources\GLSL\default.frag" />
     <None Include="Resources\GLSL\default.vert" />
+    <None Include="Resources\GLSL\EquirectangularToCube.frag" />
+    <None Include="Resources\GLSL\EquirectangularToCube.vert" />
     <None Include="Resources\GLSL\error.frag" />
     <None Include="Resources\GLSL\error.vert" />
     <None Include="Resources\GLSL\fbo.frag" />

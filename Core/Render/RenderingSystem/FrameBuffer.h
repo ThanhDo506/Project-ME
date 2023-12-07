@@ -10,7 +10,7 @@ class FrameBuffer
 {
 	friend class Rendering;
 public:
-	FrameBuffer(const unsigned int& width, const unsigned int& height);
+	FrameBuffer(const unsigned int& width, const unsigned int& height, const RenderBuffer::InternalFormat& rboInternalFormat);
 	~FrameBuffer();
 
 	unsigned int get_width() const;

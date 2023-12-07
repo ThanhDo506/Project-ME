@@ -65,6 +65,7 @@ void calculate_TilingAndOffset(inout vec2 UV, vec2 Tiling, vec2 Offset);
 
 in VS_OUT {
 	vec3 position;
+	vec3 worldPosition;
 	vec3 normal;
 	vec4 color;
 	vec2 texcoord;

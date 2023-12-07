@@ -13,7 +13,62 @@ Camera::Camera(CameraType type, float near, float far, float fieldOfView, int wi
 	Rendering::add_camera_to_registry(this);
 	attach_to_gameObject(gameObject);
 
-	this->_frameBuffer = new FrameBuffer(width, height);
+	// this camera render image will be save in _frameBuffer
+	this->_frameBuffer = new FrameBuffer(width, height, RenderBuffer::InternalFormat::DEPTH24_STENCIL8);
+
+	//// for Diffuse-irradiance
+
+	//init_cube();
+
+	//TextureSetting ts = {
+	//	.maxMipmapsLevel = 0,
+	//	.textureWrapMode = ClampToEdge,
+	//};
+	//this->_hdrTexture.loadHdr("Resources/ibl/kloofendal_48d_partly_cloudy_puresky_2k.hdr", ts);
+	//// init custome texture
+	//glGenTextures(1, &this->_enviromentCubemapTexture._id);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, this->_enviromentCubemapTexture._id);
+	//for (unsigned int i = 0; i < 6; ++i)
+	//{
+	//	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0, GL_RGB, GL_FLOAT, nullptr);
+	//}
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	//static glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+	//static glm::mat4 captureViews[] =
+	//{
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+	//	glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+	//};
+
+	//// pbr: convert HDR equirectangular environment map to cubemap equivalent
+	//// ----------------------------------------------------------------------
+	//_equirectangularToCubemapShader.Active();
+	//this->_hdrTexture.bind_texture_unit(0);
+	//_equirectangularToCubemapShader.SetInt("_EquirectangularMap", 0);
+	//_equirectangularToCubemapShader.SetMat4("_ProjectionMatrix", captureProjection);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LEQUAL);
+	//glViewport(0, 0, 512, 512);
+	//glBindFramebuffer(GL_FRAMEBUFFER, this->_captureFbo->get_id());
+	//for (unsigned int i = 0; i < 6; ++i)
+	//{
+	//	this->_equirectangularToCubemapShader.SetMat4("_ViewMatrix", captureViews[i]);
+	//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, this->_enviromentCubemapTexture._id, 0);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//	render_cube();
+	//}
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 Camera::~Camera()
@@ -135,8 +190,8 @@ void Camera::OnGui()
 			if (this->_cameraType != Ortho) {
 				ImGui::DragFloat("Fov", &this->_fieldOfView, 1, 0, 175, "%.f");
 			}
-			ImGui::DragFloat("Near", &this->_nearClipping, 0.005, 0.001, 1000, "%.3f");
-			ImGui::DragFloat("Far", &this->_farClipping, 10, 1000, 10000, "%.f");
+			ImGui::DragFloat("Near", &this->_nearClipping, 0.005f, 0.001f, 1000.0f, "%.3f");
+			ImGui::DragFloat("Far", &this->_farClipping, 10.0f, 1000.0f, 10000.0f, "%.f");
 		}
 		ImGui::TreePop();
 	}
@@ -156,3 +211,75 @@ void Camera::disable_frame_buffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+//
+//void Camera::init_cube()
+//{
+//	if (this->_vaoCube)
+//		return;
+//	float vertices[] = {
+//		// back face
+//		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+//		 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+//		 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
+//		 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+//		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+//		-1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
+//		// front face
+//		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+//		 1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
+//		 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+//		 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+//		-1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
+//		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+//		// left face
+//		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+//		-1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
+//		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+//		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+//		-1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+//		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+//		// right face
+//		 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+//		 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+//		 1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
+//		 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+//		 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+//		 1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
+//		 // bottom face
+//		 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+//		  1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
+//		  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+//		  1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+//		 -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+//		 -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+//		 // top face
+//		 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+//		  1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+//		  1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
+//		  1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+//		 -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+//		 -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+//	};
+//	glGenVertexArrays(1, &this->_vaoCube);
+//	glGenBuffers(1, &this->_vaoCube);
+//	// fill buffer
+//	glBindBuffer(GL_ARRAY_BUFFER, this->_vaoCube);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+//	// link vertex attributes
+//	glBindVertexArray(this->_vaoCube);
+//	glEnableVertexAttribArray(0);
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+//	glEnableVertexAttribArray(1);
+//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+//	glEnableVertexAttribArray(2);
+//	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//	glBindVertexArray(0);
+//}
+//
+//void Camera::render_cube()
+//{
+//	glBindVertexArray(this->_vaoCube);
+//	glDrawArrays(GL_TRIANGLES, 0, 36);
+//	glBindVertexArray(0);
+//}

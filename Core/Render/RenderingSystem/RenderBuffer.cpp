@@ -1,6 +1,6 @@
 #include "RenderBuffer.h"
 
-RenderBuffer::RenderBuffer(unsigned int width, unsigned int height)
+RenderBuffer::RenderBuffer(unsigned int width, unsigned int height, const InternalFormat& internalFormat)
 	: _width(width), _height(height)
 {
 	//glGenRenderbuffers(1, &_id);
@@ -8,7 +8,17 @@ RenderBuffer::RenderBuffer(unsigned int width, unsigned int height)
 	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
 	glGenRenderbuffers(1, &this->_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, this->_id);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
+
+	switch (internalFormat)
+	{
+	case InternalFormat::DEPTH24_STENCIL8:
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
+		break;
+	case InternalFormat::DEPTH_COMPONENT24:
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+	default:
+		break;
+	}
 }
 
 RenderBuffer::~RenderBuffer()
@@ -35,4 +45,9 @@ void RenderBuffer::clean()
 {
 	glDeleteRenderbuffers(1, &_id);
 	_width = _height = 0;
+}
+
+GLenum RenderBuffer::get_gl_internal_format() const
+{
+	return this->_internalFormat;
 }
