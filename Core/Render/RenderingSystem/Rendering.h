@@ -5,18 +5,47 @@
 #include "../Object/Renderer.h"
 #include "../Lighting/Light.h"
 #include "../Camera/Camera.h"
+#include "../Object/Shader.h"
 
 class Light;
 class Renderer;
 class Camera;
 
+class Environment {
+public:
+	Environment();
+	~Environment();
+
+	void renderQuad();
+	void renderCube();
+	GLuint captureFBO = 0, captureRBO = 0;
+	GLuint envCubemap, irradianceMap, prefilterMap, brdfLUTTexture, hdrTexture;
+
+	unsigned int quadVAO = 0;
+	unsigned int quadVBO = 0;
+	unsigned int cubeVAO = 0;
+	unsigned int cubeVBO = 0;
+
+	Shader equirectangularToCubemapShader
+		= Shader("asd", "Resources/PBR/2.2.1.cubemap.vs", "Resources/PBR/2.2.1.equirectangular_to_cubemap.fs");
+	Shader irradianceShader
+		= Shader("sasd", "Resources/PBR/2.2.1.cubemap.vs", "Resources/PBR/2.2.1.irradiance_convolution.fs");
+	Shader prefilterShader 
+		= Shader("sacxcd", "Resources/PBR/2.2.1.cubemap.vs", "Resources/PBR/2.2.1.prefilter.fs");
+	Shader brdfShader 
+		= Shader("dsad", "Resources/PBR/2.2.1.brdf.vs", "Resources/PBR/2.2.1.brdf.fs");
+	Shader backgroundShader 
+		= Shader("saxxd", "Resources/PBR/2.2.1.background.vs", "Resources/PBR/2.2.1.background.fs");
+};
+
 class Rendering
 {
+	friend class Application;
 private:
 	std::vector<Light*>		_lightRegistry;
 	std::vector<Camera*>	_cameraRegistry;
 	std::vector<Renderer*>	_rendererRegistry;
-
+	Environment*				_environment;
 #pragma region Singleton
 	Rendering(const Rendering& obj) = delete;
 	void operator = (const Rendering& obj) = delete;
@@ -29,6 +58,7 @@ public:
 
 	static void UpdateData();
 	static void Render();
+
 
 #pragma region Renderer Registry
 	static void add_renderer_to_registry(Renderer* renderer) {

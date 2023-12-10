@@ -2,7 +2,7 @@
 
 
 
-Renderer::Renderer(const Material& material, std::vector<Mesh*> meshes)
+Renderer::Renderer(Material* material, std::vector<Mesh*> meshes)
 	: Component(nullptr)
 	, _material(material)
 	, _meshes(meshes)
@@ -23,14 +23,14 @@ void Renderer::update_shader()
 {
 	if (!_gameObject->is_active() 
 		|| !this->is_active() 
-		|| !_material.is_must_update() 
-		|| !_material.is_texture_changed())
+		|| !_material->is_must_update() 
+		|| !_material->is_texture_changed())
 		return;
 
-	Shader& shader = material.shader;
+	Shader& shader = material->shader;
 	shader.Active();
-	shader.SetFloat2("_Material.tilling", _material.tilling);
-	shader.SetFloat2("_Material.offset", _material.offset);
+	shader.SetFloat2("_Material.tilling", _material->tilling);
+	shader.SetFloat2("_Material.offset", _material->offset);
 	//if (_material.is_texture_changed()) {
 	//	int c = 0;
 	//	shader.SetFloat2("_Material.tilling", _material.tilling);
@@ -74,14 +74,14 @@ void Renderer::update_shader()
 	//	_material._textureChanged = false;
 	//}
 	
-	shader.SetFloat("_Material.metallic",				_material.metallic);
-	shader.SetFloat("_Material.smoothness",				_material.smoothness);
-	shader.SetFloat("_Material.aoStrength",				_material.aoStrength);
-	shader.SetBool("_Material.useAlphaClipping",		_material.useAlphaClipping);
-	shader.SetFloat("_Material.alphaClippingThreshold", _material.alphaClippingThreshold);
-	shader.SetVec4("_Material.reflectColor",			_material.reflectColor);
-	shader.SetBool("_Material.useEmission",				_material.useEmissionMap);
-	shader.SetBool("_Material.useMetallic",				_material.useMetallicMap);
+	shader.SetFloat("_Material.metallic",				_material->metallic);
+	shader.SetFloat("_Material.smoothness",				_material->smoothness);
+	shader.SetFloat("_Material.aoStrength",				_material->aoStrength);
+	shader.SetBool("_Material.useAlphaClipping",		_material->useAlphaClipping);
+	shader.SetFloat("_Material.alphaClippingThreshold", _material->alphaClippingThreshold);
+	shader.SetVec4("_Material.reflectColor",			_material->reflectColor);
+	shader.SetBool("_Material.useEmission",				_material->useEmissionMap);
+	shader.SetBool("_Material.useMetallic",				_material->useMetallicMap);
 	//APP_INFO("Update attributes of %s shader",	shader.name.c_str());
 }
 
@@ -91,18 +91,18 @@ void Renderer::Render()
 	if (!_gameObject->is_active())
 		return;
 
-	this->_material.shader.Active();
+	this->_material->shader.Active();
 	for (Mesh* mesh : this->_meshes) {
 		mesh->Draw(this->_drawMode);
 	}
 }
 
-Material& Renderer::get_material()
+Material* Renderer::get_material()
 {
 	return _material;
 }
 
-void Renderer::set_material(const Material& material)
+void Renderer::set_material(Material* material)
 {
 	_material = material;
 }
@@ -168,4 +168,5 @@ GLenum Renderer::draw_mode_to_gl_enum(const DrawMode& mode)
 	default:
 		break;
 	}
+	return GL_POINTS;
 }

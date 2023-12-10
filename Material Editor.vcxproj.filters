@@ -129,7 +129,16 @@
     <ClCompile Include="Core\Render\Camera\CameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialManager.cpp">
+    <ClCompile Include="Core\Manager\ComponentManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Manager\MaterialManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Manager\TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Manager\Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,16 +278,21 @@
     <ClInclude Include="Core\Render\Camera\CameraController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialManager.h">
+    <ClInclude Include="Core\Manager\ComponentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Manager\MaterialManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Manager\TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Manager\Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Design Proj\Material Editor.vpp" />
-    <None Include="Resources\GLSL\PBR.frag" />
-    <None Include="Resources\GLSL\default.vert" />
-    <None Include="Resources\GLSL\default.frag" />
-    <None Include="Resources\GLSL\Camera.glsl" />
     <None Include="Resources\ibl\brown_photostudio_02_2k.hdr" />
     <None Include="Resources\ibl\dikhololo_night_2k.hdr" />
     <None Include="Resources\ibl\evening_road_01_puresky_2k.hdr" />
@@ -286,15 +300,49 @@
     <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k.hdr" />
     <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
     <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
-    <None Include="Resources\GLSL\PBR.vert" />
+    <None Include="Resources\GLSL\BackgroundPBR.frag" />
+    <None Include="Resources\GLSL\BackgroundPBR.vert" />
+    <None Include="Resources\GLSL\Camera.glsl" />
+    <None Include="Resources\GLSL\default.frag" />
+    <None Include="Resources\GLSL\default.vert" />
+    <None Include="Resources\GLSL\EquirectangularToCube.frag" />
+    <None Include="Resources\GLSL\EquirectangularToCube.vert" />
     <None Include="Resources\GLSL\error.frag" />
     <None Include="Resources\GLSL\error.vert" />
     <None Include="Resources\GLSL\fbo.frag" />
     <None Include="Resources\GLSL\fbo.vert" />
-    <None Include="Resources\GLSL\EquirectangularToCube.frag" />
-    <None Include="Resources\GLSL\EquirectangularToCube.vert" />
-    <None Include="Resources\GLSL\BackgroundPBR.frag" />
-    <None Include="Resources\GLSL\BackgroundPBR.vert" />
+    <None Include="Resources\GLSL\Irradiance.frag" />
+    <None Include="Resources\GLSL\Irradiance.vert" />
+    <None Include="Resources\GLSL\PBR.frag" />
+    <None Include="Resources\GLSL\PBR.vert" />
+    <None Include="Resources\GLSL\Skybox.frag" />
+    <None Include="Resources\GLSL\Skybox.vert" />
+    <None Include="Resources\PBR\2.1.1.background.fs" />
+    <None Include="Resources\PBR\2.1.1.background.vs" />
+    <None Include="Resources\PBR\2.1.1.cubemap.vs" />
+    <None Include="Resources\PBR\2.1.1.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.1.1.pbr.fs" />
+    <None Include="Resources\PBR\2.1.1.pbr.vs" />
+    <None Include="Resources\PBR\2.2.1.background.fs" />
+    <None Include="Resources\PBR\2.2.1.background.vs" />
+    <None Include="Resources\PBR\2.2.1.brdf.fs" />
+    <None Include="Resources\PBR\2.2.1.brdf.vs" />
+    <None Include="Resources\PBR\2.2.1.cubemap.vs" />
+    <None Include="Resources\PBR\2.2.1.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.2.1.irradiance_convolution.fs" />
+    <None Include="Resources\PBR\2.2.1.pbr.fs" />
+    <None Include="Resources\PBR\2.2.1.pbr.vs" />
+    <None Include="Resources\PBR\2.2.1.prefilter.fs" />
+    <None Include="Resources\PBR\2.2.2.background.fs" />
+    <None Include="Resources\PBR\2.2.2.background.vs" />
+    <None Include="Resources\PBR\2.2.2.brdf.fs" />
+    <None Include="Resources\PBR\2.2.2.brdf.vs" />
+    <None Include="Resources\PBR\2.2.2.cubemap.vs" />
+    <None Include="Resources\PBR\2.2.2.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.2.2.irradiance_convolution.fs" />
+    <None Include="Resources\PBR\2.2.2.pbr.fs" />
+    <None Include="Resources\PBR\2.2.2.pbr.vs" />
+    <None Include="Resources\PBR\2.2.2.prefilter.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\images\Skybox\back.jpg">
@@ -338,8 +386,5 @@
     <Font Include="Resources\fonts\ProggyClean.ttf" />
     <Font Include="Resources\fonts\ProggyTiny.ttf" />
     <Font Include="Resources\fonts\Roboto-Medium.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\GLSL\test.txt" />
   </ItemGroup>
 </Project>

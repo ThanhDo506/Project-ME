@@ -25,14 +25,14 @@ enum DrawMode {
 
 class Renderer : public Component {
 public:
-	Renderer(const Material& material, std::vector<Mesh*> meshes);
+	Renderer(Material* material, std::vector<Mesh*> meshes);
 	~Renderer();
 
 	void update_shader();
 	void Render();
 
-	Material&	get_material();
-	void		set_material(const Material& material);
+	Material*	get_material();
+	void		set_material(Material* material);
 	
 	std::vector<Mesh*>& get_meshes();
 	/// <summary>
@@ -44,14 +44,14 @@ public:
 	Renderer* Clone() const override;
 
 	__declspec(property(get = get_material, 
-						put = set_material))	Material& material;
+						put = set_material))	Material* material;
 
 	void			set_draw_mode(const DrawMode& mode);
 private:
 	static GLenum	draw_mode_to_gl_enum(const DrawMode& mode);
 
 private:
-	Material					_material;
+	Material*					_material;
 	std::vector<Mesh*>			_meshes;
 	GLenum						_drawMode = GL_TRIANGLES;
 };

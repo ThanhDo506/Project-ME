@@ -64,20 +64,12 @@ private:
 	unsigned int	_width, _height;
 	CameraType		_cameraType;
 	bool			_isMaincamera = false;
-	//bool			_useHdrEnviroment = true;
-	// for normal cube map enviroment
-	//Texture
-	// 
-	// for HDR enviroment
-	GLuint			_hdrTexture;
-	GLuint			_enviromentCubemapTexture;
-	Shader			_equirectangularToCubemapShader = Shader("EquirectangularToCubemap", "Resources/GLSL/EquirectangularToCube.vert", "Resources/GLSL/EquirectangularToCube.frag");
-	Shader			_backgroundShader = Shader("Background", "Resources/GLSL/BackgroundPBR.vert", "Resources/GLSL/BackgroundPBR.frag");
-	GLuint			_captureFbo, _captureRbo;
-	GLuint			_vaoCube = 0, _vboCube = 0;
-	void			init_cube();
-public:
-	void			render_cube();
+
+
+	GLuint			_skyboxVao, _skyboxVbo;
+	Texture*		_cubemapTex;
+	Shader			_skyboxShader 
+		= Shader("Skybox", "Resources/GLSL/Skybox.vert", "Resources/GLSL/Skybox.frag");
 };
 
 #endif

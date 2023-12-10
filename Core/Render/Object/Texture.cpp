@@ -1,8 +1,13 @@
 #include "Texture.h"
-#include <glm/gtc/type_ptr.hpp>
+
+Texture::Texture(const std::string& name)
+{
+	TextureManager::add_new_texture_to_registry(this, name);
+}
 
 Texture::~Texture()
 {
+	//TextureManager::remove_texture_from_registry(this);
 	this->Clean();
 }
 
@@ -118,7 +123,7 @@ bool Texture::loadCubeTexture(std::vector<const char*> paths, TextureSetting& te
 	}
 	_textureShape = TextureShape::Cube;
 	
-	_internalFormat = GL_RGB8; // Cubemaps must be RGB.
+	_internalFormat = GL_RGB; // Cubemaps must be RGB.
 
 	glGenTextures(1, &_id);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _id);
@@ -127,35 +132,28 @@ bool Texture::loadCubeTexture(std::vector<const char*> paths, TextureSetting& te
 
 	int width, height, numChannels;
 	bool initialized = false;
-	for (unsigned int i = 0; i < paths.size(); i++)
-	{
+	for (unsigned int i = 0; i < paths.size(); i++) {
 		unsigned char* data = stbi_load(paths[i], &width, &height,
 			&numChannels, textureSetting.desiredChannel);
 		// Error handling.
-		if (data == nullptr)
-		{
+		if (data == nullptr) {
 			stbi_image_free(data);
 			APP_ERROR("Load texture failure!");
 			return false;
 		}
-		if (numChannels != 3)
-		{
+		if (numChannels != 3) {
 			stbi_image_free(data);
 			APP_ERROR("Unsupported texture format.");
 			return false;
 		}
-		if (!initialized)
-		{
-			if (width != height)
-			{
+		if (!initialized) {
+			if (width != height) {
 				APP_WARN("Texture size doesn't a square");
 			}
 			_width = width;
 			_height = height;
 			_numChannel = numChannels;
-		}
-		else if (width != _width || height != _height)
-		{
+		} else if (width != _width || height != _height) {
 			APP_WARN("Texture %s is different size from first texture.", paths[i]);
 		}
 
@@ -224,15 +222,6 @@ bool Texture::loadHdr(const char* path, const TextureSetting& textureSetting)
 	stbi_image_free(data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	return true;
-}
-
-Texture& Texture::loadDefaultHdr()
-{
-	static Texture texture;
-	texture.loadHdr("Resources/ibl/kloofendal_48d_partly_cloudy_puresky_2k.hdr", TextureSetting{
-
-		});
-	return texture;
 }
 
 std::string Texture::get_path() const

@@ -10,5 +10,4 @@ void main()
 {    
     vec3 col = texture(screenTexture, UV).rgb;
     FragColor = vec4(col, 1.0);
-//	FragColor = vec4(0.5f, 0.5, 0.5, 1.0);
 }

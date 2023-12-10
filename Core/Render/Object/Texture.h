@@ -5,6 +5,8 @@
 #include "../../third-party/stb/stb_image.h"
 #include "exception"
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "../../Manager/TextureManager.h"
 
 enum MappingCubeType {
 	CubicEnviroment,
@@ -73,6 +75,7 @@ struct TextureSetting {
 class Texture {
 	friend class FrameBuffer;
 	friend class Camera;
+	friend class GUI;
 private:
 	/**
 	 * true if color space is sRGB, false is linear.
@@ -91,6 +94,7 @@ private:
 	std::string		_path;
 
 public:
+	Texture(const std::string& name);
 	~Texture();
 	/**
 	 * @return true if color space is sRGB, false if linear.
@@ -109,19 +113,62 @@ public:
 	 * Create cube texture.
 	 * @brief
 	 * Only support RGB format (no sRGB, etc).
-	 * \param paths exactly 6 paths to 6 base image
-	 * \param textureSetting
-	 * \return init success or false
+	 * @param paths exactly 6 paths to 6 base image
+	 * @param textureSetting
+	 * @return init success or false
 	 */
 	bool loadCubeTexture(std::vector<const char*> paths, TextureSetting& textureSetting);
 
 	bool loadHdr(const char* path, const TextureSetting& textureSetting);
 
-	static Texture& loadDefaultHdr();
-
 	std::string get_path() const;
 
 	GLuint get_id() const;
+
+	inline static std::string to_string(const TextureWrapMode& wrapMode) {
+		switch (wrapMode)
+		{
+		case Repeat:
+			return "Repeat";
+			break;
+		case MirrorRepeat:
+			return "MirrorRepeat";
+			break;
+		case ClampToEdge:
+			return "ClampToEdge";
+			break;
+		case ClampToBorder:
+			return "ClampToBorder";
+			break;
+		}
+	}
+	inline static std::string to_string(const TextureFilterMode& filterMode) {
+		switch (filterMode)
+		{
+		case PointFiltering:
+			return "PointFiltering";
+			break;
+		case BilinearFiltering:
+			return "BilinearFiltering";
+			break;
+		case TrilinearFiltering:
+			return "TrilinearFiltering";
+			break;
+		}
+	}
+	inline static std::string to_string(const TextureShape& shape) {
+		switch (shape) {
+		case Texture2D:
+			return "Texture2D";
+			break;
+		case Cube:
+			return "Cube";
+			break;
+		case Image:
+			return "Image";
+			break;
+		}
+	}
 private:
 	void applySetting(const TextureSetting& textureSetting);
 };

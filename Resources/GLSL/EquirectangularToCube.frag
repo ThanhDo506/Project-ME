@@ -1,12 +1,10 @@
 #version 330 core
-
 out vec4 FragColor;
-in vec3 WorldPosition;
+in vec3 WorldPos;
 
-uniform sampler2D _EquirectangularMap;
+uniform sampler2D equirectangularMap;
 
 const vec2 invAtan = vec2(0.1591, 0.3183);
-
 vec2 SampleSphericalMap(vec3 v)
 {
     vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
@@ -17,8 +15,8 @@ vec2 SampleSphericalMap(vec3 v)
 
 void main()
 {		
-    vec2 uv = SampleSphericalMap(normalize(WorldPosition));
-    vec3 color = texture(_EquirectangularMap, uv).rgb;
+    vec2 uv = SampleSphericalMap(normalize(WorldPos));
+    vec3 color = texture(equirectangularMap, uv).rgb;
     
     FragColor = vec4(color, 1.0);
 }

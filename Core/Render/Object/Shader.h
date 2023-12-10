@@ -24,7 +24,7 @@ private:
 	std::string _name;
 
 public:
-	Shader(std::string name, const char* vertPath, const char* fragPath, const char* geoPath = "");
+	Shader(const std::string& name, const char* vertPath, const char* fragPath, const char* geoPath = "");
 	~Shader();
 
 	void clean();
@@ -54,7 +54,7 @@ public:
 	void SetVec4(const char* uniformName, const float& x, const float& y, const float& z, const float& w);
 
 	std::string get_name() const;
-	void		set_name(std::string newName);
+	void		set_name(const std::string& name);
 
 	static Shader& get_default_shader();
 
@@ -66,7 +66,8 @@ private:
 	// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%204%20-%20Organizing/shaderClass.cpp
 	std::string read_shader_file(const char* filePath);
 
-	void getGLError(const GLuint& id, ShaderType glType);
+	bool getGLError(const GLuint& id, ShaderType glType);
+	void checkCompileErrors(GLuint shader, std::string type);
 };
 
 #endif

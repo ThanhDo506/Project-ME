@@ -91,6 +91,10 @@ struct Material {
     vec3        diffuse;
 };
 
+//uniform samplerCube _irradianceMap;
+//uniform samplerCube _prefilterMap;
+//uniform sampler2D _brdfLUT;
+
 uniform Material _Material;
 
 uniform DirectionalLight _DirectionalLights[MAX_DIRECTIONAL_LIGHT];
@@ -171,7 +175,16 @@ void main() {
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + specular) * radiance * NdotL; // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }
-
+    vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+    
+    vec3 kS = F;
+    vec3 kD = 1.0 - kS;
+    kD *= 1.0 - metallic;	  
+    
+//    vec3 irradiance = texture(_irradianceMap, N).rgb;
+//    vec3 diffuse      = irradiance * albedo;
+//
+//    vec3 ambient = (kD * diffuse) * ao;
     vec3 ambient = vec3(0.03) * albedo * ao;
     
     vec3 color = ambient + Lo;

@@ -60,7 +60,8 @@ void GUI::canvas()
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             if (ImGui::TreeNode("Other setting"))
             {
-                if (ImGui::Checkbox("Show style editor", &this->_showStyleEditor))
+                ImGui::Checkbox("Show style editor", &this->_showStyleEditor);
+                if (this->_showStyleEditor)
                     ImGui::ShowStyleEditor();
                 ImGui::TreePop();
             }
@@ -86,7 +87,23 @@ void GUI::canvas()
             ImGui::End();
         }
     }
+    {
+        if (ImGui::Begin("Texture Manager")) {
+            static int _id = 1;
+            ImGui::SliderInt("Texture id", &_id, 0, 20);
+            ImGui::Image((void*)static_cast<intptr_t>(_id), ImVec2(128, 128));
 
+
+            for (auto texture : TextureManager::instance()._textureRegistry) {
+                Texture* t = texture.second;
+                ImGui::TextColored(ImVec4(3.0/255, 140.0/255, 252.0/255, 1.0), "%s (id: %d)", texture.first.c_str(), t->get_id());
+                ImGui::Text("Size: %dx%d", t->_width, t->_height);
+                ImGui::Text("Shape: %s", Texture::to_string(t->_textureShape).c_str());
+                ImGui::Image((void*)static_cast<intptr_t>(t->get_id()), ImVec2(128 * t->_width / t->_height, 128));
+            }
+            ImGui::End();
+        }
+    }
 }
 
 void GUI::print_hierachy(GameObject* root)

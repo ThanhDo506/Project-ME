@@ -144,13 +144,13 @@ public:
 	__declspec(property(get = get_shader, put = set_shader))										Shader&			shader;
 
 private:
-	Texture*					_diffuseMap;
-	Texture*					_roughnessMap;
-	Texture*					_metallicMap;
-	Texture*					_aoMap;
-	Texture*					_normalMap;
-	Texture*					_emissionMap;
-	Texture*					_heightMap;
+	Texture*					_diffuseMap = NULL;
+	Texture*					_roughnessMap = NULL;
+	Texture*					_metallicMap = NULL;
+	Texture*					_aoMap = NULL;
+	Texture*					_normalMap = NULL;
+	Texture*					_emissionMap = NULL;
+	Texture*					_heightMap = NULL;
 
 	float						_metallic = 0.1f;
 	float						_smoothness = 0.2f;

@@ -34,7 +34,6 @@ private:
 	void Clean();
 
 	void initContext(WindowSetting& setting);
-
 private:
 	WindowSetting _setting;
 	GLFWwindow* _glfwWindow;

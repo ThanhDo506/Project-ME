@@ -18,6 +18,7 @@ void Application::Init(WindowSetting& setting) {
 	Input::instance().init(this);
 	glfwSetCursorPosCallback(_glfwWindow, Input::mouse_callback);
 	glfwSetInputMode(_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	//glfwSetScrollCallback(_glfwWindow, Input::scroll_callback);
 	APP_INFO("Init input system!");
 	int maxTextureUnits;
@@ -35,6 +36,11 @@ void Application::Run() {
 		return;
 	}
 	APP_INFO("Init OpenGL success");
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	Rendering::instance()._environment = new Environment();
+	//Shader equirectangularToCubemapShader
+	//	= Shader("asd", "Resources/PBR/2.2.1.cubemap.vs", "Resources/PBR/2.2.1.equirectangular_to_cubemap.fs");
 
 #pragma region test
 	GameObject* root = new GameObject(Transform(), "root");
@@ -80,49 +86,48 @@ void Application::Run() {
 	ts.maxMipmapsLevel = 4;
 	ts.textureFilter = BilinearFiltering;
 	Sphere* s = new Sphere(
-		Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
+		Transform(glm::vec3(0, 0, 8), glm::vec3(1), glm::vec3(30, 30, 0)));
 	s->set_parent(root);
 	s->set_name("Sphere");
-	Material& materialPBR = s->GetComponent<Renderer>()->get_material();
-	materialPBR.renderFace = Both;
-	materialPBR.shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
-	materialPBR.roughnessMap = new Texture();
-	materialPBR.roughnessMap->load2DTexture("Resources/images/rustediron/roughness.png", ts);
+	Material* materialPBR = s->GetComponent<Renderer>()->get_material();
+	materialPBR->renderFace = Front;
+	materialPBR->shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
+	materialPBR->roughnessMap = new Texture("rustediron/roughness");
+	materialPBR->roughnessMap->load2DTexture("Resources/images/rustediron/roughness.png", ts);
 
-	materialPBR.metallicMap = new Texture();
-	materialPBR.metallicMap->load2DTexture("Resources/images/rustediron/metallic.png", ts);
-
-	materialPBR.normalMap = new Texture();
-	materialPBR.normalMap->load2DTexture("Resources/images/rustediron/normal.png", ts);
-
-	materialPBR.aoMap = new Texture();
-	materialPBR.aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
+	materialPBR->metallicMap = new Texture("rustediron/metallic");
+	materialPBR->metallicMap->load2DTexture("Resources/images/rustediron/metallic.png", ts);
+			   
+	materialPBR->normalMap = new Texture("rustediron/normal");
+	materialPBR->normalMap->load2DTexture("Resources/images/rustediron/normal.png", ts);
+			   
+	materialPBR->aoMap = new Texture("rustediron/ao");
+	materialPBR->aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
 
 	//ts.sRGB = true;
-	materialPBR.diffuseMap = new Texture();
-	materialPBR.diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
+	materialPBR->diffuseMap = new Texture("rustediron/basecolor");
+	materialPBR->diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
 
 	Sphere* s1 = new Sphere(Transform(glm::vec3(0, 0, 10), glm::vec3(1), glm::vec3(30, 30, 0)));
 	s1->set_parent(root);
 	s1->name = "Sphere 1";
-	Material& m = s1->GetComponent<Renderer>()->get_material();
-	m = s1->GetComponent<Renderer>()->get_material();
-	m.renderFace = Both;
-	m.shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
-	m.roughnessMap = new Texture();
-	m.roughnessMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/roughness.png", ts);
+	Material* m = s1->GetComponent<Renderer>()->get_material();
+	m->renderFace = Both;
+	m->shader = Shader("PBR", "Resources/GLSL/PBR.vert", "Resources/GLSL/PBR.frag");
+	m->roughnessMap = new Texture("hungarian-point-flooring-bl/roughness");
+	m->roughnessMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/roughness.png", ts);
 
-	m.metallicMap = new Texture();
-	m.metallicMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/metallic.png", ts);
+	m->metallicMap = new Texture("hungarian-point-flooring-bl/metallic");
+	m->metallicMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/metallic.png", ts);
 
-	m.normalMap = new Texture();
-	m.normalMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/normal.png", ts);
+	m->normalMap = new Texture("hungarian-point-flooring-bl/normal");
+	m->normalMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/normal.png", ts);
 
-	m.aoMap = new Texture();
-	m.aoMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/ao.png", ts);
+	m->aoMap = new Texture("hungarian-point-flooring-bl/ao");
+	m->aoMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/ao.png", ts);
 
-	m.diffuseMap = new Texture();
-	m.diffuseMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/albedo.png", ts);
+	m->diffuseMap = new Texture("hungarian-point-flooring-bl/albedo");
+	m->diffuseMap->load2DTexture("Resources/images/hungarian-point-flooring-bl/albedo.png", ts);
 
 	GameObject* cameraHolder = new GameObject(Transform());
 	cameraHolder->set_name("camera Holder");
@@ -161,14 +166,19 @@ void Application::Run() {
 	Light* l3 = new Light();
 	l3->attach_to_gameObject(light3);
 	l3->set_light_type(Point);
-
-	Renderer* lr = new Renderer(Material(), {new Mesh(vertices, indices)});
+	Material* m1 = new Material();
+	Renderer* lr = new Renderer(m1, {new Mesh(vertices, indices)});
 	lr->attach_to_gameObject(light1);
 
 	GUI::instance().root = root;
 #pragma endregion
 	Time& time = Time::instance();
 	Input& input = Input::instance();
+
+	//Rendering::instance().environment = new Rendering::Environment();
+
+	glViewport(0, 0, 1920, 1080);
+
 	while (!glfwWindowShouldClose(_glfwWindow))
 	{
 		// update time
@@ -180,9 +190,10 @@ void Application::Run() {
 		glfwPollEvents();
 
 		// call GameObject OnPreRender() here
-
+		
 		Rendering::UpdateData();
 		Rendering::Render();
+		
 
 		// call GameObject OnPostRender() here
 		GUI::instance().Draw();
@@ -202,10 +213,13 @@ void Application::Update() {
 }
 
 void Application::Clean() {
+	delete Rendering::instance()._environment;
 	GUI::instance().Clean();
 	Input::instance().clean();
+	TextureManager::instance().clean();
 	glfwDestroyWindow(_glfwWindow);
 	glfwTerminate();
+	system("pause");
 }
 
 void Application::initContext(WindowSetting& setting)
@@ -228,8 +242,6 @@ void Application::initContext(WindowSetting& setting)
 		return;
 	}
 
-	glViewport(0, 0, _setting.width, _setting.height);
-
 	const GLubyte* renderer = glGetString(GL_RENDERER);
 	APP_INFO("Renderer: %s", reinterpret_cast<const char*>(renderer));
 	renderer = glGetString(GL_VERSION);
@@ -238,12 +250,10 @@ void Application::initContext(WindowSetting& setting)
 	glViewport(0, 0, setting.width, setting.height);
 	APP_INFO("Viewport: %4d x %4d", setting.width, setting.height);
 
-	glEnable(GL_DEPTH_TEST);
-
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+	//glFrontFace(GL_CW);
 	APP_INFO("Enable face culling. With winding order CW");
 
 	this->_isInitialized = true;
 }
-

@@ -43,8 +43,8 @@ Sphere::Sphere(Transform transform)
 		}
 		oddRow = !oddRow;
 	}
-	Material material;
-	material.renderFace = Front;
+	Material* material = new Material;
+	material->renderFace = Front;
 	std::vector<Mesh*> meshes = { new Mesh(vertices, indices) };
 	Renderer* r = this->AddComponent<Renderer>(material, meshes);
 	r->attach_to_gameObject(this);

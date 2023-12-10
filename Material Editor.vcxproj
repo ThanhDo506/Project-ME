@@ -152,6 +152,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Manager\ComponentManager.cpp" />
     <ClCompile Include="Core\Render\Camera\CameraController.cpp" />
     <ClCompile Include="Core\Render\Camera\Camera.cpp" />
     <ClCompile Include="Core\Application.cpp" />
@@ -181,7 +182,9 @@
     <ClCompile Include="Core\Render\RenderingSystem\Cylinder.cpp" />
     <ClCompile Include="Core\Render\RenderingSystem\Sphere.cpp" />
     <ClCompile Include="Core\Render\RenderingSystem\RenderBuffer.cpp" />
-    <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="Core\Manager\MaterialManager.cpp" />
+    <ClCompile Include="Core\Manager\TextureManager.cpp" />
+    <ClCompile Include="Core\Manager\Manager.cpp" />
     <ClCompile Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="third-party\imgui\imgui.cpp" />
     <ClCompile Include="third-party\imgui\imgui_demo.cpp" />
@@ -193,6 +196,7 @@
     <ClCompile Include="third-party\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Manager\ComponentManager.h" />
     <ClInclude Include="Core\Render\Camera\CameraController.h" />
     <ClInclude Include="Core\Render\Camera\Camera.h" />
     <ClInclude Include="Core\Application.h" />
@@ -223,7 +227,9 @@
     <ClInclude Include="Core\Render\RenderingSystem\Cylinder.h" />
     <ClInclude Include="Core\Render\RenderingSystem\Sphere.h" />
     <ClInclude Include="Core\Render\RenderingSystem\RenderBuffer.h" />
-    <ClInclude Include="MaterialManager.h" />
+    <ClInclude Include="Core\Manager\MaterialManager.h" />
+    <ClInclude Include="Core\Manager\TextureManager.h" />
+    <ClInclude Include="Core\Manager\Manager.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="third-party\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
@@ -253,8 +259,12 @@
     <None Include="Resources\GLSL\error.vert" />
     <None Include="Resources\GLSL\fbo.frag" />
     <None Include="Resources\GLSL\fbo.vert" />
+    <None Include="Resources\GLSL\Irradiance.frag" />
+    <None Include="Resources\GLSL\Irradiance.vert" />
     <None Include="Resources\GLSL\PBR.frag" />
     <None Include="Resources\GLSL\PBR.vert" />
+    <None Include="Resources\GLSL\Skybox.frag" />
+    <None Include="Resources\GLSL\Skybox.vert" />
     <None Include="Resources\ibl\brown_photostudio_02_2k.hdr" />
     <None Include="Resources\ibl\dikhololo_night_2k.hdr" />
     <None Include="Resources\ibl\evening_road_01_puresky_2k.hdr" />
@@ -262,6 +272,32 @@
     <None Include="Resources\ibl\kloofendal_48d_partly_cloudy_puresky_2k.hdr" />
     <None Include="Resources\ibl\kloppenheim_06_puresky_2k.hdr" />
     <None Include="Resources\ibl\sunflowers_puresky_2k.hdr" />
+    <None Include="Resources\PBR\2.1.1.background.fs" />
+    <None Include="Resources\PBR\2.1.1.background.vs" />
+    <None Include="Resources\PBR\2.1.1.cubemap.vs" />
+    <None Include="Resources\PBR\2.1.1.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.1.1.pbr.fs" />
+    <None Include="Resources\PBR\2.1.1.pbr.vs" />
+    <None Include="Resources\PBR\2.2.1.background.fs" />
+    <None Include="Resources\PBR\2.2.1.background.vs" />
+    <None Include="Resources\PBR\2.2.1.brdf.fs" />
+    <None Include="Resources\PBR\2.2.1.brdf.vs" />
+    <None Include="Resources\PBR\2.2.1.cubemap.vs" />
+    <None Include="Resources\PBR\2.2.1.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.2.1.irradiance_convolution.fs" />
+    <None Include="Resources\PBR\2.2.1.pbr.fs" />
+    <None Include="Resources\PBR\2.2.1.pbr.vs" />
+    <None Include="Resources\PBR\2.2.1.prefilter.fs" />
+    <None Include="Resources\PBR\2.2.2.background.fs" />
+    <None Include="Resources\PBR\2.2.2.background.vs" />
+    <None Include="Resources\PBR\2.2.2.brdf.fs" />
+    <None Include="Resources\PBR\2.2.2.brdf.vs" />
+    <None Include="Resources\PBR\2.2.2.cubemap.vs" />
+    <None Include="Resources\PBR\2.2.2.equirectangular_to_cubemap.fs" />
+    <None Include="Resources\PBR\2.2.2.irradiance_convolution.fs" />
+    <None Include="Resources\PBR\2.2.2.pbr.fs" />
+    <None Include="Resources\PBR\2.2.2.pbr.vs" />
+    <None Include="Resources\PBR\2.2.2.prefilter.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\images\awesomeface.png" />
@@ -283,9 +319,6 @@
     <Font Include="Resources\fonts\ProggyClean.ttf" />
     <Font Include="Resources\fonts\ProggyTiny.ttf" />
     <Font Include="Resources\fonts\Roboto-Medium.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\GLSL\test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,7 @@
 #include "FrameBuffer.h"
 
+static unsigned int c = 0;
+
 FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height,  const RenderBuffer::InternalFormat& rboInternalFormat, const bool& hasColoredFBO)
 	: _width(width), _height(height), _hasColoredFBO(hasColoredFBO)
 {
@@ -20,7 +22,7 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height, 
 
 	if (this->_hasColoredFBO) {
 		// init color texture
-		this->_colorTexture = new Texture();
+		this->_colorTexture = new Texture("Frame Buffer Texture " + std::to_string(c++));
 		_colorTexture->_textureShape = Texture2D;
 		_colorTexture->_textureType = Default;
 		_colorTexture->_internalFormat = GL_RGB;
