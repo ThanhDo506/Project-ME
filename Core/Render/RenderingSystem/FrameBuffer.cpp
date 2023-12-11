@@ -25,13 +25,13 @@ FrameBuffer::FrameBuffer(const unsigned int& width, const unsigned int& height, 
 		this->_colorTexture = new Texture("Frame Buffer Texture " + std::to_string(c++));
 		_colorTexture->_textureShape = Texture2D;
 		_colorTexture->_textureType = Default;
-		_colorTexture->_internalFormat = GL_RGB;
+		_colorTexture->_internalFormat = GL_RGBA;
 		_colorTexture->_width = width;
 		_colorTexture->_height = height;
 		_colorTexture->_numChannel = 3;
 		glGenTextures(1, &_colorTexture->_id);
 		glBindTexture(GL_TEXTURE_2D, _colorTexture->_id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->_width, this->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->_width, this->_height, 0, GL_RGBA, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

@@ -47,6 +47,8 @@ public:
 						put = set_material))	Material* material;
 
 	void			set_draw_mode(const DrawMode& mode);
+
+	void			OnGui() override;
 private:
 	static GLenum	draw_mode_to_gl_enum(const DrawMode& mode);
 

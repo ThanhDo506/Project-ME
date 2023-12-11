@@ -102,7 +102,6 @@ void Application::Run() {
 	materialPBR->aoMap = new Texture("rustediron/ao");
 	materialPBR->aoMap->load2DTexture("Resources/images/rustediron/ao.png", ts);
 
-	//ts.sRGB = true;
 	materialPBR->diffuseMap = new Texture("rustediron/basecolor");
 	materialPBR->diffuseMap->load2DTexture("Resources/images/rustediron/basecolor.png", ts);
 

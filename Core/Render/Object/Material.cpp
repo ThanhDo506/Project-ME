@@ -132,15 +132,15 @@ void Material::set_alpha_clipping_threshold(float val)
     _alphaClippingThreshold = val;
 }
 
-glm::vec4 Material::get_reflect_color() const
+glm::vec4 Material::get_base_color() const
 {
-    return _reflectColor;
+    return _baseColor;
 }
 
-void Material::set_reflect_color(glm::vec4 newColor)
+void Material::set_base_color(glm::vec4 newColor)
 {
     _mustUpdate = true;
-    _reflectColor = newColor;
+    _baseColor = newColor;
 }
 
 bool Material::is_use_emission_map() const

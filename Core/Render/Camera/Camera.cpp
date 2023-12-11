@@ -93,7 +93,6 @@ Camera::~Camera()
 {
 	delete this->_frameBuffer;
 	Rendering::remove_camera_from_registry(this);
-
 }
 
 float Camera::get_near_clipping() const

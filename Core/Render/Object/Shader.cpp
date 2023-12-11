@@ -1,5 +1,5 @@
 #include "Shader.h"
-
+#include <sstream>
 Shader::Shader(const std::string& name, const char* vertPath, const char* fragPath, const char* geoPath) 
 	: _name(name)
 {
@@ -244,7 +244,7 @@ void Shader::SetVec3(const char* uniformName, const float& x, const float& y, co
 
 void Shader::SetVec4(const char* uniformName, const glm::vec4& value)
 {
-	glUniform2fv(glGetUniformLocation(_id, uniformName), 1, &value[0]);
+	glUniform4fv(glGetUniformLocation(_id, uniformName), 1, &value[0]);
 }
 
 void Shader::SetVec4(const char* uniformName, const float& x, const float& y, const float& z, const float& w)

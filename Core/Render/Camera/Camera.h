@@ -66,10 +66,10 @@ private:
 	bool			_isMaincamera = false;
 
 
-	GLuint			_skyboxVao, _skyboxVbo;
+	/*GLuint			_skyboxVao, _skyboxVbo;
 	Texture*		_cubemapTex;
 	Shader			_skyboxShader 
-		= Shader("Skybox", "Resources/GLSL/Skybox.vert", "Resources/GLSL/Skybox.frag");
+		= Shader("Skybox", "Resources/GLSL/Skybox.vert", "Resources/GLSL/Skybox.frag");*/
 };
 
 #endif

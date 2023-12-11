@@ -155,10 +155,14 @@ void Rendering::Render()
 							shader.SetInt("_Material.aoMap", c++);
 						}
 
-						if (_material->bumpMap) {
+						if (_material->normalMap != NULL) {
 							_material->bumpMap->bind_texture_unit(c);
 							shader.SetInt("_Material.normalMap", c++);
-						}
+                            shader.SetBool("_Material.hasNormalMap", true);
+                        }
+                        else {
+                            shader.SetBool("_Material.hasNormalMap", false);
+                        }
 
 						if (_material->emissionMap) {
 							_material->emissionMap->bind_texture_unit(c);
@@ -185,8 +189,8 @@ void Rendering::Render()
             instance._environment->backgroundShader.SetMat4("projection", camera->get_projection_matrix());
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->envCubemap);
-            //glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceMap); // display irradiance map
-            //glBindTexture(GL_TEXTURE_CUBE_MAP, prefilterMap); // display prefilter map
+            //glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->irradianceMap); // display irradiance map
+            //glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->prefilterMap); // display prefilter map
             instance._environment->renderCube();
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -224,7 +228,7 @@ Environment::Environment() {
     // ---------------------------------
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrComponents;
-    float* data = stbi_loadf("Resources/ibl/evening_road_01_puresky_2k.hdr", &width, &height, &nrComponents, 0);
+    float* data = stbi_loadf("Resources/ibl/kloppenheim_06_puresky_2k.hdr", &width, &height, &nrComponents, 0);
     if (data)
     {
         glGenTextures(1, &hdrTexture);
@@ -401,8 +405,6 @@ Environment::Environment() {
     renderQuad();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
 }
 
 Environment::~Environment()

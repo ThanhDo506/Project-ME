@@ -47,7 +47,6 @@ Sphere::Sphere(Transform transform)
 	material->renderFace = Front;
 	std::vector<Mesh*> meshes = { new Mesh(vertices, indices) };
 	Renderer* r = this->AddComponent<Renderer>(material, meshes);
-	r->attach_to_gameObject(this);
 	r->set_draw_mode(TriangleStrip);
 }
 //

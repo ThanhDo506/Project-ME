@@ -85,10 +85,12 @@ struct Material {
 	bool		useAlphaClipping;
     bool        useEmission;
     bool        useMetallic;
-
-    vec3        ambient;
-    vec3        specular;
-    vec3        diffuse;
+    bool        useRoughness;
+    bool        useDiffuse;
+    bool        hasNormalMap;
+    bool        sRGB;
+    vec4        baseColor;
+    vec3        fresnelColor;
 };
 
 uniform samplerCube _irradianceMap;
@@ -126,19 +128,37 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness);
 /************************************************************/
 
 void main() {
-    vec3 albedo = pow(texture(_Material.diffuseMap, fs_in.uv).rgb, vec3(GAMMA));
-    float metallic = texture(_Material.metallicMap, fs_in.uv).r;
-    float roughness = texture(_Material.roughnessMap, fs_in.uv).r;
+    vec3 albedo = vec3(_Material.baseColor);
+//    if (_Material.sRGB) {
+        albedo = texture(_Material.diffuseMap, fs_in.uv).rgb * vec3(_Material.baseColor);
+//    } else {
+//        albedo = pow(texture(_Material.diffuseMap, fs_in.uv).rgb * vec3(_Material.baseColor), vec3(GAMMA));
+//    }
+    float metallic = _Material.metallic;
+    if (_Material.useMetallic) {
+        metallic = max(_Material.metallic + 0.00001f,texture(_Material.metallicMap, fs_in.uv).r);
+    }
+    float roughness = 1.0f - _Material.smoothness;
+    if (_Material.useRoughness) {
+        roughness = texture(_Material.roughnessMap, fs_in.uv).r;
+    }
+//    float ao = texture(_Material.aoMap, fs_in.uv).r;
+//    float metallic = _Material.metallic;
+//    if (_Material.useMetallic) {
+//        metallic = clamp(max(_Material.metallic + 0.00001, texture(_Material.metallicMap, fs_in.uv).r), 0.0, 1.0);
+//    }
+//    float roughness = clamp(max(1.0f - _Material.smoothness + 0.00001f, texture(_Material.roughnessMap, fs_in.uv).r), 0.0f, 1.0f);
+//    float ao = clamp(texture(_Material.aoMap, fs_in.uv).r, 0.0, 1.0);
     float ao = texture(_Material.aoMap, fs_in.uv).r;
+
     vec3 N = getNormalFromMap();
 
     vec3 V = normalize(fs_in.cameraPosition - fs_in.worldPosition);
     vec3 R = reflect(-V, N); 
 
-    vec3 F0 = vec3(0.04);   
-    F0 = mix(F0, albedo, metallic);
+    vec3 F0 = mix(vec3(0.04f), albedo, metallic);
 
-    vec3 Lo = vec3(0.004);
+    vec3 Lo = vec3(0.004f);
 
     for (int i = 0; i < _PointLightCount; ++i) 
     {
@@ -176,7 +196,7 @@ void main() {
         Lo += (kD * albedo / PI + specular) * radiance * NdotL; // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }
 
-// ambient lighting (we now use IBL as the ambient term)
+    // ambient lighting (we now use IBL as the ambient term)
     vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
     
     vec3 kS = F;
@@ -198,9 +218,11 @@ void main() {
     // HDR tonemapping
     color = color / (color + vec3(1.0));
     // gamma correct
-    color = pow(color, vec3(1.0 / GAMMA)); 
+//    if (!_Material.sRGB) {
+//        color = pow(color, vec3(1.0 / GAMMA)); 
+//    }
 
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(color, _Material.baseColor.a);
 }
 
 /*************************** LIGHTING ******************************/
@@ -215,8 +237,11 @@ float calculateAttenuation(Attenuation attenuation, float distance) {
 /**************************** PBR **********************************/
 
 vec3 getNormalFromMap() {
-    vec3 tangentNormal = texture(_Material.normalMap, fs_in.uv).xyz * 2.0 - 1.0;
+    vec3 tangentNormal = vec3(1.0);
 
+    if (_Material.hasNormalMap) {
+        vec3 tangentNormal = texture(_Material.normalMap, fs_in.uv).xyz * 2.0 - 1.0;
+    }
     vec3 Q1  = dFdx(fs_in.worldPosition);
     vec3 Q2  = dFdy(fs_in.worldPosition);
     vec2 st1 = dFdx(fs_in.uv);

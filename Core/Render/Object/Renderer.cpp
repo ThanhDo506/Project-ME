@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "../../../third-party/imgui/imgui.h"
 
 
 
@@ -23,14 +24,13 @@ void Renderer::update_shader()
 {
 	if (!_gameObject->is_active() 
 		|| !this->is_active() 
-		|| !_material->is_must_update() 
-		|| !_material->is_texture_changed())
+		|| !_material->is_must_update())
 		return;
 
 	Shader& shader = material->shader;
 	shader.Active();
-	shader.SetFloat2("_Material.tilling", _material->tilling);
-	shader.SetFloat2("_Material.offset", _material->offset);
+	shader.SetFloat2("tilling", _material->tilling);
+	shader.SetFloat2("offset", _material->offset);
 	//if (_material.is_texture_changed()) {
 	//	int c = 0;
 	//	shader.SetFloat2("_Material.tilling", _material.tilling);
@@ -74,14 +74,16 @@ void Renderer::update_shader()
 	//	_material._textureChanged = false;
 	//}
 	
-	shader.SetFloat("_Material.metallic",				_material->metallic);
-	shader.SetFloat("_Material.smoothness",				_material->smoothness);
-	shader.SetFloat("_Material.aoStrength",				_material->aoStrength);
-	shader.SetBool("_Material.useAlphaClipping",		_material->useAlphaClipping);
-	shader.SetFloat("_Material.alphaClippingThreshold", _material->alphaClippingThreshold);
-	shader.SetVec4("_Material.reflectColor",			_material->reflectColor);
-	shader.SetBool("_Material.useEmission",				_material->useEmissionMap);
-	shader.SetBool("_Material.useMetallic",				_material->useMetallicMap);
+	shader.SetFloat("_Material.metallic",				_material->_metallic);
+	shader.SetFloat("_Material.smoothness",				_material->_smoothness);
+	shader.SetFloat("_Material.aoStrength",				_material->_aoStrength);
+	shader.SetBool("_Material.useAlphaClipping",		_material->_useAlphaClipping);
+	shader.SetFloat("_Material.alphaClippingThreshold", _material->_alphaClippingThreshold);
+	shader.SetVec4("_Material.baseColor",				_material->_baseColor);
+	shader.SetBool("_Material.useEmission",				_material->_useEmissionMap);
+	shader.SetBool("_Material.useMetallic",				_material->_useMetallicMap);
+	shader.SetBool("_Material.useRoughness",			_material->_useRoughnessMap);
+	shader.SetBool("_Material.hasNormalMap",			_material->_hasNormalMap);
 	//APP_INFO("Update attributes of %s shader",	shader.name.c_str());
 }
 
@@ -129,6 +131,60 @@ Renderer* Renderer::Clone() const
 void Renderer::set_draw_mode(const DrawMode& mode)
 {
 	this->_drawMode = draw_mode_to_gl_enum(mode);
+}
+
+void Renderer::OnGui()
+{
+	if (ImGui::TreeNode("Renderer")) {
+		if (ImGui::TreeNode("Material")) {
+			Material* material = this->get_material();
+
+			if (ImGui::TreeNode("UV")) {
+				ImGui::DragFloat2("Tilling", &material->_tilling[0], 0.02, -10.0f, 10.0f);
+				ImGui::DragFloat2("Offset", &material->_offset[0], 0.02, -10.0f, 10.0f);
+				ImGui::TreePop();
+			}
+
+			ImGui::Text("Base Map");
+			ImGui::Image((void*)static_cast<intptr_t>(material->get_diffuse_map()->get_id()),
+				ImVec2(48, 48), ImVec2(0, 1), ImVec2(1, 0));
+
+			ImGui::ColorEdit4("Color", &material->_baseColor[0]);
+
+			ImGui::Text("Metallic");
+			ImGui::Checkbox("Use Metallic", &material->_useMetallicMap);
+			if (material->_useMetallicMap) {
+				ImGui::Image((void*)static_cast<intptr_t>(material->get_metallic_map()->get_id()),
+					ImVec2(48, 48), ImVec2(0, 1), ImVec2(1, 0));
+			} else {
+				ImGui::SliderFloat("Metallic value", &material->_metallic, 0.0, 1.0);
+			}
+
+			ImGui::Text("Normal Map");
+			ImGui::Checkbox("Use Normal map", &material->_hasNormalMap);
+			if (material->normalMap) {
+				ImGui::Image((void*)static_cast<intptr_t>(material->get_normal_map()->get_id()),
+					ImVec2(48, 48), ImVec2(0, 1), ImVec2(1, 0));
+			}
+			
+
+			ImGui::Text("Roughness");
+			ImGui::Checkbox("Use Roughness", &material->_useRoughnessMap);
+			if (material->_useRoughnessMap) {
+				ImGui::Image((void*)static_cast<intptr_t>(material->get_roughness_map()->get_id()),
+					ImVec2(48, 48), ImVec2(0, 1), ImVec2(1, 0));
+			} else {
+				ImGui::SliderFloat("Smoothness", &material->_smoothness, 0.0, 1.0);
+			}
+
+			ImGui::Text("AO Map");
+			ImGui::Image((void*)static_cast<intptr_t>(material->get_ao_map()->get_id()),
+				ImVec2(48, 48), ImVec2(0, 1), ImVec2(1, 0));
+
+			ImGui::TreePop();
+		}
+		ImGui::TreePop();
+	}
 }
 
 GLenum Renderer::draw_mode_to_gl_enum(const DrawMode& mode)

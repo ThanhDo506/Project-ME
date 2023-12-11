@@ -69,8 +69,8 @@ public:
 	float	get_alpha_clipping_threshold();
 	void	set_alpha_clipping_threshold(float val);
 
-	glm::vec4	get_reflect_color() const;
-	void		set_reflect_color(glm::vec4 newColor);
+	glm::vec4	get_base_color() const;
+	void		set_base_color(glm::vec4 newColor);
 
 	bool		is_use_emission_map() const;
 	void		set_use_emission_map(bool use);
@@ -126,7 +126,7 @@ public:
 	__declspec(property(get = get_ao_strength, put = set_ao_strength))								float			occolusionStrength;
 	__declspec(property(get = is_use_alpha_clipping, put = set_use_alpha_clipping))					bool			useAlphaClipping;
 	__declspec(property(get = get_alpha_clipping_threshold, put = set_alpha_clipping_threshold))	float			alphaClippingThreshold;
-	__declspec(property(get = get_reflect_color, put = set_reflect_color))							glm::vec4		reflectColor;
+	__declspec(property(get = get_base_color, put = set_base_color))								glm::vec4		baseColor;
 	__declspec(property(get = is_use_emission_map, put = set_use_emission_map))						bool			useEmissionMap;
 	__declspec(property(get = is_use_metallic_map, put = set_use_metallic_map))						bool			useMetallicMap;
 	__declspec(property(get = is_received_shadow, put = set_received_shadow))						bool			receivedShadow;
@@ -157,10 +157,13 @@ private:
 	float						_aoStrength = 0.3f;
 	float						_alphaClippingThreshold = 0.0f;
 	glm::vec2					_tilling = glm::vec2(1.0, 1.0);
-	glm::vec2					_offset = glm::vec2(0.5, 0.0);
-	glm::vec4					_reflectColor;
+	glm::vec2					_offset = glm::vec2(0.0, 0.0);
+	glm::vec4					_baseColor = glm::vec4(1.0f);
 	bool						_useEmissionMap = false;
-	bool						_useMetallicMap = false;
+	bool						_useDiffuseMap = true;
+	bool						_useMetallicMap = true;
+	bool						_useRoughnessMap = true;
+	bool						_hasNormalMap = true;
 	bool						_receivedShadow = false;
 
 	SurfaceType					_surfaceType = Opaque;

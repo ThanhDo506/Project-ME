@@ -21,6 +21,7 @@ public:
 	static bool has_texture(const std::string& name);
 	static Texture* get_texture(const std::string& name);
 	static void clean();
+
 private:
 	std::unordered_map<std::string, Texture*> _textureRegistry;
 };

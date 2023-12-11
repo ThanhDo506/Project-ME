@@ -14,6 +14,8 @@ struct Camera {
 uniform Camera _Camera;
 uniform mat4 _TransformMatrix;
 uniform mat3 _NormalMatrix;
+uniform vec2 tilling;
+uniform vec2 offset;
 
 out VS_OUT {
 	vec3 position;
@@ -33,7 +35,7 @@ void main() {
 	vs_out.position = aPosition;
 	vs_out.normal = _NormalMatrix * aNormal;
 	vs_out.color = aColor;
-	vs_out.uv = aTexCoord;
+	vs_out.uv = aTexCoord * tilling + offset;
 	vs_out.tangent = aTangent;
 	vs_out.tbn = get_TBN(aTangent,aNormal);
 	vs_out.cameraPosition = inverse(_Camera.viewMatrix)[3].xyz;

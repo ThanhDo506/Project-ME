@@ -52,6 +52,12 @@ private:
 	Rendering() = default;
 #pragma endregion
 
+	//static void render_quad();
+	//static void render_cube();
+	//unsigned int quadVAO = 0;
+	//unsigned int quadVBO = 0;
+	//unsigned int cubeVAO = 0;
+	//unsigned int cubeVBO = 0;
 public:
 	Camera* mainCamera = nullptr;
 	static Rendering& instance();
