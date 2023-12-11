@@ -39,8 +39,6 @@ void Application::Run() {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	Rendering::instance()._environment = new Environment();
-	//Shader equirectangularToCubemapShader
-	//	= Shader("asd", "Resources/PBR/2.2.1.cubemap.vs", "Resources/PBR/2.2.1.equirectangular_to_cubemap.fs");
 
 #pragma region test
 	GameObject* root = new GameObject(Transform(), "root");
@@ -174,8 +172,6 @@ void Application::Run() {
 #pragma endregion
 	Time& time = Time::instance();
 	Input& input = Input::instance();
-
-	//Rendering::instance().environment = new Rendering::Environment();
 
 	glViewport(0, 0, 1920, 1080);
 

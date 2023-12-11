@@ -96,102 +96,106 @@ void Rendering::Render()
 	Rendering& instance = Rendering::instance();
 	for (Camera* camera : instance._cameraRegistry) {
 		// render scene to cam frame buffer 
-			//glEnable(GL_DEPTH_TEST);
+			glEnable(GL_DEPTH_TEST);
 			glViewport(0, 0, camera->get_width(), camera->get_height());
-			//camera->enable_frame_buffer();
+			camera->enable_frame_buffer();
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//for (auto renderer : Rendering::instance()._rendererRegistry) {
-			//	if (renderer->is_active() && renderer->material->get_sufface_type() == SurfaceType::Opaque) {
-			//		Transform* transform = renderer->gameObject->GetComponent<Transform>();
-			//		switch (renderer->material->renderFace)
-			//		{
-			//		case Back:
-			//			glEnable(GL_CULL_FACE);
-			//			glCullFace(GL_FRONT);
-			//			break;
-			//		case Both:
-			//			glDisable(GL_CULL_FACE);
-			//			break;
-			//		case Front:
-			//		default:
-			//			glEnable(GL_CULL_FACE);
-			//			glCullFace(GL_BACK);
-			//			break;
-			//		}
-			//		Shader& shader = renderer->material->shader;
-			//		Material* _material = renderer->material;
-			//		shader.Active();
-   //                 glActiveTexture(GL_TEXTURE0);
-   //                 glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->irradianceMap);
-   //                 glActiveTexture(GL_TEXTURE1);
-   //                 glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->prefilterMap);
-   //                 glActiveTexture(GL_TEXTURE2);
-   //                 glBindTexture(GL_TEXTURE_2D, instance._environment->brdfLUTTexture);
-			//		// bind texture to shader before draw call
-			//		{
-			//			int c = 3;
-			//			if (_material->diffuseMap) {
-			//				_material->diffuseMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.diffuseMap", c++);
-			//			}
+			for (auto renderer : Rendering::instance()._rendererRegistry) {
+				if (renderer->is_active() && renderer->material->get_sufface_type() == SurfaceType::Opaque) {
+					Transform* transform = renderer->gameObject->GetComponent<Transform>();
+					switch (renderer->material->renderFace)
+					{
+					case Back:
+						glEnable(GL_CULL_FACE);
+						glCullFace(GL_FRONT);
+						break;
+					case Both:
+						glDisable(GL_CULL_FACE);
+						break;
+					case Front:
+					default:
+						glEnable(GL_CULL_FACE);
+						glCullFace(GL_BACK);
+						break;
+					}
+					Shader& shader = renderer->material->shader;
+					Material* _material = renderer->material;
+					shader.Active();
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->irradianceMap);
+                    shader.SetInt("_irradianceMap", 0);
+                    glActiveTexture(GL_TEXTURE1);
+                    shader.SetInt("_prefilterMap", 1);
+                    glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->prefilterMap);
+                    glActiveTexture(GL_TEXTURE2);
+                    shader.SetInt("_brdfLUT", 2);
+                    glBindTexture(GL_TEXTURE_2D, instance._environment->brdfLUTTexture);
+					 //bind texture to shader before draw call
+					{
+						int c = 3;
+						if (_material->diffuseMap) {
+							_material->diffuseMap->bind_texture_unit(c);
+							shader.SetInt("_Material.diffuseMap", c++);
+						}
 
-			//			if (_material->roughnessMap) {
-			//				_material->roughnessMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.roughnessMap", c++);
-			//			}
+						if (_material->roughnessMap) {
+							_material->roughnessMap->bind_texture_unit(c);
+							shader.SetInt("_Material.roughnessMap", c++);
+						}
 
-			//			if (_material->metallicMap) {
-			//				_material->metallicMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.metallicMap", c++);
-			//			}
+						if (_material->metallicMap) {
+							_material->metallicMap->bind_texture_unit(c);
+							shader.SetInt("_Material.metallicMap", c++);
+						}
 
-			//			if (_material->aoMap) {
-			//				_material->aoMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.aoMap", c++);
-			//			}
+						if (_material->aoMap) {
+							_material->aoMap->bind_texture_unit(c);
+							shader.SetInt("_Material.aoMap", c++);
+						}
 
-			//			if (_material->bumpMap) {
-			//				_material->bumpMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.normalMap", c++);
-			//			}
+						if (_material->bumpMap) {
+							_material->bumpMap->bind_texture_unit(c);
+							shader.SetInt("_Material.normalMap", c++);
+						}
 
-			//			if (_material->emissionMap) {
-			//				_material->emissionMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.emissionMap", c++);
-			//			}
+						if (_material->emissionMap) {
+							_material->emissionMap->bind_texture_unit(c);
+							shader.SetInt("_Material.emissionMap", c++);
+						}
 
-			//			if (_material->heightMap) {
-			//				_material->heightMap->bind_texture_unit(c);
-			//				shader.SetInt("_Material.parallaxMap", c++);
-			//			}
-			//		}
-			//		shader.SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
-			//		shader.SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
-			//		glm::mat4 transformMatrix = transform->get_matrix_transform();
-			//		shader.SetMat4("_TransformMatrix", transformMatrix);
-			//		shader.SetMat3("_NormalMatrix", glm::transpose(glm::inverse(glm::mat3(transformMatrix))));
-			//		renderer->Render();
-			//	}
-			//}
+						if (_material->heightMap) {
+							_material->heightMap->bind_texture_unit(c);
+							shader.SetInt("_Material.parallaxMap", c++);
+						}
+					}
+					shader.SetMat4("_Camera.projectionMatrix", camera->get_projection_matrix());
+					shader.SetMat4("_Camera.viewMatrix", camera->get_view_matrix());
+					glm::mat4 transformMatrix = transform->get_matrix_transform();
+					shader.SetMat4("_TransformMatrix", transformMatrix);
+					shader.SetMat3("_NormalMatrix", glm::transpose(glm::inverse(glm::mat3(transformMatrix))));
+					renderer->Render();
+				}
+			}
 
-   //         glDisable(GL_CULL_FACE);
+            glDisable(GL_CULL_FACE);
             instance._environment->backgroundShader.Active();
             instance._environment->backgroundShader.SetMat4("view", camera->get_view_matrix());
+            instance._environment->backgroundShader.SetMat4("projection", camera->get_projection_matrix());
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_CUBE_MAP, instance._environment->envCubemap);
             //glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceMap); // display irradiance map
             //glBindTexture(GL_TEXTURE_CUBE_MAP, prefilterMap); // display prefilter map
             instance._environment->renderCube();
 
-			//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	//glDisable(GL_DEPTH_TEST);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//glViewport(0, 0, 1920, 1080);
-	//Rendering::instance().mainCamera->get_frame_buffer()->render_frame_buffer_to_screen();
+	glDisable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glViewport(0, 0, 1920, 1080);
+	Rendering::instance().mainCamera->get_frame_buffer()->render_frame_buffer_to_screen();
 }
 
 Environment::Environment() {
@@ -397,6 +401,8 @@ Environment::Environment() {
     renderQuad();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 }
 
 Environment::~Environment()
@@ -447,6 +453,7 @@ void Environment::renderCube()
 {
     if (cubeVAO == 0)
     {
+        std::cout << "init cube\n";
         float vertices[] = {
             // back face
             -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left

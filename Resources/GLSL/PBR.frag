@@ -91,9 +91,9 @@ struct Material {
     vec3        diffuse;
 };
 
-//uniform samplerCube _irradianceMap;
-//uniform samplerCube _prefilterMap;
-//uniform sampler2D _brdfLUT;
+uniform samplerCube _irradianceMap;
+uniform samplerCube _prefilterMap;
+uniform sampler2D _brdfLUT;
 
 uniform Material _Material;
 
@@ -175,17 +175,23 @@ void main() {
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + specular) * radiance * NdotL; // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     }
+
+// ambient lighting (we now use IBL as the ambient term)
     vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
     
     vec3 kS = F;
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;	  
     
-//    vec3 irradiance = texture(_irradianceMap, N).rgb;
-//    vec3 diffuse      = irradiance * albedo;
-//
-//    vec3 ambient = (kD * diffuse) * ao;
-    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 irradiance = texture(_irradianceMap, N).rgb;
+    vec3 diffuse      = irradiance * albedo;
+    
+    // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+    vec3 prefilteredColor = textureLod(_prefilterMap, R,  roughness * 4).rgb;    
+    vec2 brdf  = texture(_brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+    vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+
+    vec3 ambient = (kD * diffuse + specular) * ao;
     
     vec3 color = ambient + Lo;
 
