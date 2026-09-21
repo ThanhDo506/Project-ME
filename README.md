@@ -76,6 +76,12 @@ Dependencies/              Third-party headers and project dependencies
 third-party/               Dear ImGui, stb_image, and ImGuiFileDialog sources
 ```
 
+## Design Documentation
+
+[`Design Proj/Material Editor.vpp`](Design%20Proj/Material%20Editor.vpp) is a [Visual Paradigm](https://www.visual-paradigm.com/) project containing an early, high-level view of class relationships in the application.
+
+It is intended as a design aid for understanding the main application, scene, component, rendering, material, and lighting areas. The diagram is not a complete UML specification and may not reflect every class or the latest implementation detail.
+
 ## Build
 
 ### Requirements
